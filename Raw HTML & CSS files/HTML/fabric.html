@@ -36,6 +36,48 @@
                 </div>
             </ul>
         </nav>
+        <form action="">
+            <div class="search-box">
+                <label for="search">Search</label><i></i><input type="text" id="search">
+            </div>
+            <div class="filter-box">
+                <p><i></i>Apply filters</p>
+                <span>Select fabric type</span>
+                <select name="fabric-type" id="fabric-type">
+                    <option value="all" selected>All</option>
+                    <option value="chiffon">Chiffon</option>
+                    <option value="georgette">Georgette</option>
+                    <option value="lace">Lace</option>
+                    <option value="lycra">Lycra</option>
+                    <option value="organza">Organza</option>
+                    <option value="pleat">Pleat</option>
+                    <option value="plush">Plush</option>
+                    <option value="satin">Satin</option>
+                    <option value="silk">Silk</option>
+                    <option value="taffeta">Taffeta</option>
+                    <option value="tulle">Tulle</option>
+                </select>
+                <span>Select extras on fabric</span>
+                <select name="extras" id="extras">
+                    <option value="none" selected>None</option>
+                    <option value="brocade">Brocade</option>
+                    <option value="sequins">Sequins</option>
+                    <option value="swarovski-stones">Swarovski stones</option>
+                </select>
+                <span>Sort products by</span>
+                <select name="sort" id="sort">
+                    <option value="name" selected>Name</option>
+                    <option value="price">Price</option>
+                    <option value="rating">Rating</option>
+                    <option value="availability">Availability</option>
+                </select>
+                <span>Way of sorting</span>
+                <select name="direction" id="sort-direction">
+                    <option value="ascending" selected>Ascending</option>
+                    <option value="descending">Descending</option>
+                </select>
+            </div>
+        </form>
     </header>
     <main>
         <div class="fabric-card">

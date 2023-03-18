@@ -36,6 +36,55 @@
                 </div>
             </ul>
         </nav>
+        <form action="">
+            <div class="search-box">
+                <label for="search">Search</label><i></i><input type="text" id="search">
+            </div>
+            <div class="filter-box">
+                <p><i></i>Apply filters</p>
+                <span>Select stone type</span>
+                <select name="stamp-type" id="stamp-type">
+                    <option value="all" selected>All</option>
+                    <option value="crystal">Crystal</option>
+                    <option value="metal">Metal</option>
+                </select>
+                <span>Select stamp design</span>
+                <select name="stamp-design" id="stamp-design">
+                    <option value="all" selected>All</option>
+                    <option value="client-wish">Client's wish</option>
+                    <option value="animals">Animals</option>
+                    <option value="animated">Animated heroes</option>
+                    <option value="text">Text</option>
+                    <option value="shapes">Shapes</option>
+                </select>
+                <span>Select stone color</span>
+                <select name="stamp-color" id="stamp-color">
+                    <option value="all" selected>All</option>
+                    <option value="black">Black</option>
+                    <option value="blue">Blue</option>
+                    <option value="chameleon">Chameleon</option>
+                    <option value="green">Green</option>
+                    <option value="orange">Orange</option>
+                    <option value="purple">Purple</option>
+                    <option value="red">Red</option>
+                    <option value="turquoise">Turquoise</option>
+                    <option value="white">White</option>
+                    <option value="yellow">Yellow</option>
+                </select>
+                <span>Sort products by</span>
+                <select name="sort" id="sort">
+                    <option value="name" selected>Name</option>
+                    <option value="price">Price</option>
+                    <option value="rating">Rating</option>
+                    <option value="availability">Availability</option>
+                </select>
+                <span>Way of sorting</span>
+                <select name="direction" id="sort-direction">
+                    <option value="ascending" selected>Ascending</option>
+                    <option value="descending">Descending</option>
+                </select>
+            </div>
+        </form>
     </header>
     <main>
         <div class="stones-card">
