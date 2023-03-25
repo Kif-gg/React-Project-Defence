@@ -48,6 +48,38 @@ a:hover {
     background-color: #5f5b5b;
 }
 
+select {
+    font-size: 14px;
+    cursor: pointer;
+}
+
+form {
+    font-size: 20px;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    margin-top: -16px;
+    background-color: #cecece;
+}
+
+.search-box {
+    align-self: center;
+}
+
+form button {
+    cursor: pointer;
+    border: none;
+    height: 22px;
+    background-color: #acacac;
+}
+
+.filter-box {
+    width: 60%;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+}
+
 /* Footer styling */
 
 footer {
@@ -76,4 +108,51 @@ footer li {
 
 .copyright {
     align-self: center;
+}
+
+/* Main content styling */
+
+main {
+    margin: 50px 80px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+main button {
+    width: 70%;
+    height: 40px;
+    background-color: #76cfed;
+    cursor: pointer;
+    border-radius: 10px;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    font-size: 20px;
+}
+
+main button:hover {
+    background-color: #7deca8;
+}
+
+.stamps-card {
+    width: 20%;
+    margin: 10px;
+    border: 1px solid black;
+    padding: 30px;
+    text-align: center;
+    border-radius: 20px;
+    background-color: #faf4fa;
+}
+
+.stamps-card img {
+    width: 70%;
+    height: 60%;
+}
+
+.stamps-card p {
+    font-size: 20px;
+}
+
+.stars {
+    color: rgb(178, 178, 76);
 }
