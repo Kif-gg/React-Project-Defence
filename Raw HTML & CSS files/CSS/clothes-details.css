@@ -77,3 +77,132 @@ footer li {
 .copyright {
     align-self: center;
 }
+
+/* Main content styling */
+
+main {
+    margin: 50px 80px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.clothes-card {
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 12px;
+    box-shadow: 1px 1px 20px black;
+    padding: 20px;
+    width: 35%;
+    background-color: #faf4fa;
+    font-size: 20px;
+}
+
+main img {
+    width: 65%;
+}
+
+.stars,
+.rating {
+    color: gold;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+.clothes-card button {
+    width: 70%;
+    padding: 20px;
+    background-color: #76cfed;
+    cursor: pointer;
+    border-radius: 10px;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    font-size: 20px;
+}
+
+.clothes-card button:hover {
+    background-color: #7deca8;
+}
+
+.comments {
+    height: 1000px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 35%;
+    border-radius: 12px;
+    box-shadow: 1px 1px 20px black;
+    overflow: auto;
+}
+
+main form {
+    width: 100%;
+}
+
+textarea {
+    width: 80%;
+    resize: none;
+}
+
+.radio-stars {
+    display: flex;
+    justify-content: center;
+    flex-direction: row-reverse;
+}
+
+input[type=submit] {
+    width: 80%;
+    padding: 10px 20px;
+    background-color: #76cfed;
+    color: white;
+    font-size: 22px;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+input[type=submit]:hover {
+    background-color: #7deca8;
+}
+
+input[type=radio] {
+    display: none;
+}
+
+.comments label i {
+    cursor: pointer;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+label i:hover {
+    color: gold;
+    font-size: 18px;
+}
+
+input[type=radio]:checked~label i {
+    color: gold;
+    font-size: 18px;
+}
+
+hr {
+    width: 90%;
+}
+
+.comment {
+    font-size: 18px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid gray;
+    width: 80%;
+    margin: 10px;
+    padding: 5px;
+    text-align: justify;
+}
+
+time {
+    text-align: right;
+    text-decoration: underline;
+}

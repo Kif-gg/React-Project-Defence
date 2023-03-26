@@ -46,45 +46,68 @@
             </p>
             <p>Fabric type</p>
             <p>Extras</p>
-            <p>Price</p>
+            <p>Price BGN</p>
             <p>In or Out of Stock</p>
-            <p><span class="stars"><i></i><i></i><i></i><i></i><i></i></span>4.7 stars from 100 users</p>
-            <button><i></i>Add to cart</button>
+            <p><span class="stars"><i class="fa-solid fa-star"></i></span> 4.7 stars from 100 users</p>
+            <button type="button"><i class="fa-solid fa-cart-shopping"></i> Add to cart</button>
         </div>
         <div class="comments">
-            <h3>Add your comment</h3>
             <form action="" method="">
-                <label for="comment-text">
-                    <textarea name="comment-text" id="comment-text" cols="30" rows="10" minlength="5" maxlength="200">
-                    </textarea>
-                </label>
+                <h3>Rate product</h3>
+                <div class="radio-stars">
+                    <input type="radio" name="rate" id="5" value="5">
+                    <label for="5">
+                        <i class="fa-solid fa-star"></i>
+                    </label>
+                    <input type="radio" name="rate" id="4" value="4">
+                    <label for="4">
+                        <i class="fa-solid fa-star"></i>
+                    </label>
+                    <input type="radio" name="rate" id="3" value="3">
+                    <label for="3">
+                        <i class="fa-solid fa-star"></i>
+                    </label>
+                    <input type="radio" name="rate" id="2" value="2">
+                    <label for="2">
+                        <i class="fa-solid fa-star"></i>
+                    </label>
+                    <input type="radio" name="rate" id="1" value="1">
+                    <label for="1">
+                        <i class="fa-solid fa-star"></i>
+                    </label>
+                </div>
                 <br>
-                <input type="submit" value="Publish comment">
+                <label for="comment-text">
+                    <h3>Add your comment</h3>
+                    <textarea name="comment-text" id="comment-text" rows="10" minlength="5" maxlength="800"></textarea>
+                </label>
+                <input type="submit" value="Publish review">
             </form>
+            <hr>
             <h2>Comments</h2>
             <div class="comment">
-                <h4>Username</h4>
+                <h4>@Username</h4>
+                <span class="rating"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                        class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                        class="fa-regular fa-star"></i></span>
                 <p>Comment</p>
-                <button>Upvote</button><span>148</span><button>Downvote</button>
-                <p>
-                    <time datetime="2023-03-12T12:00">3 hours ago</time>
-                </p>
+                <time>3 hours ago</time>
             </div>
             <div class="comment">
-                <h4>Username</h4>
+                <h4>@Username</h4>
+                <span class="rating"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                        class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i><i
+                        class="fa-regular fa-star"></i></span>
                 <p>Comment</p>
-                <button>Upvote</button><span>148</span><button>Downvote</button>
-                <p>
-                    <time datetime="2023-03-12T12:00">12 minutes ago</time>
-                </p>
+                <time>12 minutes ago</time>
             </div>
             <div class="comment">
-                <h4>Username</h4>
+                <h4>@Username</h4>
+                <span class="rating"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                        class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                        class="fa-solid fa-star"></i></span>
                 <p>Comment</p>
-                <button>Upvote</button><span>148</span><button>Downvote</button>
-                <p>
-                    <time datetime="2023-03-12T12:00">12.03.2021</time>
-                </p>
+                <time>12.03.2021</time>
             </div>
         </div>
     </main>
@@ -108,9 +131,10 @@
             <ul>
                 <li><a href="https://github.com/Kif-gg" target="_blank"><i class="fa-brands fa-github"></i> GitHub</a>
                 </li>
-                <li><a href="mailto:f17.8oy@gmail.com" target="_blank"><i class="fa-solid fa-envelope"></i> Email</a></li>
+                <li><a href="mailto:f17.8oy@gmail.com" target="_blank"><i class="fa-solid fa-envelope"></i> Email</a>
+                </li>
                 <li><a href="https://www.facebook.com/kifchoo" target="_blank"><i
-                    class="fa-brands fa-square-facebook"></i> Facebook</a></li>
+                            class="fa-brands fa-square-facebook"></i> Facebook</a></li>
             </ul>
         </div>
     </footer>
