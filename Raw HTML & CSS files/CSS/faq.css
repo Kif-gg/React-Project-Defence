@@ -77,3 +77,47 @@ footer li {
 .copyright {
     align-self: center;
 }
+
+/* Main content styling */
+
+main {
+    margin: 50px 80px;
+    text-align: center;
+    font-size: 20px;
+}
+
+h2 {
+    font-size: 28px;
+    color: coral;
+}
+
+.contact {
+    text-decoration: none;
+    color: coral;
+    padding: 10px 5px;
+}
+
+.contact:hover {
+    color: white;
+    background-color: #2a2d2c;
+}
+
+.question {
+    padding: 5px 20px;
+    background-color: #cecece;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.question:hover {
+    background-color: #b5b3b3;
+    cursor: pointer;
+}
+
+.answer {
+    text-align: justify;
+    padding: 5px 20px;
+    background-color: #f5f5f5;
+    display: none;
+}
