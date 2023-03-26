@@ -130,5 +130,6 @@ article {
 }
 
 .stars {
-    color: rgb(178, 178, 76);
+    color: gold;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
