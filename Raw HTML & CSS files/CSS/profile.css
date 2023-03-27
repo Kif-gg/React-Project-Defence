@@ -95,6 +95,14 @@ main {
     color: #2a2d2c;
 }
 
+.person-info p {
+    font-size: 20px;
+}
+
+.person-info h3 {
+    font-size: 22px;
+}
+
 hr {
     height: 2px;
     width: 20%;
