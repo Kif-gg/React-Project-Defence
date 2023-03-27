@@ -208,3 +208,15 @@ button {
     color: red;
     display: none;
 }
+
+.pass-text:hover {
+    cursor: pointer;
+}
+
+input[type=password] {
+    margin-left: 22px;
+}
+
+.fa-lock-open {
+    width: 14px;
+}
