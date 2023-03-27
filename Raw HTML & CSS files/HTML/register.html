@@ -54,9 +54,10 @@
                 <p class="error">
                     Username is too long!
                 </p>
+                <br>
                 <label for="email">Email
                     <br>
-                    <input type="email" name="email" id="email" required>
+                    <input type="text" name="email" id="email" required>
                 </label>
                 <p class="error">
                     Email is required!
@@ -64,11 +65,12 @@
                 <p class="error">
                     Email is invalid!
                 </p>
+                <br>
                 <label for="password">Password
                     <br>
                     <input type="password" name="password" id="password" required minlength="5">
                 </label>
-                <span class="eye"><i></i></span>
+                <span class="pass-text"><i class="fa-solid fa-lock"></i></span>
                 <p class="error">
                     Password is required!
                 </p>
@@ -78,20 +80,23 @@
                 <p class="error">
                     Passwords don't match!
                 </p>
+                <br>
                 <label for="repass">Confirm Password
                     <br>
-                    <input type="password" name="repass" id="repass" required minlength="5">
+                    <input type="password" name="repass" id="repass" required minlength="5" class="invalid">
                 </label>
-                <span class="eye"><i></i></span>
+                <span class="pass-text"><i class="fa-solid fa-lock-open"></i></span>
                 <p class="error">
                     Repeating password is required!
                 </p>
                 <p class="error">
                     Passwords don't match!
                 </p>
+                <br>
                 <label for="number">Phone number
                     <br>
-                    <input type="text" name="phone-number" id="number" minlength="10" maxlength="12" required>
+                    <input type="text" name="phone-number" id="number" minlength="10" maxlength="12" required
+                        class="valid">
                 </label>
                 <p class="error">
                     Phone number is required!
@@ -99,9 +104,11 @@
                 <p class="error">
                     Phone number is invalid!
                 </p>
-                <input type="submit" value="Register">
+                <p>
+                    <input type="submit" value="Register">
+                </p>
             </form>
-            <h4>You already have an account? <a href="login.html"><span class="link">Login here.</span></a></h4>
+            <h4>You already have an account? <a href="login.html" class="link">Login here</a></h4>
         </div>
     </main>
     <footer>
@@ -124,9 +131,10 @@
             <ul>
                 <li><a href="https://github.com/Kif-gg" target="_blank"><i class="fa-brands fa-github"></i> GitHub</a>
                 </li>
-                <li><a href="mailto:f17.8oy@gmail.com" target="_blank"><i class="fa-solid fa-envelope"></i> Email</a></li>
+                <li><a href="mailto:f17.8oy@gmail.com" target="_blank"><i class="fa-solid fa-envelope"></i> Email</a>
+                </li>
                 <li><a href="https://www.facebook.com/kifchoo" target="_blank"><i
-                    class="fa-brands fa-square-facebook"></i> Facebook</a></li>
+                            class="fa-brands fa-square-facebook"></i> Facebook</a></li>
             </ul>
         </div>
     </footer>
