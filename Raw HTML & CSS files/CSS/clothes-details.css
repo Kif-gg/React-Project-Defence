@@ -126,6 +126,16 @@ main {
     font-size: 20px;
 }
 
+.clothes-card .remove-favorites {
+    background-color: orange;
+}
+
+
+.clothes-card .remove-favorites:hover {
+    background-color: #ff3333;
+}
+
+
 main img {
     width: 65%;
 }
@@ -137,6 +147,7 @@ main img {
 }
 
 .clothes-card button {
+    margin-bottom: 30px;
     width: 70%;
     padding: 20px;
     background-color: #76cfed;

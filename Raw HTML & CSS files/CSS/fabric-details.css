@@ -137,6 +137,7 @@ main img {
 }
 
 .fabric-card button {
+    margin-bottom: 30px;
     width: 70%;
     padding: 20px;
     background-color: #76cfed;

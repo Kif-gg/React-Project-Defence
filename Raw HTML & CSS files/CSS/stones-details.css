@@ -126,6 +126,15 @@ main {
     font-size: 20px;
 }
 
+.stones-card .remove-favorites {
+    background-color: orange;
+}
+
+
+.stones-card .remove-favorites:hover {
+    background-color: #ff3333;
+}
+
 main img {
     width: 65%;
 }
@@ -137,6 +146,7 @@ main img {
 }
 
 .stones-card button {
+    margin-bottom: 30px;
     width: 70%;
     padding: 20px;
     background-color: #76cfed;
