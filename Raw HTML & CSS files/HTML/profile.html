@@ -39,17 +39,21 @@
     </header>
     <main>
         <div class="person-info">
-            <img src="../../Resources-images/avatar.jpg" alt="avatar" class="avatar">
+            <i class="fa-solid fa-circle-user"></i>
             <p>Username</p>
             <h3>JohnDoe</h3>
+            <hr>
             <p>Email</p>
             <h3>john@alabala.com</h3>
+            <hr>
             <p>Phone number</p>
             <h3>+0123456789</h3>
-            <a href="favorites.html"><button class="favorite-products">Favorite products</button></a>
-        </div>
-        <div class="edit-person-info">
-            <button type="button">Edit profile data</button>
+            <hr>
+            <div class="buttons">
+                <button type="button" class="edit">Edit profile data</button>
+                <a href="favorites.html"><button type="button">Favorite products</button></a>
+                <button type="button" class="edit">Change password</button>
+            </div>
         </div>
         <form action="" method="">
             <label for="username">Username
@@ -65,44 +69,66 @@
             <p class="error">
                 Username is too long!
             </p>
+            <p class="error">
+                This username is already taken!
+            </p>
             <br>
             <label for="email">Email
                 <br>
-                <input type="text" name="email" id="email">
+                <input type="text" name="email" id="email" required class="valid">
             </label>
+            <p class="error">
+                Email is required!
+            </p>
+            <p class="error">
+                Email is not valid!
+            </p>
+            <p class="error">
+                This email is already registered!
+            </p>
             <br>
             <label for="number">Phone number
                 <br>
-                <input type="text" name="number" id="number">
+                <input type="text" name="number" id="number" required class="invalid">
             </label>
+            <p class="error">
+                Phone number is required!
+            </p>
+            <p class="error">
+                Phone number is invalid!
+            </p>
             <br>
-            <input type="submit" value="Update profile data">
-            <a href="profile.html"><button type="button">Cancel</button></a>
+            <p>
+                <input type="submit" value="Update profile data">
+            </p>
+            <a href="profile.html"><button type="button" class="cancel">Cancel</button></a>
         </form>
-        <button type="button">Change password</button>
         <form action="" method="">
             <label for="current">Current password
                 <br>
                 <input type="password" name="current" id="current" required>
-                <p class="error">
-                    Current password is required if you want to change it!
-                </p>
-                <p class="error">
-                    Wrong password!
-                </p>
             </label>
+            <p class="error">
+                Current password is required if you want to change it!
+            </p>
+            <p class="error">
+                Wrong password!
+            </p>
+            <br>
             <label for="new">New password
                 <br>
                 <input type="password" name="new" id="new" required minlength="5">
-                <p class="error">
-                    New password is required!
-                </p>
-                <p class="error">
-                    New password is too short!
-                </p>
             </label>
-            <input type="submit" value="Change password">
-            <a href="profile.html"><button type="button">Cancel</button></a>
+            <p class="error">
+                New password is required!
+            </p>
+            <p class="error">
+                New password is too short!
+            </p>
+            <p>
+                <input type="submit" value="Change password">
+            </p>
+            <a href="profile.html"><button type="button" class="cancel">Cancel</button></a>
         </form>
     </main>
     <footer>
@@ -125,9 +151,10 @@
             <ul>
                 <li><a href="https://github.com/Kif-gg" target="_blank"><i class="fa-brands fa-github"></i> GitHub</a>
                 </li>
-                <li><a href="mailto:f17.8oy@gmail.com" target="_blank"><i class="fa-solid fa-envelope"></i> Email</a></li>
+                <li><a href="mailto:f17.8oy@gmail.com" target="_blank"><i class="fa-solid fa-envelope"></i> Email</a>
+                </li>
                 <li><a href="https://www.facebook.com/kifchoo" target="_blank"><i
-                    class="fa-brands fa-square-facebook"></i> Facebook</a></li>
+                            class="fa-brands fa-square-facebook"></i> Facebook</a></li>
             </ul>
         </div>
     </footer>
