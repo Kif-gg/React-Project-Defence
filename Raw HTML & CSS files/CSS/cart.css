@@ -171,3 +171,7 @@ h2 {
 .order:hover {
     background-color: #7deca8;
 }
+
+input[type=text] {
+    text-align: center;
+}
