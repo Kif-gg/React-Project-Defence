@@ -6,6 +6,9 @@ const connectionString = 'mongodb://127.0.0.1:27017/React-project-defence';
 
 const authController = require('./Controllers/authController');
 
+const trimBody = require('./Middlewares/trimBody');
+const session = require('./Middlewares/session');
+
 start();
 
 async function start() {
@@ -17,13 +20,17 @@ async function start() {
 
         app.use(express.json());
         app.use(cookieParser());
-        // TODO add the custom middlewares and the controllers
+        app.use(trimBody());
+        app.use(session());
+        // TODO add cors if needed
 
-        app.get('/', (req, res) => {
+        app.get('/', async (req, res) => {
             res.json({ message: 'REST service is operating' });
         });
 
-        app.use('/users', authController)
+        // app.use('/')
+        app.use('/users', authController);
+
 
         app.listen(3030, () => console.log('REST service started successfully'));
     } catch (error) {
