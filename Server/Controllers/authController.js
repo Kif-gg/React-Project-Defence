@@ -48,4 +48,53 @@ authController.get('/logout', guestGuard(), async (req, res) => {
     res.status(204).end();
 });
 
+authController.get('/profile', guestGuard(), async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            throw new Error(`User with ID ${req.user._id} does not exist!`);
+        }
+        res.json(user);
+    } catch (error) {
+        const message = parseError(error);
+        res.status(400).json({ message });
+    }
+});
+
+authController.put('/profile', guestGuard(), async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            throw new Error(`User with ID ${req.user._id} does not exist!`);
+        } else {
+            const checkWhatIsBeingUpdated = Object.keys(req.body);
+            if (checkWhatIsBeingUpdated.length == 3 && checkWhatIsBeingUpdated.includes('username') && checkWhatIsBeingUpdated.includes('email') && checkWhatIsBeingUpdated.includes('number')) {
+                const result = await changeUserData(req.user._id, req.body);
+                res.json(result);
+            } else if (checkWhatIsBeingUpdated.length == 2 && checkWhatIsBeingUpdated.includes('current') && checkWhatIsBeingUpdated.includes('new')) {
+                const result = await changePassword(req.user._id, req.body);
+                res.json(result);
+            }
+        }
+    } catch (error) {
+        const message = parseError(error);
+        res.status(400).json({ message });
+    }
+});
+
+authController.delete('/profile', guestGuard(), async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+        if (!user){
+            throw new Error(`User with ID ${req.user._id} does not exist!`);
+        } else {
+            await deleteUser(req.user._id);
+            res.status(204).end();
+        }
+    } catch (error) {
+        const message = parseError(error);
+        res.status(400).json({ message });
+    }
+});
+
 module.exports = authController;
