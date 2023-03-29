@@ -13,7 +13,7 @@ const userSchema = new Schema({
         type: String, required: [true, 'Phone number is required!'], match: [/^(\+359|0)\d{9}$/, 'The phone number is not valid!'],
     },
     hashedPassword: {
-        type: String, required: true
+        type: String, required: [true, 'Password is required!']
     },
     pin: {
         type: String, required: true, default: 'No pin'

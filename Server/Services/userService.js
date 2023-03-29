@@ -91,6 +91,8 @@ async function changePassword(id, user) {
         throw new Error('Password is too short!');
     } else {
         existingUser.hashedPassword = await bcrypt.hash(user.new, 10);
+
+        return existingUser.save();
     }
 };
 
