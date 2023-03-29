@@ -237,6 +237,35 @@ hr {
     margin: 10px;
     padding: 5px;
     text-align: justify;
+    box-shadow: 1px 1px 20px black;
+}
+
+.edit-delete {
+    align-self: flex-end;
+    margin-bottom: -6%;
+}
+
+.edit-delete .edit {
+    border-radius: 5px;
+    font-size: 18px;
+    background-color: #76cfed;
+    cursor: pointer;
+}
+
+.edit-delete .edit:hover {
+    background-color: #7deca8;
+}
+
+.edit-delete .delete {
+    border-radius: 5px;
+    margin-left: 10px;
+    font-size: 18px;
+    background-color: orange;
+    cursor: pointer;
+}
+
+.edit-delete .delete:hover {
+    background-color: red;
 }
 
 time {
