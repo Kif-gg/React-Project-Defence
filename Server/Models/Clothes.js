@@ -10,14 +10,11 @@ const clothesSchema = new Schema({
     description: {
         type: String, required: true, minLength: [20, 'Description must be at least 20 characters!'], maxLength: [200, 'Description must not be longer than 200 characters!']
     },
-    stoneType: {
-        type: String, required: [true, 'Stone type is required!']
+    clothingType: {
+        type: String, required: [true, 'Clothing type is required!']
     },
-    stampDesign: {
-        type: String, required: [true, 'Stamp shape is required!']
-    },
-    stoneColor: {
-        type: String, required: [true, 'Stone color is required!']
+    targetCustomers: {
+        type: String, required: [true, 'Target customers field is required!']
     },
     price: {
         type: Number, required: true, min: [0.1, 'Price must not be negative or 0!']
