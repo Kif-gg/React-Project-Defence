@@ -24,6 +24,12 @@ const fabricSchema = new Schema({
     },
     reviews: {
         type: [ObjectId], ref: 'Review', default: []
+    },
+    average: {
+        type: Number, default: 0
+    },
+    totalPeople: {
+        type: Number, default: 0
     }
 }, {
     timestamps: { updatedAt: 'updatedAt' }
