@@ -25,10 +25,13 @@ const userSchema = new Schema({
         type: Boolean, required: true, default: false
     },
     favorites: {
-        type: [ObjectId], ref: 'Product', default: []
+        fabrics: { type: [ObjectId], ref: 'Fabric', default: [] },
+        stones: { type: [ObjectId], ref: 'Stones', default: [] },
+        stamps: { type: [ObjectId], ref: 'Stamp', default: [] },
+        clothes: { type: [ObjectId], ref: 'clothes', default: [] },
     },
     cart: {
-        type: [ObjectId], ref: 'Product', default: []
+        type: [ObjectId], default: []
     }
 });
 
