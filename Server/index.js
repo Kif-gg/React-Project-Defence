@@ -8,7 +8,6 @@ const authController = require('./Controllers/authController');
 
 const trimBody = require('./Middlewares/trimBody');
 const session = require('./Middlewares/session');
-const { getUserCart } = require('./Services/userService');
 
 start();
 
@@ -26,9 +25,6 @@ async function start() {
         // TODO add cors if needed
 
         app.get('/', async (req, res) => {
-            const result = await getUserCart('6426e3caa802e41bc8d4444b');
-
-            console.log(result);
             res.json({ message: 'REST service is operating' });
         });
 
