@@ -7,33 +7,39 @@ const Review = require("../Models/Review");
 
 async function getThreeFromTopRated() {
 
-    const collection1 = await Fabric.find({}).populate('reviews').sort({ average: -1 }).limit(3);
-    const collection2 = await Stones.find({}).populate('reviews').sort({ average: -1 }).limit(3);
-    const collection3 = await Stamp.find({}).populate('reviews').sort({ average: -1 }).limit(3);
-    const collection4 = await Clothes.find({}).populate('reviews').sort({ average: -1 }).limit(3);
+    const collection1 = await Fabric.find({}).populate('reviews').sort({ average: -1 }).limit(4);
+    const collection2 = await Stones.find({}).populate('reviews').sort({ average: -1 }).limit(4);
+    const collection3 = await Stamp.find({}).populate('reviews').sort({ average: -1 }).limit(4);
+    const collection4 = await Clothes.find({}).populate('reviews').sort({ average: -1 }).limit(4);
 
-    let roulette = [collection1, collection2, collection3, collection4];
+    const roulette = [collection1, collection2, collection3, collection4];
 
-    const min = 0;
-    const max = 3;
-    const top3 = [];
+    const threeRandom = [];
 
-    let random = Math.round(Math.random() * (max - min) + min);
+    let max = 0;
+    let bullet = 0;
 
-    roulette.splice(random, 1);
+    for (let i = 0; i < 3; i++) {
+        for (let collection of roulette) {
+            max = collection.length - 1;
+            bullet = Math.round(Math.random() * max);
+            console.log(bullet);
+            if (collection.length > 1) {
+                collection.splice(bullet, 1);
+            }
+        }
+    }
+
+    max = 3;
+    bullet = Math.round(Math.random() * max);
+
+    roulette.splice(bullet, 1);
 
     for (let collection of roulette) {
-        collection.sort((a, b) => (b.average - a.average));
-        top3.push(collection[0]);
+        threeRandom.push(collection[0]);
     }
 
-    console.log(top3);
-
-    for (let one of top3) {
-        console.log(one);
-    }
-
-    return top3;
+    return threeRandom;
 };
 
 module.exports = {

@@ -1,11 +1,11 @@
 function createRegExp(query) {
     query = query.split(' ');
     query = query.filter(q => q != '');
-        let match = '';
+    let match = '';
 
     if (query.length > 1) {
-        query = query.join('\\b)(?=.*\\b');
-        match = '^(?=.*\\b' + query + '\\b).*$';
+        query = query.join(')(?=.*');
+        match = '^(?=.*' + query + ').*$';
     } else {
         match = query.join();
     }
