@@ -74,6 +74,8 @@ authController.put('/profile', guestGuard(), async (req, res) => {
             } else if (checkWhatIsBeingUpdated.length == 2 && checkWhatIsBeingUpdated.includes('current') && checkWhatIsBeingUpdated.includes('new')) {
                 const result = await changePassword(req.user._id, req.body);
                 res.json(result);
+            } else {
+                throw new Error('Wrong input data!');
             }
         }
     } catch (error) {
