@@ -5,10 +5,10 @@ const { parseError } = require('../Util/parser');
 
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const { getFavoriteFabrics } = require('./fabricService');
-const { getFavoriteStones } = require('./stonesService');
-const { getFavoriteStamps } = require('./stampService');
-const { getFavoriteClothes } = require('./clothesService');
+const { getFavoriteFabrics, getFabricsInCart } = require('./fabricService');
+const { getFavoriteStones, getStonesInCart } = require('./stonesService');
+const { getFavoriteStamps, getStampsInCart } = require('./stampService');
+const { getFavoriteClothes, getClothesInCart } = require('./clothesService');
 
 const secret = 'VtPkYbhk57BlCbsggaRk2qxFr71rGva4WzPkvpXv';
 let wrongPasswordUntilBlock = 10;
@@ -161,6 +161,27 @@ async function getUserFavorites(userId) {
     }
 }
 
+async function getUserCart(userId) {
+    const existingUser = await getUserById(userId);
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else {
+        const allProductsInCartArray = [];
+
+        const fabricsInCart = await getFabricsInCart(userId);
+        const stonesInCart = await getStonesInCart(userId);
+        const stampsInCart = await getStampsInCart(userId);
+        const clothesInCart = await getClothesInCart(userId);
+        
+        allProductsInCartArray.push(...fabricsInCart);
+        allProductsInCartArray.push(...stonesInCart);
+        allProductsInCartArray.push(...stampsInCart);
+        allProductsInCartArray.push(...clothesInCart);
+
+        return allProductsInCartArray.filter(fav => fav != '');
+    }
+}
+
 module.exports = {
     register,
     login,
@@ -171,5 +192,6 @@ module.exports = {
     deleteUser,
     getUserById,
     getUserFavorites,
+    getUserCart,
     secret
 };

@@ -31,7 +31,10 @@ const userSchema = new Schema({
         clothes: { type: [ObjectId], ref: 'clothes', default: [] },
     },
     cart: {
-        type: [ObjectId], default: []
+        fabrics: { type: [ObjectId], ref: 'Fabric', default: [] },
+        stones: { type: [ObjectId], ref: 'Stones', default: [] },
+        stamps: { type: [ObjectId], ref: 'Stamp', default: [] },
+        clothes: { type: [ObjectId], ref: 'clothes', default: [] },
     }
 });
 

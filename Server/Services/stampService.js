@@ -140,6 +140,56 @@ async function getFavoriteStamps(userId) {
     }
 }
 
+async function addStampToCart(stampId, userId) {
+    const existingUser = await User.findById(userId).select('cart');
+    const existingStamp = await getStampById(stampId);
+
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else if (!!existingStamp == false) {
+        throw new Error(`A product from this category with ID ${stampId} does not exist!`);
+    } else {
+        if (existingUser.cart.stamps.includes(stampId)) {
+            return;
+        } else {
+            existingUser.cart.stamps.unshift(stampId);
+            return existingUser.save();
+        }
+    }
+}
+
+async function removeStampFromCart(stampId, userId) {
+    const existingUser = await User.findById(userId).select('cart');
+    const existingStamp = await getStampById(stampId);
+
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else if (!!existingStamp == false) {
+        throw new Error(`A product from this category with ID ${stampId} does not exist!`);
+    } else {
+        if (existingUser.cart.stamps.includes(stampId)) {
+            existingUser.cart.stamps.splice(existingUser.cart.stamps.indexOf(stampId));
+            return existingUser.save();
+        } else {
+            return;
+        }
+    }
+}
+
+async function getStampsInCart(userId) {
+    const existingUser = await User.findById(userId).select('cart');
+    const arrOfStampsInCart = [];
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else {
+        for (let product of existingUser.cart.stamps) {
+            product = await getFabricById(product);
+            arrOfStampsInCart.push(product);
+        }
+        return arrOfStampsInCart;
+    }
+}
+
 module.exports = {
     calcAvgRatingAndTotalReviews,
     calcAvgRatingAndTotalReviewsById,
@@ -148,5 +198,8 @@ module.exports = {
     getStampById,
     addStampToFavorites,
     removeStampFromFavorites,
-    getFavoriteStamps
+    getFavoriteStamps,
+    addStampToCart,
+    removeStampFromCart,
+    getStampsInCart
 };

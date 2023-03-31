@@ -148,6 +148,56 @@ async function getFavoriteStones(userId) {
     }
 }
 
+async function addStonesToCart(stonesId, userId) {
+    const existingUser = await User.findById(userId).select('cart');
+    const existingStones = await getStonesById(stonesId);
+
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else if (!!existingStones == false) {
+        throw new Error(`A product from this category with ID ${stonesId} does not exist!`);
+    } else {
+        if (existingUser.cart.stones.includes(stonesId)) {
+            return;
+        } else {
+            existingUser.cart.stones.unshift(stonesId);
+            return existingUser.save();
+        }
+    }
+}
+
+async function removeStonesFromCart(stonesId, userId) {
+    const existingUser = await User.findById(userId).select('cart');
+    const existingStones = await getStonesById(stonesId);
+
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else if (!!existingStones == false) {
+        throw new Error(`A product from this category with ID ${stonesId} does not exist!`);
+    } else {
+        if (existingUser.cart.stones.includes(stonesId)) {
+            existingUser.cart.stones.splice(existingUser.cart.stones.indexOf(stonesId));
+            return existingUser.save();
+        } else {
+            return;
+        }
+    }
+}
+
+async function getStonesInCart(userId) {
+    const existingUser = await User.findById(userId).select('cart');
+    const arrOfStonesInCart = [];
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else {
+        for (let product of existingUser.cart.stones) {
+            product = await getStonesById(product);
+            arrOfStonesInCart.push(product);
+        }
+        return arrOfStonesInCart;
+    }
+}
+
 module.exports = {
     calcAvgRatingAndTotalReviews,
     calcAvgRatingAndTotalReviewsById,
@@ -156,5 +206,8 @@ module.exports = {
     getStonesById,
     addStonesToFavorites,
     removeStonesFromFavorites,
-    getFavoriteStones
+    getFavoriteStones,
+    addStonesToCart,
+    removeStonesFromCart,
+    getStonesInCart
 };

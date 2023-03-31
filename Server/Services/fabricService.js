@@ -131,6 +131,56 @@ async function getFavoriteFabrics(userId) {
     }
 }
 
+async function addFabricToCart(fabricId, userId) {
+    const existingUser = await User.findById(userId).select('cart');
+    const existingFabric = await getFabricById(fabricId);
+
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else if (!!existingFabric == false) {
+        throw new Error(`A product from this category with ID ${fabricId} does not exist!`);
+    } else {
+        if (existingUser.cart.fabrics.includes(fabricId)) {
+            return;
+        } else {
+            existingUser.cart.fabrics.unshift(fabricId);
+            return existingUser.save();
+        }
+    }
+}
+
+async function removeFabricFromCart(fabricId, userId) {
+    const existingUser = await User.findById(userId).select('cart');
+    const existingFabric = await getFabricById(fabricId);
+
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else if (!!existingFabric == false) {
+        throw new Error(`A product from this category with ID ${fabricId} does not exist!`);
+    } else {
+        if (existingUser.cart.fabrics.includes(fabricId)) {
+            existingUser.cart.fabrics.splice(existingUser.cart.fabrics.indexOf(fabricId));
+            return existingUser.save();
+        } else {
+            return;
+        }
+    }
+}
+
+async function getFabricsInCart(userId) {
+    const existingUser = await User.findById(userId).select('cart');
+    const arrOfFabricsInCart = [];
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else {
+        for (let product of existingUser.cart.fabrics) {
+            product = await getFabricById(product);
+            arrOfFabricsInCart.push(product);
+        }
+        return arrOfFabricsInCart;
+    }
+}
+
 module.exports = {
     calcAvgRatingAndTotalReviews,
     calcAvgRatingAndTotalReviewsById,
@@ -139,5 +189,8 @@ module.exports = {
     getFabricById,
     addFabricToFavorites,
     removeFabricFromFavorites,
-    getFavoriteFabrics
+    getFavoriteFabrics,
+    addFabricToCart,
+    removeFabricFromCart,
+    getFabricsInCart
 };

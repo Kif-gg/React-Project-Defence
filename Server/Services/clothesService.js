@@ -138,6 +138,56 @@ async function getFavoriteClothes(userId) {
     }
 }
 
+async function addClothesToCart(clothesId, userId) {
+    const existingUser = await User.findById(userId).select('cart');
+    const existingClothes = await getClothesById(clothesId);
+
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else if (!!existingClothes == false) {
+        throw new Error(`A product from this category with ID ${clothesId} does not exist!`);
+    } else {
+        if (existingUser.cart.clothes.includes(clothesId)) {
+            return;
+        } else {
+            existingUser.cart.clothes.unshift(clothesId);
+            return existingUser.save();
+        }
+    }
+}
+
+async function removeClothesFromCart(clothesId, userId) {
+    const existingUser = await User.findById(userId).select('cart');
+    const existingClothes = await getClothesById(clothesId);
+
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else if (!!existingClothes == false) {
+        throw new Error(`A product from this category with ID ${clothesId} does not exist!`);
+    } else {
+        if (existingUser.cart.clothes.includes(clothesId)) {
+            existingUser.cart.clothes.splice(existingUser.cart.clothes.indexOf(clothesId));
+            return existingUser.save();
+        } else {
+            return;
+        }
+    }
+}
+
+async function getClothesInCart(userId) {
+    const existingUser = await User.findById(userId).select('cart');
+    const arrOfClothesInCart = [];
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else {
+        for (let product of existingUser.cart.clothes) {
+            product = await getClothesById(product);
+            arrOfClothesInCart.push(product);
+        }
+        return arrOfClothesInCart;
+    }
+}
+
 module.exports = {
     calcAvgRatingAndTotalReviews,
     calcAvgRatingAndTotalReviewsById,
@@ -146,5 +196,8 @@ module.exports = {
     getClothesById,
     addClothesToFavorites,
     removeClothesFromFavorites,
-    getFavoriteClothes
+    getFavoriteClothes,
+    addClothesToCart,
+    removeClothesFromCart,
+    getClothesInCart
 };
