@@ -75,6 +75,24 @@ async function logout(token) {
 async function changeUserData(id, user) {
     const existingUser = await User.findById(id);
 
+    const currentName = new RegExp(`^${existingUser.username}$`, 'i');
+    const currentEmail = new RegExp(`^${existingUser.email}$`, 'i');
+    const currentNumber = new RegExp(`^(\\+359|0)${existingUser.number.slice(existingUser.number.length - 9)}$`, 'i');
+
+    if (currentName.test(user.username) == true) {
+        throw new Error('New username can\'t be your current username!');
+    } else if (!!await User.findOne({ username: { '$regex': `^${user.username}$`, '$options': 'i' } }) == true) {
+        throw new Error("This username is already taken!");
+    }
+    if (currentEmail.test(user.email) == true) {
+        throw new Error('New email can\'t be your current email!');
+    } else if (!!await User.findOne({ email: { '$regex': `^${user.email}$`, '$options': 'i' } }) == true) {
+        throw new Error("This username is already taken!");
+    }
+    if (currentNumber.test(user.number) == true) {
+        throw new Error('New number can\'t be your current number!');
+    }
+
     existingUser.username = user.username;
     existingUser.email = user.email;
     existingUser.number = user.number;
@@ -151,7 +169,7 @@ async function getUserFavorites(userId) {
         const stonesFavorites = await getFavoriteStones(userId);
         const stampsFavorites = await getFavoriteStamps(userId);
         const clothesFavorites = await getFavoriteClothes(userId);
-        
+
         allFavoritesArray.push(...fabricsFavorites);
         allFavoritesArray.push(...stonesFavorites);
         allFavoritesArray.push(...stampsFavorites);
@@ -172,7 +190,7 @@ async function getUserCart(userId) {
         const stonesInCart = await getStonesInCart(userId);
         const stampsInCart = await getStampsInCart(userId);
         const clothesInCart = await getClothesInCart(userId);
-        
+
         allProductsInCartArray.push(...fabricsInCart);
         allProductsInCartArray.push(...stonesInCart);
         allProductsInCartArray.push(...stampsInCart);
