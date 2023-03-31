@@ -96,6 +96,10 @@ h2 {
     font-size: 36px;
 }
 
+.total {
+    font-size: 30px;
+}
+
 .product-card {
     display: flex;
     flex-direction: column;
