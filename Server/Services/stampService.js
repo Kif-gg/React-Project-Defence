@@ -188,6 +188,85 @@ async function getStampsInCart(userId) {
     }
 }
 
+async function addStampReview(stampId, userId, reviewBody) {
+    const existingUser = await User.findById(userId);
+    const existingStamp = await getStampById(stampId);
+
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else if (!!existingStamp == false) {
+        throw new Error(`A product from this category with ID ${stampId} does not exist!`);
+    } else {
+        const review = await Review.create({
+            userId: existingUser._id,
+            rating: reviewBody.rating,
+            comment: reviewBody.comment
+        });
+
+        await review.save();
+
+        existingStamp.reviews.unshift(review);
+
+        await existingStamp.save();
+
+        return calcAvgRatingAndTotalReviewsById(stampId);
+    }
+}
+
+async function editStampReview(stampId, userId, reviewId, reviewBody) {
+    const existingUser = await User.findById(userId);
+    const existingStamp = await getStampById(stampId);
+
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else if (!!existingStamp == false) {
+        throw new Error(`A product from this category with ID ${stampId} does not exist!`);
+    } else {
+        const review = await Review.findById(reviewId);
+
+        if (!!review == false) {
+            throw new Error(`A review with ID ${reviewId} does not exist!`);
+        } else if (review.userId != userId) {
+            throw new Error('You can not edit someone else\'s review!');
+        } else if (!existingStamp.reviews.includes(reviewId)) {
+            throw new Error(`Review with ID ${reviewId} does not exist in this product!`);
+        } else {
+
+            review.rating = reviewBody.rating;
+            review.comment = reviewBody.comment;
+
+            await review.save();
+
+            await existingStamp.save();
+
+            return calcAvgRatingAndTotalReviewsById(stampId);
+        }
+    }
+}
+
+async function deleteStampReview(stampId, userId, reviewId) {
+    const existingUser = await User.findById(userId);
+    const existingStamp = await getStampById(stampId);
+
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else if (!!existingStamp == false) {
+        throw new Error(`A product from this category with ID ${stampId} does not exist!`);
+    } else {
+        const review = await Review.findById(reviewId);
+
+        if (!!review == false) {
+            throw new Error(`A review with ID ${reviewId} does not exist!`);
+        } else if (review.userId != userId) {
+            throw new Error('You can not delete someone else\'s review!');
+        } else if (!existingStamp.reviews.includes(reviewId)) {
+            throw new Error(`Review with ID ${reviewId} does not exist in this product!`);
+        } else {
+            return Review.findByIdAndDelete(reviewId);
+        }
+    }
+}
+
 module.exports = {
     calcAvgRatingAndTotalReviews,
     calcAvgRatingAndTotalReviewsById,
@@ -199,5 +278,8 @@ module.exports = {
     getFavoriteStamps,
     addStampToCart,
     removeStampFromCart,
-    getStampsInCart
+    getStampsInCart,
+    addStampReview,
+    editStampReview,
+    deleteStampReview
 };

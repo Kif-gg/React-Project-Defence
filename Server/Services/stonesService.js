@@ -196,6 +196,84 @@ async function getStonesInCart(userId) {
     }
 }
 
+async function addStonesReview(stonesId, userId, reviewBody) {
+    const existingUser = await User.findById(userId);
+    const existingStones = await getStonesById(stonesId);
+
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else if (!!existingStones == false) {
+        throw new Error(`A product from this category with ID ${stonesId} does not exist!`);
+    } else {
+        const review = await Review.create({
+            userId: existingUser._id,
+            rating: reviewBody.rating,
+            comment: reviewBody.comment
+        });
+
+        await review.save();
+
+        existingStones.reviews.unshift(review);
+
+        await existingStones.save();
+
+        return calcAvgRatingAndTotalReviewsById(stonesId);
+    }
+}
+
+async function editStonesReview(stonesId, userId, reviewId, reviewBody) {
+    const existingUser = await User.findById(userId);
+    const existingStones = await getStonesById(stonesId);
+
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else if (!!existingStones == false) {
+        throw new Error(`A product from this category with ID ${stonesId} does not exist!`);
+    } else {
+        const review = await Review.findById(reviewId);
+
+        if (!!review == false) {
+            throw new Error(`A review with ID ${reviewId} does not exist!`);
+        } else if (review.userId != userId) {
+            throw new Error('You can not edit someone else\'s review!');
+        } else if (!existingStones.reviews.includes(reviewId)) {
+            throw new Error(`Review with ID ${reviewId} does not exist in this product!`);
+        } else {
+
+            review.rating = reviewBody.rating;
+            review.comment = reviewBody.comment;
+
+            await review.save();
+
+            await existingStones.save();
+
+            return calcAvgRatingAndTotalReviewsById(stonesId);
+        }
+    }
+}
+
+async function deleteStonesReview(stonesId, userId, reviewId) {
+    const existingUser = await User.findById(userId);
+    const existingStones = await getStonesById(stonesId);
+
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else if (!!existingStones == false) {
+        throw new Error(`A product from this category with ID ${stonesId} does not exist!`);
+    } else {
+        const review = await Review.findById(reviewId);
+
+        if (!!review == false) {
+            throw new Error(`A review with ID ${reviewId} does not exist!`);
+        } else if (review.userId != userId) {
+            throw new Error('You can not delete someone else\'s review!');
+        } else if (!existingStones.reviews.includes(reviewId)) {
+            throw new Error(`Review with ID ${reviewId} does not exist in this product!`);
+        } else {
+            return Review.findByIdAndDelete(reviewId);
+        }
+    }
+}
 module.exports = {
     calcAvgRatingAndTotalReviews,
     calcAvgRatingAndTotalReviewsById,
@@ -207,5 +285,8 @@ module.exports = {
     getFavoriteStones,
     addStonesToCart,
     removeStonesFromCart,
-    getStonesInCart
+    getStonesInCart,
+    addStonesReview,
+    editStonesReview,
+    deleteStonesReview
 };

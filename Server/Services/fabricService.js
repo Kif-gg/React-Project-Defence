@@ -181,6 +181,85 @@ async function getFabricsInCart(userId) {
     }
 }
 
+async function addFabricReview(fabricId, userId, reviewBody) {
+    const existingUser = await User.findById(userId);
+    const existingFabric = await getFabricById(fabricId);
+
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else if (!!existingFabric == false) {
+        throw new Error(`A product from this category with ID ${fabricId} does not exist!`);
+    } else {
+        const review = await Review.create({
+            userId: existingUser._id,
+            rating: reviewBody.rating,
+            comment: reviewBody.comment
+        });
+
+        await review.save();
+
+        existingFabric.reviews.unshift(review);
+
+        await existingFabric.save();
+
+        return calcAvgRatingAndTotalReviewsById(fabricId);
+    }
+}
+
+async function editFabricReview(fabricId, userId, reviewId, reviewBody) {
+    const existingUser = await User.findById(userId);
+    const existingFabric = await getFabricById(fabricId);
+
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else if (!!existingFabric == false) {
+        throw new Error(`A product from this category with ID ${fabricId} does not exist!`);
+    } else {
+        const review = await Review.findById(reviewId);
+
+        if (!!review == false) {
+            throw new Error(`A review with ID ${reviewId} does not exist!`);
+        } else if (review.userId != userId) {
+            throw new Error('You can not edit someone else\'s review!');
+        } else if (!existingFabric.reviews.includes(reviewId)) {
+            throw new Error(`Review with ID ${reviewId} does not exist in this product!`);
+        } else {
+
+            review.rating = reviewBody.rating;
+            review.comment = reviewBody.comment;
+
+            await review.save();
+
+            await existingFabric.save();
+
+            return calcAvgRatingAndTotalReviewsById(fabricId);
+        }
+    }
+}
+
+async function deleteFabricReview(fabricId, userId, reviewId) {
+    const existingUser = await User.findById(userId);
+    const existingFabric = await getFabricById(fabricId);
+
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else if (!!existingFabric == false) {
+        throw new Error(`A product from this category with ID ${fabricId} does not exist!`);
+    } else {
+        const review = await Review.findById(reviewId);
+
+        if (!!review == false) {
+            throw new Error(`A review with ID ${reviewId} does not exist!`);
+        } else if (review.userId != userId) {
+            throw new Error('You can not delete someone else\'s review!');
+        } else if (!existingFabric.reviews.includes(reviewId)) {
+            throw new Error(`Review with ID ${reviewId} does not exist in this product!`);
+        } else {
+            return Review.findByIdAndDelete(reviewId);
+        }
+    }
+}
+
 module.exports = {
     calcAvgRatingAndTotalReviews,
     calcAvgRatingAndTotalReviewsById,
@@ -192,5 +271,8 @@ module.exports = {
     getFavoriteFabrics,
     addFabricToCart,
     removeFabricFromCart,
-    getFabricsInCart
+    getFabricsInCart,
+    addFabricReview,
+    editFabricReview,
+    deleteFabricReview
 };

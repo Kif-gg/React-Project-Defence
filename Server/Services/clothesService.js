@@ -188,6 +188,85 @@ async function getClothesInCart(userId) {
     }
 }
 
+async function addClothesReview(clothesId, userId, reviewBody) {
+    const existingUser = await User.findById(userId);
+    const existingClothes = await getClothesById(clothesId);
+
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else if (!!existingClothes == false) {
+        throw new Error(`A product from this category with ID ${clothesId} does not exist!`);
+    } else {
+        const review = await Review.create({
+            userId: existingUser._id,
+            rating: reviewBody.rating,
+            comment: reviewBody.comment
+        });
+
+        await review.save();
+
+        existingClothes.reviews.unshift(review);
+
+        await existingClothes.save();
+
+        return calcAvgRatingAndTotalReviewsById(clothesId);
+    }
+}
+
+async function editClothesReview(clothesId, userId, reviewId, reviewBody) {
+    const existingUser = await User.findById(userId);
+    const existingClothes = await getClothesById(clothesId);
+
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else if (!!existingClothes == false) {
+        throw new Error(`A product from this category with ID ${clothesId} does not exist!`);
+    } else {
+        const review = await Review.findById(reviewId);
+
+        if (!!review == false) {
+            throw new Error(`A review with ID ${reviewId} does not exist!`);
+        } else if (review.userId != userId) {
+            throw new Error('You can not edit someone else\'s review!');
+        } else if (!existingClothes.reviews.includes(reviewId)) {
+            throw new Error(`Review with ID ${reviewId} does not exist in this product!`);
+        } else {
+
+            review.rating = reviewBody.rating;
+            review.comment = reviewBody.comment;
+
+            await review.save();
+
+            await existingClothes.save();
+
+            return calcAvgRatingAndTotalReviewsById(clothesId);
+        }
+    }
+}
+
+async function deleteClothesReview(clothesId, userId, reviewId) {
+    const existingUser = await User.findById(userId);
+    const existingClothes = await getClothesById(clothesId);
+
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else if (!!existingClothes == false) {
+        throw new Error(`A product from this category with ID ${clothesId} does not exist!`);
+    } else {
+        const review = await Review.findById(reviewId);
+
+        if (!!review == false) {
+            throw new Error(`A review with ID ${reviewId} does not exist!`);
+        } else if (review.userId != userId) {
+            throw new Error('You can not delete someone else\'s review!');
+        } else if (!existingClothes.reviews.includes(reviewId)) {
+            throw new Error(`Review with ID ${reviewId} does not exist in this product!`);
+        } else {
+            return Review.findByIdAndDelete(reviewId);
+        }
+    }
+}
+
 module.exports = {
     calcAvgRatingAndTotalReviews,
     calcAvgRatingAndTotalReviewsById,
@@ -199,5 +278,8 @@ module.exports = {
     getFavoriteClothes,
     addClothesToCart,
     removeClothesFromCart,
-    getClothesInCart
+    getClothesInCart,
+    addClothesReview,
+    editClothesReview,
+    deleteClothesReview
 };
