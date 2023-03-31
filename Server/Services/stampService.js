@@ -69,8 +69,6 @@ async function getStampsFiltered(search, type, design, color, sort, direction) {
     filter.stampDesign = new RegExp(design, 'i');
     filter.stoneColor = new RegExp(color, 'i');
 
-    console.log(filter);
-
     if (sort == 'price') {
         if (direction == 'ascending') {
             return Stamp.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ price: 1 });

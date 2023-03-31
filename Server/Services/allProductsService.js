@@ -23,7 +23,6 @@ async function getThreeFromTopRated() {
         for (let collection of roulette) {
             max = collection.length - 1;
             bullet = Math.round(Math.random() * max);
-            console.log(bullet);
             if (collection.length > 1) {
                 collection.splice(bullet, 1);
             }

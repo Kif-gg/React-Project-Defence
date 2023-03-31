@@ -73,8 +73,6 @@ async function getStonesFiltered(search, type, shape, size, color, sort, directi
     filter.stoneSize = new RegExp(size, 'i');
     filter.stoneColor = new RegExp(color, 'i');
 
-    console.log(filter);
-
     if (sort == 'price') {
         if (direction == 'ascending') {
             return Stones.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ price: 1 });
