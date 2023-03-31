@@ -1,14 +1,34 @@
 const Stamp = require('../Models/Stamp');
 const Review = require('../Models/Review');
+const User = require('../Models/User');
 
-const { parseError } = require('../Util/parser');
 const { createRegExp } = require('../Util/regexGenerator');
 
 async function calcAvgRatingAndTotalReviews() {
 
     const collection = await Stamp.find({}).populate('reviews').sort({ price: 1 });
 
-    for (let product of collection) {
+    if (collection.length > 0) {
+        for (let product of collection) {
+            let average = 0;
+            for (let review of product.reviews) {
+                average += review.rating;
+            }
+            average = average / product.reviews.length;
+
+            product.average = average;
+            product.totalPeople = product.reviews.length;
+
+            await product.save();
+        }
+    }
+    return collection;
+};
+
+async function calcAvgRatingAndTotalReviewsById(stampId) {
+    const product = await Stamp.findById(stampId).populate('reviews');
+
+    if (!!product != false) {
         let average = 0;
         for (let review of product.reviews) {
             average += review.rating;
@@ -20,30 +40,11 @@ async function calcAvgRatingAndTotalReviews() {
 
         await product.save();
     }
-
-    return collection;
-};
-
-async function calcAvgRatingAndTotalReviewsById(stonesId) {
-    const product = await Stamp.findById(stonesId).populate('reviews');
-
-    let average = 0;
-    for (let review of product.reviews) {
-        average += review.rating;
-    }
-    average = average / product.reviews.length;
-
-    product.average = average;
-    product.totalPeople = product.reviews.length;
-
-    await product.save();
-
     return product;
 };
 
 async function getAllStamps() {
-    const result = await calcAvgRatingAndTotalReviews();
-    return result;
+    return calcAvgRatingAndTotalReviews();
 };
 
 async function getStampsFiltered(search, type, design, color, sort, direction) {
@@ -72,24 +73,80 @@ async function getStampsFiltered(search, type, design, color, sort, direction) {
 
     if (sort == 'price') {
         if (direction == 'ascending') {
-            return await Stamp.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ price: 1 });
+            return Stamp.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ price: 1 });
         } else if (direction == 'descending') {
-            return await Stamp.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ price: -1 });
+            return Stamp.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ price: -1 });
         }
     } else if (sort == 'rating') {
         if (direction == 'ascending') {
-            return await Stamp.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ average: 1 });
+            return Stamp.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ average: 1 });
         } else if (direction == 'descending') {
-            return await Stamp.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ average: -1 });
+            return Stamp.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ average: -1 });
         }
     }
 };
 
+async function getStampById(stampId) {
+    return calcAvgRatingAndTotalReviewsById(stampId);
+}
 
+async function addStampToFavorites(stampId, userId) {
+    const existingUser = await User.findById(userId).select('favorites');
+    const existingStamp = await getStampById(stampId);
+
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else if (!!existingStamp == false) {
+        throw new Error(`A product from this category with ID ${stampId} does not exist!`);
+    } else {
+        if (existingUser.favorites.stamps.includes(stampId)) {
+            return;
+        } else {
+            existingUser.favorites.stamps.unshift(stampId);
+            return existingUser.save();
+        }
+    }
+}
+
+async function removeStampFromFavorites(stampId, userId) {
+    const existingUser = await User.findById(userId).select('favorites');
+    const existingStamp = await getStampById(stampId);
+
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else if (!!existingStamp == false) {
+        throw new Error(`A product from this category with ID ${stampId} does not exist!`);
+    } else {
+        if (existingUser.favorites.stamps.includes(stampId)) {
+            existingUser.favorites.stamps.splice(existingUser.favorites.stamps.indexOf(stampId));
+            return existingUser.save();
+        } else {
+            return;
+        }
+    }
+}
+
+async function getFavoriteStamps(userId) {
+    const existingUser = await User.findById(userId).select('favorites');
+    const arrOfFavoriteStamps = [];
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else {
+        for (let product of existingUser.favorites.stamps) {
+            product = await getStampById(product);
+            arrOfFavoriteStamps.push(product);
+        }
+        return arrOfFavoriteStamps;
+    }
+}
 
 module.exports = {
     calcAvgRatingAndTotalReviews,
     calcAvgRatingAndTotalReviewsById,
     getAllStamps,
-    getStampsFiltered
+    getStampsFiltered,
+    getStampById,
+    addStampToFavorites,
+    removeStampFromFavorites,
+    getFavoriteStamps
 };

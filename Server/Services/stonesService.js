@@ -1,14 +1,34 @@
 const Stones = require('../Models/Stones');
 const Review = require('../Models/Review');
+const User = require('../Models/User');
 
-const { parseError } = require('../Util/parser');
 const { createRegExp } = require('../Util/regexGenerator');
 
 async function calcAvgRatingAndTotalReviews() {
 
     const collection = await Stones.find({}).populate('reviews').sort({ price: 1 });
 
-    for (let product of collection) {
+    if (collection.length > 0) {
+        for (let product of collection) {
+            let average = 0;
+            for (let review of product.reviews) {
+                average += review.rating;
+            }
+            average = average / product.reviews.length;
+
+            product.average = average;
+            product.totalPeople = product.reviews.length;
+
+            await product.save();
+        }
+    }
+    return collection;
+};
+
+async function calcAvgRatingAndTotalReviewsById(stonesId) {
+    const product = await Stones.findById(stonesId).populate('reviews');
+
+    if (!!product != false) {
         let average = 0;
         for (let review of product.reviews) {
             average += review.rating;
@@ -20,30 +40,11 @@ async function calcAvgRatingAndTotalReviews() {
 
         await product.save();
     }
-
-    return collection;
-};
-
-async function calcAvgRatingAndTotalReviewsById(stonesId) {
-    const product = await Stones.findById(stonesId).populate('reviews');
-
-    let average = 0;
-    for (let review of product.reviews) {
-        average += review.rating;
-    }
-    average = average / product.reviews.length;
-
-    product.average = average;
-    product.totalPeople = product.reviews.length;
-
-    await product.save();
-
     return product;
 };
 
 async function getAllStones() {
-    const result = await calcAvgRatingAndTotalReviews();
-    return result;
+    return calcAvgRatingAndTotalReviews();
 };
 
 async function getStonesFiltered(search, type, shape, size, color, sort, direction) {
@@ -76,24 +77,84 @@ async function getStonesFiltered(search, type, shape, size, color, sort, directi
 
     if (sort == 'price') {
         if (direction == 'ascending') {
-            return await Stones.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ price: 1 });
+            return Stones.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ price: 1 });
         } else if (direction == 'descending') {
-            return await Stones.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ price: -1 });
+            return Stones.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ price: -1 });
         }
     } else if (sort == 'rating') {
         if (direction == 'ascending') {
-            return await Stones.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ average: 1 });
+            return Stones.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ average: 1 });
         } else if (direction == 'descending') {
-            return await Stones.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ average: -1 });
+            return Stones.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ average: -1 });
         }
     }
 };
 
+async function getStonesById(stonesId) {
+    return calcAvgRatingAndTotalReviewsById(stonesId);
+}
 
+async function getStonesById(stonesId) {
+    return calcAvgRatingAndTotalReviewsById(stonesId);
+}
+
+async function addStonesToFavorites(stonesId, userId) {
+    const existingUser = await User.findById(userId).select('favorites');
+    const existingStones = await getStonesById(stonesId);
+
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else if (!!existingStones == false) {
+        throw new Error(`A product from this category with ID ${stonesId} does not exist!`);
+    } else {
+        if (existingUser.favorites.stones.includes(stonesId)) {
+            return;
+        } else {
+            existingUser.favorites.stones.unshift(stonesId);
+            return existingUser.save();
+        }
+    }
+}
+
+async function removeStonesFromFavorites(stonesId, userId) {
+    const existingUser = await User.findById(userId).select('favorites');
+    const existingStones = await getStonesById(stonesId);
+
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else if (!!existingStones == false) {
+        throw new Error(`A product from this category with ID ${stonesId} does not exist!`);
+    } else {
+        if (existingUser.favorites.stones.includes(stonesId)) {
+            existingUser.favorites.stones.splice(existingUser.favorites.stones.indexOf(stonesId));
+            return existingUser.save();
+        } else {
+            return;
+        }
+    }
+}
+
+async function getFavoriteStones(userId) {
+    const existingUser = await User.findById(userId).select('favorites');
+    const arrOfFavoriteStones = [];
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else {
+        for (let product of existingUser.favorites.stones) {
+            product = await getStonesById(product);
+            arrOfFavoriteStones.push(product);
+        }
+        return arrOfFavoriteStones;
+    }
+}
 
 module.exports = {
     calcAvgRatingAndTotalReviews,
     calcAvgRatingAndTotalReviewsById,
     getAllStones,
-    getStonesFiltered
+    getStonesFiltered,
+    getStonesById,
+    addStonesToFavorites,
+    removeStonesFromFavorites,
+    getFavoriteStones
 };
