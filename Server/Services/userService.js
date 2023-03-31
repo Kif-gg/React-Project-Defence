@@ -5,6 +5,10 @@ const { parseError } = require('../Util/parser');
 
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const { getFavoriteFabrics } = require('./fabricService');
+const { getFavoriteStones } = require('./stonesService');
+const { getFavoriteStamps } = require('./stampService');
+const { getFavoriteClothes } = require('./clothesService');
 
 const secret = 'VtPkYbhk57BlCbsggaRk2qxFr71rGva4WzPkvpXv';
 let wrongPasswordUntilBlock = 10;
@@ -132,6 +136,31 @@ async function parseToken(token) {
     };
 };
 
+async function getUserById(userId) {
+    return User.findById(userId);
+}
+
+async function getUserFavorites(userId) {
+    const existingUser = await getUserById(userId);
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else {
+        const allFavoritesArray = [];
+
+        const fabricsFavorites = await getFavoriteFabrics(userId);
+        const stonesFavorites = await getFavoriteStones(userId);
+        const stampsFavorites = await getFavoriteStamps(userId);
+        const clothesFavorites = await getFavoriteClothes(userId);
+        
+        allFavoritesArray.push(...fabricsFavorites);
+        allFavoritesArray.push(...stonesFavorites);
+        allFavoritesArray.push(...stampsFavorites);
+        allFavoritesArray.push(...clothesFavorites);
+
+        return allFavoritesArray.filter(fav => fav != '');
+    }
+}
+
 module.exports = {
     register,
     login,
@@ -140,5 +169,7 @@ module.exports = {
     changeUserData,
     changePassword,
     deleteUser,
+    getUserById,
+    getUserFavorites,
     secret
 };
