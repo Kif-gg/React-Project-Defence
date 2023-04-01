@@ -11,12 +11,16 @@ async function calcAvgRatingAndTotalReviews() {
     if (collection.length > 0) {
         for (let product of collection) {
             let average = 0;
-            for (let review of product.reviews) {
-                average += review.rating;
-            }
-            average = average / product.reviews.length;
+            if (product.reviews.length > 0) {
+                for (let review of product.reviews) {
+                    average += review.rating;
+                }
+                average = average / product.reviews.length;
 
-            product.average = average;
+                product.average = Number(average.toFixed(1));
+            } else {
+                product.average = 0;
+            }
             product.totalPeople = product.reviews.length;
 
             await product.save();
@@ -30,12 +34,16 @@ async function calcAvgRatingAndTotalReviewsById(stonesId) {
 
     if (!!product != false) {
         let average = 0;
-        for (let review of product.reviews) {
-            average += review.rating;
-        }
-        average = average / product.reviews.length;
+        if (product.reviews.length > 0) {
+            for (let review of product.reviews) {
+                average += review.rating;
+            }
+            average = average / product.reviews.length;
 
-        product.average = average;
+            product.average = Number(average.toFixed(1));
+        } else {
+            product.average = 0;
+        }
         product.totalPeople = product.reviews.length;
 
         await product.save();
@@ -51,17 +59,26 @@ async function getStonesFiltered(search, type, shape, size, color, sort, directi
 
     await calcAvgRatingAndTotalReviews();
 
-    if (type == 'all') {
+    if (search == undefined) {
+        search = '';
+    }
+    if (type == 'all' || type == undefined) {
         type = '';
     }
-    if (shape == 'all') {
+    if (shape == 'all' || shape == undefined) {
         shape = '';
     }
-    if (size == 'all') {
+    if (size == 'all' || size == undefined) {
         size = '';
     }
-    if (color == 'all') {
+    if (color == 'all' || color == undefined) {
         color = '';
+    }
+    if (sort == undefined) {
+        sort = 'price';
+    }
+    if (direction == undefined) {
+        direction = 'ascending';
     }
 
     const query = new RegExp(createRegExp(search), 'i');
@@ -75,26 +92,26 @@ async function getStonesFiltered(search, type, shape, size, color, sort, directi
 
     if (sort == 'price') {
         if (direction == 'ascending') {
-            return Stones.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ price: 1 });
+            return Stones.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ price: 1 }).populate('reviews');
         } else if (direction == 'descending') {
-            return Stones.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ price: -1 });
+            return Stones.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ price: -1 }).populate('reviews');
         }
     } else if (sort == 'rating') {
         if (direction == 'ascending') {
-            return Stones.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ average: 1 });
+            return Stones.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ average: 1 }).populate('reviews');
         } else if (direction == 'descending') {
-            return Stones.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ average: -1 });
+            return Stones.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ average: -1 }).populate('reviews');
         }
     }
 };
 
 async function getStonesById(stonesId) {
     return calcAvgRatingAndTotalReviewsById(stonesId);
-}
+};
 
 async function getStonesById(stonesId) {
     return calcAvgRatingAndTotalReviewsById(stonesId);
-}
+};
 
 async function addStonesToFavorites(stonesId, userId) {
     const existingUser = await User.findById(userId).select('favorites');
@@ -105,14 +122,14 @@ async function addStonesToFavorites(stonesId, userId) {
     } else if (!!existingStones == false) {
         throw new Error(`A product from this category with ID ${stonesId} does not exist!`);
     } else {
-        if (existingUser.favorites.stones.includes(stonesId)) {
+        if (!!existingUser.favorites.stones.find(fav => fav.toString() == stonesId) == true) {
             return;
         } else {
             existingUser.favorites.stones.unshift(stonesId);
             return existingUser.save();
         }
     }
-}
+};
 
 async function removeStonesFromFavorites(stonesId, userId) {
     const existingUser = await User.findById(userId).select('favorites');
@@ -123,14 +140,14 @@ async function removeStonesFromFavorites(stonesId, userId) {
     } else if (!!existingStones == false) {
         throw new Error(`A product from this category with ID ${stonesId} does not exist!`);
     } else {
-        if (existingUser.favorites.stones.includes(stonesId)) {
-            existingUser.favorites.stones.splice(existingUser.favorites.stones.indexOf(stonesId));
+        if (!!existingUser.favorites.stones.find(fav => fav.toString() == stonesId) == true) {
+            existingUser.favorites.stones.splice(existingUser.favorites.stones.findIndex(fav => fav.toString() == stonesId), 1);
             return existingUser.save();
         } else {
             return;
         }
     }
-}
+};
 
 async function getFavoriteStones(userId) {
     const existingUser = await User.findById(userId).select('favorites');
@@ -144,7 +161,7 @@ async function getFavoriteStones(userId) {
         }
         return arrOfFavoriteStones;
     }
-}
+};
 
 async function addStonesToCart(stonesId, userId) {
     const existingUser = await User.findById(userId).select('cart');
@@ -155,14 +172,14 @@ async function addStonesToCart(stonesId, userId) {
     } else if (!!existingStones == false) {
         throw new Error(`A product from this category with ID ${stonesId} does not exist!`);
     } else {
-        if (existingUser.cart.stones.includes(stonesId)) {
+        if (!!existingUser.cart.stones.find(prod => prod.toString() == stonesId) == true) {
             return;
         } else {
             existingUser.cart.stones.unshift(stonesId);
             return existingUser.save();
         }
     }
-}
+};
 
 async function removeStonesFromCart(stonesId, userId) {
     const existingUser = await User.findById(userId).select('cart');
@@ -173,14 +190,14 @@ async function removeStonesFromCart(stonesId, userId) {
     } else if (!!existingStones == false) {
         throw new Error(`A product from this category with ID ${stonesId} does not exist!`);
     } else {
-        if (existingUser.cart.stones.includes(stonesId)) {
-            existingUser.cart.stones.splice(existingUser.cart.stones.indexOf(stonesId));
+        if (!!existingUser.cart.stones.find(prod => prod.toString() == stonesId) == true) {
+            existingUser.cart.stones.splice(existingUser.cart.stones.findIndex(prod => prod.toString() == stonesId), 1);
             return existingUser.save();
         } else {
             return;
         }
     }
-}
+};
 
 async function getStonesInCart(userId) {
     const existingUser = await User.findById(userId).select('cart');
@@ -194,7 +211,7 @@ async function getStonesInCart(userId) {
         }
         return arrOfStonesInCart;
     }
-}
+};
 
 async function addStonesReview(stonesId, userId, reviewBody) {
     const existingUser = await User.findById(userId);
@@ -219,11 +236,13 @@ async function addStonesReview(stonesId, userId, reviewBody) {
 
         return calcAvgRatingAndTotalReviewsById(stonesId);
     }
-}
+};
 
-async function editStonesReview(stonesId, userId, reviewId, reviewBody) {
+async function editStonesReview(stonesId, userId, reviewBody) {
     const existingUser = await User.findById(userId);
     const existingStones = await getStonesById(stonesId);
+    
+    const reviewId = document.querySelector('.review-id').textContent;
 
     if (!!existingUser == false) {
         throw new Error(`User with ID ${userId} does not exist!`);
@@ -236,7 +255,7 @@ async function editStonesReview(stonesId, userId, reviewId, reviewBody) {
             throw new Error(`A review with ID ${reviewId} does not exist!`);
         } else if (review.userId != userId) {
             throw new Error('You can not edit someone else\'s review!');
-        } else if (!existingStones.reviews.includes(reviewId)) {
+        } else if (!!existingStones.reviews.find(review => review._id == reviewId) != true) {
             throw new Error(`Review with ID ${reviewId} does not exist in this product!`);
         } else {
 
@@ -250,11 +269,13 @@ async function editStonesReview(stonesId, userId, reviewId, reviewBody) {
             return calcAvgRatingAndTotalReviewsById(stonesId);
         }
     }
-}
+};
 
-async function deleteStonesReview(stonesId, userId, reviewId) {
+async function deleteStonesReview(stonesId, userId) {
     const existingUser = await User.findById(userId);
     const existingStones = await getStonesById(stonesId);
+
+    const reviewId = document.querySelector('.review-id').textContent;
 
     if (!!existingUser == false) {
         throw new Error(`User with ID ${userId} does not exist!`);
@@ -267,10 +288,12 @@ async function deleteStonesReview(stonesId, userId, reviewId) {
             throw new Error(`A review with ID ${reviewId} does not exist!`);
         } else if (review.userId != userId) {
             throw new Error('You can not delete someone else\'s review!');
-        } else if (!existingStones.reviews.includes(reviewId)) {
+        } else if (!!existingStones.reviews.find(review => review._id == reviewId) != true) {
             throw new Error(`Review with ID ${reviewId} does not exist in this product!`);
         } else {
-            return Review.findByIdAndDelete(reviewId);
+            await Review.findByIdAndDelete(reviewId);
+            existingStones.reviews.splice(existingStones.reviews.findIndex(review => review._id == reviewId), 1);
+            return calcAvgRatingAndTotalReviewsById(stonesId);
         }
     }
 }

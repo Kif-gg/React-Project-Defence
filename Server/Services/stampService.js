@@ -11,12 +11,16 @@ async function calcAvgRatingAndTotalReviews() {
     if (collection.length > 0) {
         for (let product of collection) {
             let average = 0;
-            for (let review of product.reviews) {
-                average += review.rating;
-            }
-            average = average / product.reviews.length;
+            if (product.reviews.length > 0) {
+                for (let review of product.reviews) {
+                    average += review.rating;
+                }
+                average = average / product.reviews.length;
 
-            product.average = average;
+                product.average = Number(average.toFixed(1));
+            } else {
+                product.average = 0;
+            }
             product.totalPeople = product.reviews.length;
 
             await product.save();
@@ -30,12 +34,16 @@ async function calcAvgRatingAndTotalReviewsById(stampId) {
 
     if (!!product != false) {
         let average = 0;
-        for (let review of product.reviews) {
-            average += review.rating;
-        }
-        average = average / product.reviews.length;
+        if (product.reviews.length > 0) {
+            for (let review of product.reviews) {
+                average += review.rating;
+            }
+            average = average / product.reviews.length;
 
-        product.average = average;
+            product.average = Number(average.toFixed(1));
+        } else {
+            product.average = 0;
+        }
         product.totalPeople = product.reviews.length;
 
         await product.save();
@@ -51,14 +59,23 @@ async function getStampsFiltered(search, type, design, color, sort, direction) {
 
     await calcAvgRatingAndTotalReviews();
 
-    if (type == 'all') {
+    if (search == undefined) {
+        search = '';
+    }
+    if (type == 'all' || type == undefined) {
         type = '';
     }
-    if (design == 'all') {
+    if (design == 'all' || design == undefined) {
         design = '';
     }
-    if (color == 'all') {
+    if (color == 'all' || color == undefined) {
         color = '';
+    }
+    if (sort == undefined) {
+        sort = 'price';
+    }
+    if (direction == undefined) {
+        direction = 'ascending';
     }
 
     const query = new RegExp(createRegExp(search), 'i');
@@ -71,22 +88,22 @@ async function getStampsFiltered(search, type, design, color, sort, direction) {
 
     if (sort == 'price') {
         if (direction == 'ascending') {
-            return Stamp.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ price: 1 });
+            return Stamp.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ price: 1 }).populate('reviews');
         } else if (direction == 'descending') {
-            return Stamp.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ price: -1 });
+            return Stamp.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ price: -1 }).populate('reviews');
         }
     } else if (sort == 'rating') {
         if (direction == 'ascending') {
-            return Stamp.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ average: 1 });
+            return Stamp.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ average: 1 }).populate('reviews');
         } else if (direction == 'descending') {
-            return Stamp.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ average: -1 });
+            return Stamp.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ average: -1 }).populate('reviews');
         }
     }
 };
 
 async function getStampById(stampId) {
     return calcAvgRatingAndTotalReviewsById(stampId);
-}
+};
 
 async function addStampToFavorites(stampId, userId) {
     const existingUser = await User.findById(userId).select('favorites');
@@ -97,14 +114,14 @@ async function addStampToFavorites(stampId, userId) {
     } else if (!!existingStamp == false) {
         throw new Error(`A product from this category with ID ${stampId} does not exist!`);
     } else {
-        if (existingUser.favorites.stamps.includes(stampId)) {
+        if (!!existingUser.favorites.stamps.find(fav => fav.toString() == stampId) == true) {
             return;
         } else {
             existingUser.favorites.stamps.unshift(stampId);
             return existingUser.save();
         }
     }
-}
+};
 
 async function removeStampFromFavorites(stampId, userId) {
     const existingUser = await User.findById(userId).select('favorites');
@@ -115,14 +132,14 @@ async function removeStampFromFavorites(stampId, userId) {
     } else if (!!existingStamp == false) {
         throw new Error(`A product from this category with ID ${stampId} does not exist!`);
     } else {
-        if (existingUser.favorites.stamps.includes(stampId)) {
-            existingUser.favorites.stamps.splice(existingUser.favorites.stamps.indexOf(stampId));
+        if (!!existingUser.favorites.stamps.find(fav => fav.toString() == stampId) == true) {
+            existingUser.favorites.stamps.splice(existingUser.favorites.stamps.findIndex(fav => fav.toString() == stampId), 1);
             return existingUser.save();
         } else {
             return;
         }
     }
-}
+};
 
 async function getFavoriteStamps(userId) {
     const existingUser = await User.findById(userId).select('favorites');
@@ -136,7 +153,7 @@ async function getFavoriteStamps(userId) {
         }
         return arrOfFavoriteStamps;
     }
-}
+};
 
 async function addStampToCart(stampId, userId) {
     const existingUser = await User.findById(userId).select('cart');
@@ -147,14 +164,14 @@ async function addStampToCart(stampId, userId) {
     } else if (!!existingStamp == false) {
         throw new Error(`A product from this category with ID ${stampId} does not exist!`);
     } else {
-        if (existingUser.cart.stamps.includes(stampId)) {
+        if (!!existingUser.cart.stamps.find(prod => prod.toString() == stampId) == true) {
             return;
         } else {
             existingUser.cart.stamps.unshift(stampId);
             return existingUser.save();
         }
     }
-}
+};
 
 async function removeStampFromCart(stampId, userId) {
     const existingUser = await User.findById(userId).select('cart');
@@ -165,14 +182,14 @@ async function removeStampFromCart(stampId, userId) {
     } else if (!!existingStamp == false) {
         throw new Error(`A product from this category with ID ${stampId} does not exist!`);
     } else {
-        if (existingUser.cart.stamps.includes(stampId)) {
-            existingUser.cart.stamps.splice(existingUser.cart.stamps.indexOf(stampId));
+        if (!!existingUser.cart.stamps.find(prod => prod.toString() == stampId) == true) {
+            existingUser.cart.stamps.splice(existingUser.cart.stamps.findIndex(prod => prod.toString() == stampId), 1);
             return existingUser.save();
         } else {
             return;
         }
     }
-}
+};
 
 async function getStampsInCart(userId) {
     const existingUser = await User.findById(userId).select('cart');
@@ -181,12 +198,12 @@ async function getStampsInCart(userId) {
         throw new Error(`User with ID ${userId} does not exist!`);
     } else {
         for (let product of existingUser.cart.stamps) {
-            product = await getFabricById(product);
+            product = await getStampById(product);
             arrOfStampsInCart.push(product);
         }
         return arrOfStampsInCart;
     }
-}
+};
 
 async function addStampReview(stampId, userId, reviewBody) {
     const existingUser = await User.findById(userId);
@@ -211,11 +228,13 @@ async function addStampReview(stampId, userId, reviewBody) {
 
         return calcAvgRatingAndTotalReviewsById(stampId);
     }
-}
+};
 
-async function editStampReview(stampId, userId, reviewId, reviewBody) {
+async function editStampReview(stampId, userId, reviewBody) {
     const existingUser = await User.findById(userId);
     const existingStamp = await getStampById(stampId);
+
+    const reviewId = document.querySelector('.review-id').textContent;
 
     if (!!existingUser == false) {
         throw new Error(`User with ID ${userId} does not exist!`);
@@ -228,7 +247,7 @@ async function editStampReview(stampId, userId, reviewId, reviewBody) {
             throw new Error(`A review with ID ${reviewId} does not exist!`);
         } else if (review.userId != userId) {
             throw new Error('You can not edit someone else\'s review!');
-        } else if (!existingStamp.reviews.includes(reviewId)) {
+        } else if (!!existingStamp.reviews.find(review => review._id == reviewId) != true) {
             throw new Error(`Review with ID ${reviewId} does not exist in this product!`);
         } else {
 
@@ -242,11 +261,13 @@ async function editStampReview(stampId, userId, reviewId, reviewBody) {
             return calcAvgRatingAndTotalReviewsById(stampId);
         }
     }
-}
+};
 
-async function deleteStampReview(stampId, userId, reviewId) {
+async function deleteStampReview(stampId, userId) {
     const existingUser = await User.findById(userId);
     const existingStamp = await getStampById(stampId);
+
+    const reviewId = document.querySelector('.review-id').textContent;
 
     if (!!existingUser == false) {
         throw new Error(`User with ID ${userId} does not exist!`);
@@ -259,13 +280,15 @@ async function deleteStampReview(stampId, userId, reviewId) {
             throw new Error(`A review with ID ${reviewId} does not exist!`);
         } else if (review.userId != userId) {
             throw new Error('You can not delete someone else\'s review!');
-        } else if (!existingStamp.reviews.includes(reviewId)) {
+        } else if (!!existingStamp.reviews.find(review => review._id == reviewId) != true) {
             throw new Error(`Review with ID ${reviewId} does not exist in this product!`);
         } else {
-            return Review.findByIdAndDelete(reviewId);
+            await Review.findByIdAndDelete(reviewId);
+            existingStamp.reviews.splice(existingStamp.reviews.findIndex(review => review._id == reviewId), 1);
+            return calcAvgRatingAndTotalReviewsById(stampId);
         }
     }
-}
+};
 
 module.exports = {
     calcAvgRatingAndTotalReviews,

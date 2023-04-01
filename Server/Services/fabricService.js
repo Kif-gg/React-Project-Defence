@@ -11,12 +11,16 @@ async function calcAvgRatingAndTotalReviews() {
     if (collection.length > 0) {
         for (let product of collection) {
             let average = 0;
-            for (let review of product.reviews) {
-                average += review.rating;
-            }
-            average = average / product.reviews.length;
+            if (product.reviews.length > 0) {
+                for (let review of product.reviews) {
+                    average += review.rating;
+                }
+                average = average / product.reviews.length;
 
-            product.average = average;
+                product.average = Number(average.toFixed(1));
+            } else {
+                product.average = 0;
+            }
             product.totalPeople = product.reviews.length;
 
             await product.save();
@@ -30,12 +34,16 @@ async function calcAvgRatingAndTotalReviewsById(fabricId) {
 
     if (!!product != false) {
         let average = 0;
-        for (let review of product.reviews) {
-            average += review.rating;
-        }
-        average = average / product.reviews.length;
+        if (product.reviews.length > 0) {
+            for (let review of product.reviews) {
+                average += review.rating;
+            }
+            average = average / product.reviews.length;
 
-        product.average = average;
+            product.average = Number(average.toFixed(1));
+        } else {
+            product.average = 0;
+        }
         product.totalPeople = product.reviews.length;
 
         await product.save();
@@ -51,8 +59,20 @@ async function getFabricFiltered(search, type, extras, sort, direction) {
 
     await calcAvgRatingAndTotalReviews();
 
-    if (type == 'all') {
+    if (search == undefined) {
+        search = '';
+    }
+    if (type == 'all' || type == undefined) {
         type = '';
+    }
+    if (extras == 'all' || extras == undefined) {
+        extras = '';
+    }
+    if (sort == undefined) {
+        sort = 'price';
+    }
+    if (direction == undefined) {
+        direction = 'ascending';
     }
 
     const query = new RegExp(createRegExp(search), 'i');
@@ -64,22 +84,22 @@ async function getFabricFiltered(search, type, extras, sort, direction) {
 
     if (sort == 'price') {
         if (direction == 'ascending') {
-            return Fabric.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ price: 1 });
+            return Fabric.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ price: 1 }).populate('reviews');
         } else if (direction == 'descending') {
-            return Fabric.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ price: -1 });
+            return Fabric.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ price: -1 }).populate('reviews');
         }
     } else if (sort == 'rating') {
         if (direction == 'ascending') {
-            return Fabric.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ average: 1 });
+            return Fabric.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ average: 1 }).populate('reviews');
         } else if (direction == 'descending') {
-            return Fabric.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ average: -1 });
+            return Fabric.find(filter).or([{ 'title': query }, { 'description': query }]).sort({ average: -1 }).populate('reviews');
         }
     }
 };
 
 async function getFabricById(fabricId) {
     return calcAvgRatingAndTotalReviewsById(fabricId);
-}
+};
 
 async function addFabricToFavorites(fabricId, userId) {
     const existingUser = await User.findById(userId).select('favorites');
@@ -90,14 +110,14 @@ async function addFabricToFavorites(fabricId, userId) {
     } else if (!!existingFabric == false) {
         throw new Error(`A product from this category with ID ${fabricId} does not exist!`);
     } else {
-        if (existingUser.favorites.fabrics.includes(fabricId)) {
+        if (!!existingUser.favorites.fabrics.find(fav => fav.toString() == fabricId) == true) {
             return;
         } else {
             existingUser.favorites.fabrics.unshift(fabricId);
             return existingUser.save();
         }
     }
-}
+};
 
 async function removeFabricFromFavorites(fabricId, userId) {
     const existingUser = await User.findById(userId).select('favorites');
@@ -108,14 +128,14 @@ async function removeFabricFromFavorites(fabricId, userId) {
     } else if (!!existingFabric == false) {
         throw new Error(`A product from this category with ID ${fabricId} does not exist!`);
     } else {
-        if (existingUser.favorites.fabrics.includes(fabricId)) {
-            existingUser.favorites.fabrics.splice(existingUser.favorites.fabrics.indexOf(fabricId));
+        if (!!existingUser.favorites.fabrics.find(fav => fav.toString() == fabricId) == true) {
+            existingUser.favorites.fabrics.splice(existingUser.favorites.fabrics.findIndex(fav => fav.toString() == fabricId), 1);
             return existingUser.save();
         } else {
             return;
         }
     }
-}
+};
 
 async function getFavoriteFabrics(userId) {
     const existingUser = await User.findById(userId).select('favorites');
@@ -129,7 +149,7 @@ async function getFavoriteFabrics(userId) {
         }
         return arrOfFavoriteFabrics;
     }
-}
+};
 
 async function addFabricToCart(fabricId, userId) {
     const existingUser = await User.findById(userId).select('cart');
@@ -140,14 +160,14 @@ async function addFabricToCart(fabricId, userId) {
     } else if (!!existingFabric == false) {
         throw new Error(`A product from this category with ID ${fabricId} does not exist!`);
     } else {
-        if (existingUser.cart.fabrics.includes(fabricId)) {
+        if (!!existingUser.cart.fabrics.find(prod => prod.toString() == fabricId) == true) {
             return;
         } else {
             existingUser.cart.fabrics.unshift(fabricId);
             return existingUser.save();
         }
     }
-}
+};
 
 async function removeFabricFromCart(fabricId, userId) {
     const existingUser = await User.findById(userId).select('cart');
@@ -158,14 +178,14 @@ async function removeFabricFromCart(fabricId, userId) {
     } else if (!!existingFabric == false) {
         throw new Error(`A product from this category with ID ${fabricId} does not exist!`);
     } else {
-        if (existingUser.cart.fabrics.includes(fabricId)) {
-            existingUser.cart.fabrics.splice(existingUser.cart.fabrics.indexOf(fabricId));
+        if (!!existingUser.cart.fabrics.find(prod => prod.toString() == fabricId) == true) {
+            existingUser.cart.fabrics.splice(existingUser.cart.fabrics.findIndex(prod => prod.toString() == fabricId), 1);
             return existingUser.save();
         } else {
             return;
         }
     }
-}
+};
 
 async function getFabricsInCart(userId) {
     const existingUser = await User.findById(userId).select('cart');
@@ -179,7 +199,7 @@ async function getFabricsInCart(userId) {
         }
         return arrOfFabricsInCart;
     }
-}
+};
 
 async function addFabricReview(fabricId, userId, reviewBody) {
     const existingUser = await User.findById(userId);
@@ -204,11 +224,13 @@ async function addFabricReview(fabricId, userId, reviewBody) {
 
         return calcAvgRatingAndTotalReviewsById(fabricId);
     }
-}
+};
 
-async function editFabricReview(fabricId, userId, reviewId, reviewBody) {
+async function editFabricReview(fabricId, userId, reviewBody) {
     const existingUser = await User.findById(userId);
     const existingFabric = await getFabricById(fabricId);
+
+    const reviewId = document.querySelector('.review-id');
 
     if (!!existingUser == false) {
         throw new Error(`User with ID ${userId} does not exist!`);
@@ -221,7 +243,7 @@ async function editFabricReview(fabricId, userId, reviewId, reviewBody) {
             throw new Error(`A review with ID ${reviewId} does not exist!`);
         } else if (review.userId != userId) {
             throw new Error('You can not edit someone else\'s review!');
-        } else if (!existingFabric.reviews.includes(reviewId)) {
+        } else if (!!existingFabric.reviews.find(review => review._id == reviewId) != true) {
             throw new Error(`Review with ID ${reviewId} does not exist in this product!`);
         } else {
 
@@ -235,11 +257,13 @@ async function editFabricReview(fabricId, userId, reviewId, reviewBody) {
             return calcAvgRatingAndTotalReviewsById(fabricId);
         }
     }
-}
+};
 
-async function deleteFabricReview(fabricId, userId, reviewId) {
+async function deleteFabricReview(fabricId, userId) {
     const existingUser = await User.findById(userId);
     const existingFabric = await getFabricById(fabricId);
+
+    const reviewId = document.querySelector('.review-id');
 
     if (!!existingUser == false) {
         throw new Error(`User with ID ${userId} does not exist!`);
@@ -252,13 +276,15 @@ async function deleteFabricReview(fabricId, userId, reviewId) {
             throw new Error(`A review with ID ${reviewId} does not exist!`);
         } else if (review.userId != userId) {
             throw new Error('You can not delete someone else\'s review!');
-        } else if (!existingFabric.reviews.includes(reviewId)) {
+        } else if (!!existingFabric.reviews.find(review => review._id == reviewId) != true) {
             throw new Error(`Review with ID ${reviewId} does not exist in this product!`);
         } else {
-            return Review.findByIdAndDelete(reviewId);
+            await Review.findByIdAndDelete(reviewId);
+            existingFabric.reviews.splice(existingFabric.reviews.findIndex(review => review._id == reviewId), 1);
+            return calcAvgRatingAndTotalReviewsById(fabricId);
         }
     }
-}
+};
 
 module.exports = {
     calcAvgRatingAndTotalReviews,
