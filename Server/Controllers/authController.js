@@ -1,9 +1,9 @@
-const { register, login, logout, changeUserData, changePassword, deleteUser } = require('../Services/userService');
+const { register, login, logout, changeUserData, changePassword, deleteUser, getUserById, getUserFavorites } = require('../Services/userService');
 const { parseError } = require('../Util/parser');
 const { guestGuard, userGuard } = require('../Middlewares/guards');
-const User = require('../Models/User');
 
 const { body, validationResult } = require('express-validator');
+const { getFavoriteFabrics } = require('../Services/fabricService');
 
 const authController = require('express').Router();
 
@@ -50,7 +50,7 @@ authController.get('/logout', guestGuard(), async (req, res) => {
 
 authController.get('/profile', guestGuard(), async (req, res) => {
     try {
-        const user = await User.findById(req.user._id);
+        const user = await getUserById(req.user._id);
         if (!user) {
             throw new Error(`User with ID ${req.user._id} does not exist!`);
         }
@@ -63,7 +63,7 @@ authController.get('/profile', guestGuard(), async (req, res) => {
 
 authController.put('/profile', guestGuard(), async (req, res) => {
     try {
-        const user = await User.findById(req.user._id);
+        const user = await getUserById(req.user._id);
         if (!user) {
             throw new Error(`User with ID ${req.user._id} does not exist!`);
         } else {
@@ -84,10 +84,25 @@ authController.put('/profile', guestGuard(), async (req, res) => {
     }
 });
 
+authController.get('/profile/favorites', guestGuard(), async (req, res) => {
+    try {
+        const user = await getUserById(req.user._id);
+        if (!user) {
+            throw new Error(`User with ID ${req.user._id} does not exist!`);
+        } else {
+            const result = await getUserFavorites(req.user._id);
+            res.json(result);
+        }
+    } catch (error) {
+        const message = parseError(error);
+        res.status(400).json({ message });
+    }
+});
+
 authController.delete('/profile', guestGuard(), async (req, res) => {
     try {
-        const user = await User.findById(req.user._id);
-        if (!user){
+        const user = await getUserById(req.user._id);
+        if (!user) {
             throw new Error(`User with ID ${req.user._id} does not exist!`);
         } else {
             await deleteUser(req.user._id);
