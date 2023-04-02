@@ -48,38 +48,6 @@ a:hover {
     background-color: #5f5b5b;
 }
 
-select {
-    font-size: 14px;
-    cursor: pointer;
-}
-
-form {
-    font-size: 20px;
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-    margin-top: -16px;
-    background-color: #cecece;
-}
-
-.search-box {
-    align-self: center;
-}
-
-form button {
-    cursor: pointer;
-    border: none;
-    height: 22px;
-    background-color: #acacac;
-}
-
-.filter-box {
-    width: 60%;
-    text-align: center;
-    display: flex;
-    justify-content: space-between;
-}
-
 /* Footer styling */
 
 footer {
@@ -111,6 +79,38 @@ footer li {
 }
 
 /* Main content styling */
+
+select {
+    font-size: 14px;
+    cursor: pointer;
+}
+
+form {
+    font-size: 20px;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    margin-top: -16px;
+    background-color: #cecece;
+}
+
+.search-box {
+    align-self: center;
+}
+
+form button {
+    cursor: pointer;
+    border: none;
+    height: 22px;
+    background-color: #acacac;
+}
+
+.filter-box {
+    width: 60%;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+}
 
 main {
     margin: 50px 80px;
