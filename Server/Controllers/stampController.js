@@ -89,14 +89,4 @@ stampController.post('/:id/cart', guestGuard(), async (req, res) => {
     }
 });
 
-stampController.delete('/:id/cart', guestGuard(), async (req, res) => {
-    try {
-        const result = await removeStampFromCart(req.params.id, req.user._id);
-        res.json(result)
-    } catch (error) {
-        const message = parseError(error);
-        res.status(400).json({ message });
-    }
-});
-
 module.exports = stampController;

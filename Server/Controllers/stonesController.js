@@ -89,14 +89,4 @@ stonesController.post('/:id/cart', guestGuard(), async (req, res) => {
     }
 });
 
-stonesController.delete('/:id/cart', guestGuard(), async (req, res) => {
-    try {
-        const result = await removeStonesFromCart(req.params.id, req.user._id);
-        res.json(result)
-    } catch (error) {
-        const message = parseError(error);
-        res.status(400).json({ message });
-    }
-});
-
 module.exports = stonesController;

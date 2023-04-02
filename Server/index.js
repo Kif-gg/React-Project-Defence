@@ -13,6 +13,8 @@ const clothesController = require('./Controllers/clothesController');
 
 const trimBody = require('./Middlewares/trimBody');
 const session = require('./Middlewares/session');
+const cartController = require('./Controllers/cartController');
+const { guestGuard } = require('./Middlewares/guards');
 
 start();
 
@@ -29,8 +31,8 @@ async function start() {
         app.use(session());
         // TODO add cors if needed
 
-        app.get('/', async (req, res) => {
-            res.json({ message: 'REST service is operating' });
+        app.all('/REST-TEST/*', (req, res) => {
+            res.json({ message: `REST service is operating => Your URL path is ${req.url}` });
         });
 
         app.use('/', homeController);
@@ -39,6 +41,7 @@ async function start() {
         app.use('/stones', stonesController);
         app.use('/stamps', stampController);
         app.use('/clothes', clothesController);
+        app.use('/cart', guestGuard(), cartController);
 
         app.listen(3030, () => console.log('REST service started successfully'));
     } catch (error) {
