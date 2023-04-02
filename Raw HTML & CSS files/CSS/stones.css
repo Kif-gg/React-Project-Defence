@@ -62,6 +62,10 @@ form {
     background-color: #cecece;
 }
 
+.search-box {
+    align-self: center;
+}
+
 form button {
     cursor: pointer;
     border: none;
@@ -70,7 +74,7 @@ form button {
 }
 
 .filter-box {
-    width: 70%;
+    width: 60%;
     text-align: center;
     display: flex;
     justify-content: space-between;
