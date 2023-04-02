@@ -111,7 +111,7 @@ async function addClothesToFavorites(clothesId, userId) {
         throw new Error(`A product from this category with ID ${clothesId} does not exist!`);
     } else {
         if (!!existingUser.favorites.clothes.find(fav => fav.toString() == clothesId) == true) {
-            return;
+            throw new Error('This product is already in your favorites list!');
         } else {
             existingUser.favorites.clothes.unshift(clothesId);
             return existingUser.save();
@@ -132,7 +132,7 @@ async function removeClothesFromFavorites(clothesId, userId) {
             existingUser.favorites.clothes.splice(existingUser.favorites.clothes.findIndex(fav => fav.toString() == clothesId), 1);
             return existingUser.save();
         } else {
-            return;
+            throw new Error('This product is not in your favorites list!');
         }
     }
 };
@@ -161,7 +161,7 @@ async function addClothesToCart(clothesId, userId) {
         throw new Error(`A product from this category with ID ${clothesId} does not exist!`);
     } else {
         if (!!existingUser.cart.clothes.find(prod => prod.toString() == clothesId) == true) {
-            return;
+            throw new Error('This product is already in your cart!');
         } else {
             existingUser.cart.clothes.unshift(clothesId);
             return existingUser.save();
@@ -182,7 +182,7 @@ async function removeClothesFromCart(clothesId, userId) {
             existingUser.cart.clothes.splice(existingUser.cart.clothes.findIndex(prod => prod.toString() == clothesId), 1);
             return existingUser.save();
         } else {
-            return;
+            throw new Error('This product is not in your cart!');
         }
     }
 };

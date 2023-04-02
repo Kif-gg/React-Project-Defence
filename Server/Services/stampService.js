@@ -115,7 +115,7 @@ async function addStampToFavorites(stampId, userId) {
         throw new Error(`A product from this category with ID ${stampId} does not exist!`);
     } else {
         if (!!existingUser.favorites.stamps.find(fav => fav.toString() == stampId) == true) {
-            return;
+            throw new Error('This product is already in your favorites list!');
         } else {
             existingUser.favorites.stamps.unshift(stampId);
             return existingUser.save();
@@ -136,7 +136,7 @@ async function removeStampFromFavorites(stampId, userId) {
             existingUser.favorites.stamps.splice(existingUser.favorites.stamps.findIndex(fav => fav.toString() == stampId), 1);
             return existingUser.save();
         } else {
-            return;
+            throw new Error('This product is not in your favorites list!');
         }
     }
 };
@@ -165,7 +165,7 @@ async function addStampToCart(stampId, userId) {
         throw new Error(`A product from this category with ID ${stampId} does not exist!`);
     } else {
         if (!!existingUser.cart.stamps.find(prod => prod.toString() == stampId) == true) {
-            return;
+            throw new Error('This product is already in your cart!');
         } else {
             existingUser.cart.stamps.unshift(stampId);
             return existingUser.save();
@@ -186,7 +186,7 @@ async function removeStampFromCart(stampId, userId) {
             existingUser.cart.stamps.splice(existingUser.cart.stamps.findIndex(prod => prod.toString() == stampId), 1);
             return existingUser.save();
         } else {
-            return;
+            throw new Error('This product is not in your cart!');
         }
     }
 };

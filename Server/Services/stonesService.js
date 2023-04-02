@@ -119,7 +119,7 @@ async function addStonesToFavorites(stonesId, userId) {
         throw new Error(`A product from this category with ID ${stonesId} does not exist!`);
     } else {
         if (!!existingUser.favorites.stones.find(fav => fav.toString() == stonesId) == true) {
-            return;
+            throw new Error('This product is already in your favorites list!');
         } else {
             existingUser.favorites.stones.unshift(stonesId);
             return existingUser.save();
@@ -140,7 +140,7 @@ async function removeStonesFromFavorites(stonesId, userId) {
             existingUser.favorites.stones.splice(existingUser.favorites.stones.findIndex(fav => fav.toString() == stonesId), 1);
             return existingUser.save();
         } else {
-            return;
+            throw new Error('This product is not in your favorites list!');
         }
     }
 };
@@ -169,7 +169,7 @@ async function addStonesToCart(stonesId, userId) {
         throw new Error(`A product from this category with ID ${stonesId} does not exist!`);
     } else {
         if (!!existingUser.cart.stones.find(prod => prod.toString() == stonesId) == true) {
-            return;
+            throw new Error('This product is already in your cart!');
         } else {
             existingUser.cart.stones.unshift(stonesId);
             return existingUser.save();
@@ -190,7 +190,7 @@ async function removeStonesFromCart(stonesId, userId) {
             existingUser.cart.stones.splice(existingUser.cart.stones.findIndex(prod => prod.toString() == stonesId), 1);
             return existingUser.save();
         } else {
-            return;
+            throw new Error('This product is not in your cart!');
         }
     }
 };

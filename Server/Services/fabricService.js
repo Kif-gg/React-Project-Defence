@@ -111,7 +111,7 @@ async function addFabricToFavorites(fabricId, userId) {
         throw new Error(`A product from this category with ID ${fabricId} does not exist!`);
     } else {
         if (!!existingUser.favorites.fabrics.find(fav => fav.toString() == fabricId) == true) {
-            return;
+            throw new Error('This product is already in your favorites list!');
         } else {
             existingUser.favorites.fabrics.unshift(fabricId);
             return existingUser.save();
@@ -132,7 +132,7 @@ async function removeFabricFromFavorites(fabricId, userId) {
             existingUser.favorites.fabrics.splice(existingUser.favorites.fabrics.findIndex(fav => fav.toString() == fabricId), 1);
             return existingUser.save();
         } else {
-            return;
+            throw new Error(`This product is not in your favorites list!`);
         }
     }
 };
@@ -161,7 +161,7 @@ async function addFabricToCart(fabricId, userId) {
         throw new Error(`A product from this category with ID ${fabricId} does not exist!`);
     } else {
         if (!!existingUser.cart.fabrics.find(prod => prod.toString() == fabricId) == true) {
-            return;
+            throw new Error('This product is already in your cart!');
         } else {
             existingUser.cart.fabrics.unshift(fabricId);
             return existingUser.save();
@@ -182,7 +182,7 @@ async function removeFabricFromCart(fabricId, userId) {
             existingUser.cart.fabrics.splice(existingUser.cart.fabrics.findIndex(prod => prod.toString() == fabricId), 1);
             return existingUser.save();
         } else {
-            return;
+            throw new Error('This product is not in your cart!');
         }
     }
 };
