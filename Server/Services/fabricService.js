@@ -204,14 +204,17 @@ async function getFabricsInCart(userId) {
 async function addFabricReview(fabricId, userId, reviewBody) {
     const existingUser = await User.findById(userId);
     const existingFabric = await getFabricById(fabricId);
+    const existingReview = existingFabric.reviews.find(review => review.userId == existingUser._id.toString());
 
     if (!!existingUser == false) {
         throw new Error(`User with ID ${userId} does not exist!`);
     } else if (!!existingFabric == false) {
         throw new Error(`A product from this category with ID ${fabricId} does not exist!`);
+    } else if (!!existingReview == true) {
+        throw new Error('You can only post one review per product!');
     } else {
         const review = await Review.create({
-            userId: existingUser._id,
+            userId: userId,
             rating: reviewBody.rating,
             comment: reviewBody.comment
         });
@@ -229,60 +232,51 @@ async function addFabricReview(fabricId, userId, reviewBody) {
 async function editFabricReview(fabricId, userId, reviewBody) {
     const existingUser = await User.findById(userId);
     const existingFabric = await getFabricById(fabricId);
-
-    const reviewId = document.querySelector('.review-id');
+    const existingReview = existingFabric.reviews.find(review => review.userId == existingUser._id.toString());
 
     if (!!existingUser == false) {
         throw new Error(`User with ID ${userId} does not exist!`);
     } else if (!!existingFabric == false) {
         throw new Error(`A product from this category with ID ${fabricId} does not exist!`);
+    } else if (!!existingReview == false) {
+        throw new Error('There is no review of this product posted by you to edit!');
+    } else if (!!existingReview == false) {
+        throw new Error(`Review with ID ${existingReview._id} does not exist in this product!`);
     } else {
-        const review = await Review.findById(reviewId);
+        if (existingReview.rating != reviewBody.rating || existingReview.comment != reviewBody.comment) {
+            existingReview.rating = reviewBody.rating;
+            existingReview.comment = reviewBody.comment;
 
-        if (!!review == false) {
-            throw new Error(`A review with ID ${reviewId} does not exist!`);
-        } else if (review.userId != userId) {
-            throw new Error('You can not edit someone else\'s review!');
-        } else if (!!existingFabric.reviews.find(review => review._id == reviewId) != true) {
-            throw new Error(`Review with ID ${reviewId} does not exist in this product!`);
-        } else {
-
-            review.rating = reviewBody.rating;
-            review.comment = reviewBody.comment;
-
-            await review.save();
-
+            await existingReview.save();
             await existingFabric.save();
 
             return calcAvgRatingAndTotalReviewsById(fabricId);
         }
+        return;
     }
 };
 
 async function deleteFabricReview(fabricId, userId) {
     const existingUser = await User.findById(userId);
     const existingFabric = await getFabricById(fabricId);
-
-    const reviewId = document.querySelector('.review-id');
+    const existingReview = existingFabric.reviews.find(review => review.userId == existingUser._id.toString());
 
     if (!!existingUser == false) {
         throw new Error(`User with ID ${userId} does not exist!`);
     } else if (!!existingFabric == false) {
         throw new Error(`A product from this category with ID ${fabricId} does not exist!`);
+    } else if (!!existingReview == false) {
+        throw new Error('There is no review of this product posted by you to delete!');
+    } else if (!!existingReview == false) {
+        throw new Error(`Review with ID ${existingReview._id} does not exist in this product!`);
     } else {
-        const review = await Review.findById(reviewId);
+        await Review.findByIdAndDelete(existingReview._id);
 
-        if (!!review == false) {
-            throw new Error(`A review with ID ${reviewId} does not exist!`);
-        } else if (review.userId != userId) {
-            throw new Error('You can not delete someone else\'s review!');
-        } else if (!!existingFabric.reviews.find(review => review._id == reviewId) != true) {
-            throw new Error(`Review with ID ${reviewId} does not exist in this product!`);
-        } else {
-            await Review.findByIdAndDelete(reviewId);
-            existingFabric.reviews.splice(existingFabric.reviews.findIndex(review => review._id == reviewId), 1);
-            return calcAvgRatingAndTotalReviewsById(fabricId);
-        }
+        existingFabric.reviews.splice(existingFabric.reviews.findIndex(review => review._id == existingReview._id), 1);
+
+        existingFabric.save();
+
+        return calcAvgRatingAndTotalReviewsById(fabricId);
     }
 };
 
