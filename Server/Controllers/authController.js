@@ -3,7 +3,6 @@ const { parseError } = require('../Util/parser');
 const { guestGuard, userGuard } = require('../Middlewares/guards');
 
 const { body, validationResult } = require('express-validator');
-const { getFavoriteFabrics } = require('../Services/fabricService');
 
 const authController = require('express').Router();
 
