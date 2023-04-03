@@ -10,11 +10,12 @@ const fabricController = require('./Controllers/fabricController');
 const stonesController = require('./Controllers/stonesController');
 const stampController = require('./Controllers/stampController');
 const clothesController = require('./Controllers/clothesController');
+const cartController = require('./Controllers/cartController');
 
 const trimBody = require('./Middlewares/trimBody');
 const session = require('./Middlewares/session');
-const cartController = require('./Controllers/cartController');
 const { guestGuard } = require('./Middlewares/guards');
+const cors = require('./Middlewares/cors');
 
 start();
 
@@ -29,7 +30,7 @@ async function start() {
         app.use(cookieParser());
         app.use(trimBody());
         app.use(session());
-        // TODO add cors if needed
+        app.use(cors());
 
         app.all('/REST-TEST/*', (req, res) => {
             res.json({ message: `REST service is operating => Your URL path is ${req.url}` });
