@@ -215,6 +215,7 @@ async function addClothesReview(clothesId, userId, reviewBody) {
     } else {
         const review = await Review.create({
             userId: userId,
+            username: existingUser.username,
             rating: reviewBody.rating,
             comment: reviewBody.comment
         });

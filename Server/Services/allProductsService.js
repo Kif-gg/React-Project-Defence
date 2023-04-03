@@ -38,7 +38,8 @@ async function getThreeFromTopRated() {
         threeRandom.push(collection[0]);
     }
 
-    return threeRandom;
+    // CHANGE LATER BECAUSE THERE WILL BE ENOUGH PRODUCTS TO NOT FILTER!
+    return threeRandom.filter(prod => prod != '' && prod != null && prod != undefined);
 };
 
 module.exports = {
