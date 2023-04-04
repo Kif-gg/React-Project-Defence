@@ -6,7 +6,7 @@ export default function Register() {
                 <form action="" method="">
                     <label htmlFor="username">Username
                         <br />
-                        <input type="text" name="username" id="username" required minlength="3" maxlength="15" />
+                        <input type="text" name="username" id="username" required minLength="3" maxLength="15" />
                     </label>
                     <p className="error">
                         Username is required!
@@ -31,7 +31,7 @@ export default function Register() {
                     <br />
                     <label htmlFor="password">Password
                         <br />
-                        <input type="password" name="password" id="password" required minlength="5" />
+                        <input type="password" name="password" id="password" required minLength="5" />
                     </label>
                     <span className="pass-text"><i className="fa-solid fa-lock"></i></span>
                     <p className="error">
@@ -46,7 +46,7 @@ export default function Register() {
                     <br />
                     <label htmlFor="repass">Confirm Password
                         <br />
-                        <input type="password" name="repass" id="repass" required minlength="5" className="invalid" />
+                        <input type="password" name="repass" id="repass" required minLength="5" className="invalid" />
                     </label>
                     <span className="pass-text"><i className="fa-solid fa-lock-open"></i></span>
                     <p className="error">
@@ -58,7 +58,7 @@ export default function Register() {
                     <br />
                     <label htmlFor="number">Phone number
                         <br />
-                        <input type="text" name="phone-number" id="number" minlength="10" maxlength="12" required
+                        <input type="text" name="phone-number" id="number" minLength="10" maxLength="12" required
                             className="valid" />
                     </label>
                     <p className="error">

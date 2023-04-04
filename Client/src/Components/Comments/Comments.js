@@ -40,7 +40,7 @@ export default function Comments({ reviews }) {
                 <br />
                 <label htmlFor="comment-text">
                     <h3>Add your comment</h3>
-                    <textarea name="comment-text" id="comment-text" rows="10" minlength="5" maxlength="800"></textarea>
+                    <textarea name="comment-text" id="comment-text" rows="10" minLength="5" maxLength="800"></textarea>
                 </label>
                 <input type="submit" value="Publish review" />
             </form>

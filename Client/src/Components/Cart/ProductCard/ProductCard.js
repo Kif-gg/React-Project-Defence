@@ -8,7 +8,7 @@ export default function ProductCard() {
             <label>Quantity</label>
             <br />
             <button type="button" className="quantity-up"><i className="fa-solid fa-circle-plus"></i></button>
-            <input type="text" name="quantity" size="4" inputmode="numeric" />
+            <input type="text" name="quantity" size="4" inputMode="numeric" />
             <button type="button" className="quantity-down"><i className="fa-solid fa-circle-minus"></i></button>
             <br />
             <button type="button" className="remove">Remove item</button>

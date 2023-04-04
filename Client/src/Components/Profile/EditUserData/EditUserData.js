@@ -3,7 +3,7 @@ export default function EditUserData() {
         <form action="" method="">
             <label htmlFor="username">Username
                 <br />
-                <input type="text" name="username" id="username" required minlength="3" maxlength="15" />
+                <input type="text" name="username" id="username" required minLength="3" maxLength="15" />
             </label>
             <p className="error">
                 Username is required!

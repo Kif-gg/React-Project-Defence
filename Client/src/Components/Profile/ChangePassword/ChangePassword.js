@@ -15,7 +15,7 @@ export default function ChangePassword() {
             <br />
             <label htmlFor="new">New password
                 <br />
-                <input type="password" name="new" id="new" required minlength="5" />
+                <input type="password" name="new" id="new" required minLength="5" />
             </label>
             <span className="pass-text"><i className="fa-solid fa-lock"></i></span>
             <p className="error">

@@ -1,5 +1,5 @@
-export default function CommentCard({review}) {
-    
+export default function CommentCard({ review }) {
+
     const createdAt = new Date(review.createdAt);
 
     const year = createdAt.getFullYear();
@@ -9,7 +9,7 @@ export default function CommentCard({review}) {
     const minutes = createdAt.getMinutes();
 
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    
+
     let stars = [];
 
     for (let i = 0; i < review.rating; i++) {
@@ -17,7 +17,7 @@ export default function CommentCard({review}) {
     };
 
     for (let i = 0; i < 5 - review.rating; i++) {
-        stars.push(<i className="fa-regular fa-star" key={i}></i>);
+        stars.push(<i className="fa-regular fa-star" key={i + 5}></i>);
     }
 
     return (
