@@ -51,8 +51,8 @@ fabricController.put('/:id', guestGuard(), async (req, res) => {
 
 fabricController.delete('/:id', guestGuard(), async (req, res) => {
     try {
-        const result = await deleteFabricReview(req.params.id, req.user._id);
-        res.json(result);
+        await deleteFabricReview(req.params.id, req.user._id);
+        res.status(204).end();
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });
@@ -62,7 +62,7 @@ fabricController.delete('/:id', guestGuard(), async (req, res) => {
 fabricController.post('/:id/favorite', guestGuard(), async (req, res) => {
     try {
         const result = await addFabricToFavorites(req.params.id, req.user._id);
-        res.json(result)
+        res.json(result);
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });
@@ -71,8 +71,8 @@ fabricController.post('/:id/favorite', guestGuard(), async (req, res) => {
 
 fabricController.delete('/:id/favorite', guestGuard(), async (req, res) => {
     try {
-        const result = await removeFabricFromFavorites(req.params.id, req.user._id);
-        res.json(result)
+        await removeFabricFromFavorites(req.params.id, req.user._id);
+        res.status(204).end();
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });
@@ -82,7 +82,7 @@ fabricController.delete('/:id/favorite', guestGuard(), async (req, res) => {
 fabricController.post('/:id/cart', guestGuard(), async (req, res) => {
     try {
         const result = await addFabricToCart(req.params.id, req.user._id);
-        res.json(result)
+        res.json(result);
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });

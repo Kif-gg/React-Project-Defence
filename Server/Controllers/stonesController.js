@@ -52,7 +52,7 @@ stonesController.put('/:id', guestGuard(), async (req, res) => {
 stonesController.delete('/:id', guestGuard(), async (req, res) => {
     try {
         const result = await deleteStonesReview(req.params.id, req.user._id);
-        res.json(result);
+        res.status(204).end();
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });
@@ -62,7 +62,7 @@ stonesController.delete('/:id', guestGuard(), async (req, res) => {
 stonesController.post('/:id/favorite', guestGuard(), async (req, res) => {
     try {
         const result = await addStonesToFavorites(req.params.id, req.user._id);
-        res.json(result)
+        res.json(result);
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });
@@ -72,7 +72,7 @@ stonesController.post('/:id/favorite', guestGuard(), async (req, res) => {
 stonesController.delete('/:id/favorite', guestGuard(), async (req, res) => {
     try {
         const result = await removeStonesFromFavorites(req.params.id, req.user._id);
-        res.json(result)
+        res.status(204).end();
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });
@@ -82,7 +82,7 @@ stonesController.delete('/:id/favorite', guestGuard(), async (req, res) => {
 stonesController.post('/:id/cart', guestGuard(), async (req, res) => {
     try {
         const result = await addStonesToCart(req.params.id, req.user._id);
-        res.json(result)
+        res.json(result);
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });

@@ -51,8 +51,8 @@ clothesController.put('/:id', guestGuard(), async (req, res) => {
 
 clothesController.delete('/:id', guestGuard(), async (req, res) => {
     try {
-        const result = await deleteClothesReview(req.params.id, req.user._id);
-        res.json(result);
+        await deleteClothesReview(req.params.id, req.user._id);
+        res.status(204).end();
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });
@@ -62,7 +62,7 @@ clothesController.delete('/:id', guestGuard(), async (req, res) => {
 clothesController.post('/:id/favorite', guestGuard(), async (req, res) => {
     try {
         const result = await addClothesToFavorites(req.params.id, req.user._id);
-        res.json(result)
+        res.json(result);
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });
@@ -71,8 +71,8 @@ clothesController.post('/:id/favorite', guestGuard(), async (req, res) => {
 
 clothesController.delete('/:id/favorite', guestGuard(), async (req, res) => {
     try {
-        const result = await removeClothesFromFavorites(req.params.id, req.user._id);
-        res.json(result)
+        await removeClothesFromFavorites(req.params.id, req.user._id);
+        res.status(204).end();
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });
@@ -82,7 +82,7 @@ clothesController.delete('/:id/favorite', guestGuard(), async (req, res) => {
 clothesController.post('/:id/cart', guestGuard(), async (req, res) => {
     try {
         const result = await addClothesToCart(req.params.id, req.user._id);
-        res.json(result)
+        res.json(result);
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });

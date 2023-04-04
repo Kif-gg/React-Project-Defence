@@ -19,8 +19,8 @@ cartController.get('/', async (req, res) => {
 
 cartController.delete('/:id', async (req, res) => {
     try {
-        const result = await removeFabricFromCart(req.params.id, req.user._id);
-        res.json(result);
+        await removeFabricFromCart(req.params.id, req.user._id);
+        res.status(204).end();
         return;
     } catch (error) {
         const message = parseError(error);
@@ -30,8 +30,8 @@ cartController.delete('/:id', async (req, res) => {
         }
     }
     try {
-        const result = await removeStonesFromCart(req.params.id, req.user._id);
-        res.json(result);
+        await removeStonesFromCart(req.params.id, req.user._id);
+        res.status(204).end();
         return;
     } catch (error) {
         const message = parseError(error);
@@ -41,8 +41,8 @@ cartController.delete('/:id', async (req, res) => {
         }
     }
     try {
-        const result = await removeStampFromCart(req.params.id, req.user._id);
-        res.json(result);
+        await removeStampFromCart(req.params.id, req.user._id);
+        res.status(204).end();
         return;
     } catch (error) {
         const message = parseError(error);
@@ -52,8 +52,8 @@ cartController.delete('/:id', async (req, res) => {
         }
     }
     try {
-        const result = await removeClothesFromCart(req.params.id, req.user._id);
-        res.json(result);
+        await removeClothesFromCart(req.params.id, req.user._id);
+        res.status(204).end();
         return;
     } catch (error) {
         const message = parseError(error);

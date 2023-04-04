@@ -51,8 +51,8 @@ stampController.put('/:id', guestGuard(), async (req, res) => {
 
 stampController.delete('/:id', guestGuard(), async (req, res) => {
     try {
-        const result = await deleteStampReview(req.params.id, req.user._id);
-        res.json(result);
+        await deleteStampReview(req.params.id, req.user._id);
+        res.status(204).end();
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });
@@ -62,7 +62,7 @@ stampController.delete('/:id', guestGuard(), async (req, res) => {
 stampController.post('/:id/favorite', guestGuard(), async (req, res) => {
     try {
         const result = await addStampToFavorites(req.params.id, req.user._id);
-        res.json(result)
+        res.json(result);
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });
@@ -71,8 +71,8 @@ stampController.post('/:id/favorite', guestGuard(), async (req, res) => {
 
 stampController.delete('/:id/favorite', guestGuard(), async (req, res) => {
     try {
-        const result = await removeStampFromFavorites(req.params.id, req.user._id);
-        res.json(result)
+        await removeStampFromFavorites(req.params.id, req.user._id);
+        res.status(204).end();
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });
@@ -82,7 +82,7 @@ stampController.delete('/:id/favorite', guestGuard(), async (req, res) => {
 stampController.post('/:id/cart', guestGuard(), async (req, res) => {
     try {
         const result = await addStampToCart(req.params.id, req.user._id);
-        res.json(result)
+        res.json(result);
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });
