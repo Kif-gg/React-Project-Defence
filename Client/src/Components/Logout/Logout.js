@@ -1,5 +1,8 @@
+import { Navigate } from "react-router-dom";
+
 export default function Logout() {
-    return(
-        console.log('Logged Out!')
+    console.log('Logged Out!');
+    return (
+        <Navigate to="/" />
     );
 };

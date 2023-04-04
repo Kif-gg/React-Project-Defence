@@ -1,51 +1,71 @@
+import { useState } from "react";
+
 export default function FabricForm() {
+
+    const [formValues, setFormValues] = useState({
+        search: '',
+        fabricType: 'all',
+        extras: 'all',
+        sort: 'price',
+        direction: 'ascending'
+    });
+
+    const onFormValuesChange = (e) => {
+        setFormValues(state => ({ ...state, [e.target.name]: e.target.value }));
+    };
+
+    const onFormSubmit = (e) => {
+        e.preventDefault();
+    };
+
     return (
-        <form action="">
+        <form action="" method="GET" onSubmit={onFormSubmit}>
             <div className="search-box">
-                <label htmlFor="search">Search...</label><input type="text" name="search" id="search" /><button type="submit"><i
-                    className="fa-solid fa-magnifying-glass"></i></button>
+                <label htmlFor="search">Search...</label>
+                <input type="text" name="search" id="search" value={formValues.search} onChange={onFormValuesChange} />
+                <button type="submit"><i className="fa-solid fa-magnifying-glass"></i></button>
             </div>
             <div className="filter-box">
                 <div>
                     <i className="fa-solid fa-filter"></i>
                     <label htmlFor="fabric-type">Fabric type</label>
-                    <select name="fabric-type" id="fabric-type">
-                        <option defaultValue="all" selected>All</option>
-                        <option defaultValue="chiffon">Chiffon</option>
-                        <option defaultValue="georgette">Georgette</option>
-                        <option defaultValue="lace">Lace</option>
-                        <option defaultValue="lycra">Lycra</option>
-                        <option defaultValue="organza">Organza</option>
-                        <option defaultValue="pleat">Pleat</option>
-                        <option defaultValue="plush">Plush</option>
-                        <option defaultValue="satin">Satin</option>
-                        <option defaultValue="silk">Silk</option>
-                        <option defaultValue="taffeta">Taffeta</option>
-                        <option defaultValue="tulle">Tulle</option>
+                    <select name="fabric-type" id="fabric-type" value={formValues.fabricType} onChange={onFormValuesChange}>
+                        <option value="all">All</option>
+                        <option value="chiffon">Chiffon</option>
+                        <option value="georgette">Georgette</option>
+                        <option value="lace">Lace</option>
+                        <option value="lycra">Lycra</option>
+                        <option value="organza">Organza</option>
+                        <option value="pleat">Pleat</option>
+                        <option value="plush">Plush</option>
+                        <option value="satin">Satin</option>
+                        <option value="silk">Silk</option>
+                        <option value="taffeta">Taffeta</option>
+                        <option value="tulle">Tulle</option>
                     </select>
                 </div>
                 <div>
                     <label htmlFor="extras">Extras on fabric</label>
-                    <select name="extras" id="extras">
-                        <option defaultValue="all" selected>Not specified</option>
-                        <option defaultValue="none">None</option>
-                        <option defaultValue="brocade">Brocade</option>
-                        <option defaultValue="sequins">Sequins</option>
-                        <option defaultValue="swarovski-stones">Swarovski stones</option>
+                    <select name="extras" id="extras" value={formValues.extras} onChange={onFormValuesChange}>
+                        <option value="all">Not specified</option>
+                        <option value="none">None</option>
+                        <option value="brocade">Brocade</option>
+                        <option value="sequins">Sequins</option>
+                        <option value="swarovski-stones">Swarovski stones</option>
                     </select>
                 </div>
                 <div>
                     <label htmlFor="sort">Sort products by</label>
-                    <select name="sort" id="sort">
-                        <option defaultValue="price" selected>Price</option>
-                        <option defaultValue="rating">Rating</option>
+                    <select name="sort" id="sort" value={formValues.sort} onChange={onFormValuesChange}>
+                        <option value="price">Price</option>
+                        <option value="rating">Rating</option>
                     </select>
                 </div>
                 <div>
                     <label htmlFor="sort-direction">Way of sorting</label>
-                    <select name="direction" id="sort-direction">
-                        <option defaultValue="ascending" selected>Ascending</option>
-                        <option defaultValue="descending">Descending</option>
+                    <select name="direction" id="sort-direction" value={formValues.direction} onChange={onFormValuesChange}>
+                        <option value="ascending">Ascending</option>
+                        <option value="descending">Descending</option>
                     </select>
                 </div>
             </div>
