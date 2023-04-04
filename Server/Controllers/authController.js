@@ -105,6 +105,9 @@ authController.delete('/profile', guestGuard(), async (req, res) => {
             throw new Error(`User with ID ${req.user._id} does not exist!`);
         } else {
             await deleteUser(req.user._id);
+            const token = req.token;
+            await logout(token);
+            res.clearCookie('Authorization');
             res.status(204).end();
         }
     } catch (error) {
