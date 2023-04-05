@@ -1,6 +1,6 @@
 const request = async (method, url, data) => {
 
-    const options = {};
+    const options = { mode: 'cors', credentials: 'include' };
 
     if (method !== 'GET') {
         options.method = method;
@@ -15,14 +15,16 @@ const request = async (method, url, data) => {
 
     const response = await fetch(url, options);
 
-    try {
-        const result = await response.json();
-
-        return result;
-    } catch (error) {
-        console.log("Thrown from requester.js!");
-        return {}
+    if (response.status === 204) {
+        return {};
     }
+
+    const result = await response.json();
+
+    if (!response.ok) {
+        throw new Error(result.message);
+    }
+    return result;
 };
 
 export const get = request.bind(null, 'GET');
