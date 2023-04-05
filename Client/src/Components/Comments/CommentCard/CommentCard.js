@@ -1,4 +1,4 @@
-export default function CommentCard({ review }) {
+export default function CommentCard({ review, onEditReview, owner }) {
 
     const createdAt = new Date(review.createdAt);
 
@@ -23,10 +23,12 @@ export default function CommentCard({ review }) {
     return (
         <div className="comment">
             {/* IF OWNER OF COMMENT */}
-            <div className="edit-delete">
-                <button type="button" className="edit"><i className="fa-solid fa-pen-to-square"></i></button>
-                <button type="button" className="delete"><i className="fa-solid fa-trash"></i></button>
-            </div>
+            {owner && (
+                <div className="edit-delete">
+                    <button type="button" className="edit" onClick={onEditReview}><i className="fa-solid fa-pen-to-square"></i></button>
+                    <button type="button" className="delete"><i className="fa-solid fa-trash"></i></button>
+                </div>
+            )}
             <h4>@{review.username}</h4>
             <span className="rating">{stars}</span>
             <p>{review.comment}</p>
