@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import UniversalProductCard from "../UniversalProductCard/UniversalProductCard";
 import { getUserFavorites } from "../../Services/authService.js";
+import { Link } from "react-router-dom";
 
 export default function Favorites() {
 
@@ -11,10 +12,10 @@ export default function Favorites() {
     }, []);
 
     return (
-        <div>
-            <a href="profile.html" className="back-a">
+        <div id="favorites">
+            <Link to="/users/profile" className="back-a">
                 <button type="button" className="back"><i className="fa-solid fa-arrow-left"></i></button>
-            </a>
+            </Link>
             <main>
                 {products.map(prod => {
                     let urlPath = '';

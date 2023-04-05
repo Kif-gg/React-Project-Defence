@@ -12,8 +12,8 @@ export default function Clothes() {
     }, []);
 
     return (
-        <div>
-            <ClothesForm />
+        <div id="clothes">
+            <ClothesForm setClothes={setClothes} />
             <main>
                 {clothes.map(prod => <UniversalProductCard key={prod._id} {...prod} urlPath="/clothes" />)}
 

@@ -12,8 +12,8 @@ export default function Fabric() {
     }, []);
 
     return (
-        <div>
-            <FabricForm />
+        <div id="fabric">
+            <FabricForm setFabrics={setFabrics} />
             <main>
                 {/* IF ANY PRODUCTS */}
                 {fabrics.map(prod => <UniversalProductCard key={prod._id} {...prod} urlPath="/fabric" />)}
@@ -23,6 +23,6 @@ export default function Fabric() {
                 )}
 
             </main>
-        </div>
+        </div >
     );
 };

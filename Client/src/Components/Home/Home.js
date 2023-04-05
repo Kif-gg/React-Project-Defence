@@ -11,29 +11,31 @@ export default function Home() {
     }, []);
 
     return (
-        <main>
-            <h2>Check out these 3 random products with higher average rating!</h2>
-            <article className="top-3">
-                {/* 3 CARDS */}
-                {homeProducts.map(prod => {
-                    let urlPath = '';
-                    if (!!prod.fabricType) {
-                        urlPath = '/fabric';
-                    } else if (!!prod.stoneShape) {
-                        urlPath = '/stones';
-                    } else if (!!prod.stampDesign) {
-                        urlPath = '/stamps';
-                    } else if (!!prod.targetCustomers) {
-                        urlPath = '/clothes';
-                    }
+        <div id="landing-page">
+            <main>
+                <h2>Check out these 3 random products with higher average rating!</h2>
+                <article className="top-3">
+                    {/* 3 CARDS */}
+                    {homeProducts.map(prod => {
+                        let urlPath = '';
+                        if (!!prod.fabricType) {
+                            urlPath = '/fabric';
+                        } else if (!!prod.stoneShape) {
+                            urlPath = '/stones';
+                        } else if (!!prod.stampDesign) {
+                            urlPath = '/stamps';
+                        } else if (!!prod.targetCustomers) {
+                            urlPath = '/clothes';
+                        }
 
-                    return <UniversalProductCard key={prod._id} {...prod} urlPath={urlPath} />
-                })}
+                        return <UniversalProductCard key={prod._id} {...prod} urlPath={urlPath} />
+                    })}
 
-                {homeProducts.length === 0 && (
-                    <h3>There is nothing to show yet!</h3>
-                )}
-            </article>
-        </main>
+                    {homeProducts.length === 0 && (
+                        <h3>There is nothing to show yet!</h3>
+                    )}
+                </article>
+            </main>
+        </div>
     );
 };

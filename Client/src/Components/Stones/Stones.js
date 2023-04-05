@@ -12,8 +12,8 @@ export default function Stones() {
     }, []);
 
     return (
-        <div>
-            <StonesForm />
+        <div id="stones">
+            <StonesForm setStones={setStones} />
             <main>
                 {stones.map(prod => <UniversalProductCard key={prod._id} {...prod} urlPath="/stones" />)}
 

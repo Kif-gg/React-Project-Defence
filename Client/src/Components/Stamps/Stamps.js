@@ -12,8 +12,8 @@ export default function Stamps() {
     }, []);
 
     return (
-        <div>
-            <StampsForm />
+        <div id="stamps">
+            <StampsForm setStamps={setStamps} />
             <main>
                 {stamps.map(prod => <UniversalProductCard key={prod._id} {...prod} urlPath="/stamps" />)}
 
