@@ -1,10 +1,11 @@
+import { getFabricProducts } from "../../../Services/fabricService";
 import { useState } from "react";
 
-export default function FabricForm() {
+export default function FabricForm(props) {
 
     const [formValues, setFormValues] = useState({
         search: '',
-        fabricType: 'all',
+        'fabric-type': 'all',
         extras: 'all',
         sort: 'price',
         direction: 'ascending'
@@ -16,10 +17,12 @@ export default function FabricForm() {
 
     const onFormSubmit = (e) => {
         e.preventDefault();
+
+        getFabricProducts(formValues).then(result => { props.setFabrics(result) });
     };
 
     return (
-        <form action="" method="GET" onSubmit={onFormSubmit}>
+        <form method="GET" onSubmit={onFormSubmit}>
             <div className="search-box">
                 <label htmlFor="search">Search...</label>
                 <input type="text" name="search" id="search" value={formValues.search} onChange={onFormValuesChange} />
@@ -29,7 +32,7 @@ export default function FabricForm() {
                 <div>
                     <i className="fa-solid fa-filter"></i>
                     <label htmlFor="fabric-type">Fabric type</label>
-                    <select name="fabric-type" id="fabric-type" value={formValues.fabricType} onChange={onFormValuesChange}>
+                    <select name="fabric-type" id="fabric-type" value={formValues['fabric-type']} onChange={onFormValuesChange}>
                         <option value="all">All</option>
                         <option value="chiffon">Chiffon</option>
                         <option value="georgette">Georgette</option>

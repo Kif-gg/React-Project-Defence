@@ -1,11 +1,12 @@
 import { useState } from "react";
+import { getClothesProducts } from "../../../Services/clothesService";
 
-export default function ClothesForm() {
+export default function ClothesForm(props) {
 
     const [formValues, setFormValues] = useState({
         search: '',
-        clothesType: 'all',
-        targetCustomers: 'all',
+        'clothes-type': 'all',
+        'target-customers': 'all',
         sort: 'price',
         direction: 'ascending'
     });
@@ -16,10 +17,12 @@ export default function ClothesForm() {
 
     const onFormSubmit = (e) => {
         e.preventDefault();
+
+        getClothesProducts(formValues).then(result => { props.setClothes(result) });
     };
 
     return (
-        <form action="" onSubmit={onFormSubmit}>
+        <form method="POST" onSubmit={onFormSubmit}>
             <div className="search-box">
                 <label htmlFor="search">Search...</label><input type="text" name="search" id="search" value={formValues.search} onChange={onFormValuesChange} /><button
                     type="submit"><i className="fa-solid fa-magnifying-glass"></i></button>
@@ -28,7 +31,7 @@ export default function ClothesForm() {
                 <div>
                     <i className="fa-solid fa-filter"></i>
                     <label htmlFor="clothes-type">Select clothes type</label>
-                    <select name="clothes-type" id="clothes-type" value={formValues.clothesType} onChange={onFormValuesChange}>
+                    <select name="clothes-type" id="clothes-type" value={formValues['clothes-type']} onChange={onFormValuesChange}>
                         <option value="all">All</option>
                         <option value="bridal-dresses">Bridal dresses</option>
                         <option value="jersey">Jersey</option>
@@ -42,7 +45,7 @@ export default function ClothesForm() {
                 </div>
                 <div>
                     <label htmlFor="target-customers">For who</label>
-                    <select name="target-customers" id="target-customers" value={formValues.targetCustomers} onChange={onFormValuesChange}>
+                    <select name="target-customers" id="target-customers" value={formValues['target-customers']} onChange={onFormValuesChange}>
                         <option value="all">All</option>
                         <option value="men">Men</option>
                         <option value="women">Women</option>

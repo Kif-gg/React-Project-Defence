@@ -1,12 +1,13 @@
 import { useState } from "react";
+import { getStampsProducts } from "../../../Services/stampService";
 
-export default function StampsForm() {
+export default function StampsForm(props) {
 
     const [formValues, setFormValues] = useState({
         search: '',
-        stoneType: 'all',
-        stampDesign: 'all',
-        stoneColor: 'all',
+        'stone-type': 'all',
+        'stamp-design': 'all',
+        'stone-color': 'all',
         sort: 'price',
         direction: 'ascending'
     });
@@ -17,6 +18,8 @@ export default function StampsForm() {
 
     const onFormSubmit = (e) => {
         e.preventDefault();
+
+        getStampsProducts(formValues).then(result => { props.setStamps(result) });
     };
 
     return (
@@ -29,7 +32,7 @@ export default function StampsForm() {
                 <div>
                     <i className="fa-solid fa-filter"></i>
                     <label htmlFor="stamp-type">Stone type</label>
-                    <select name="stamp-type" id="stamp-type" value={formValues.stoneType} onChange={onFormValuesChange}>
+                    <select name="stamp-type" id="stamp-type" value={formValues['stone-type']} onChange={onFormValuesChange}>
                         <option value="all">All</option>
                         <option value="crystal">Crystal</option>
                         <option value="metal">Metal</option>
@@ -37,7 +40,7 @@ export default function StampsForm() {
                 </div>
                 <div>
                     <label htmlFor="stamp-design">Select stamp design</label>
-                    <select name="stamp-design" id="stamp-design" value={formValues.stampDesign} onChange={onFormValuesChange}>
+                    <select name="stamp-design" id="stamp-design" value={formValues['stamp-design']} onChange={onFormValuesChange}>
                         <option value="all">All</option>
                         <option value="animals">Animals</option>
                         <option value="animated">Animated heroes</option>
@@ -47,7 +50,7 @@ export default function StampsForm() {
                 </div>
                 <div>
                     <label htmlFor="stamp-color">Select stone color</label>
-                    <select name="stamp-color" id="stamp-color" value={formValues.stoneColor} onChange={onFormValuesChange}>
+                    <select name="stamp-color" id="stamp-color" value={formValues['stone-color']} onChange={onFormValuesChange}>
                         <option value="all">All</option>
                         <option value="black">Black</option>
                         <option value="blue">Blue</option>

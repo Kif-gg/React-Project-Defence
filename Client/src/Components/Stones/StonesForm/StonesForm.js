@@ -1,13 +1,14 @@
 import { useState } from "react";
+import { getStonesProducts } from "../../../Services/stonesService";
 
-export default function StonesForm() {
+export default function StonesForm(props) {
 
     const [formValues, setFormValues] = useState({
         search: '',
-        stoneType: 'all',
-        stoneShape: 'all',
-        stoneSize: 'all',
-        stoneColor: 'all',
+        'stone-type': 'all',
+        'stone-shape': 'all',
+        'stone-size': 'all',
+        'stone-color': 'all',
         sort: 'price',
         direction: 'ascending'
     });
@@ -18,6 +19,8 @@ export default function StonesForm() {
 
     const onFormSubmit = (e) => {
         e.preventDefault();
+
+        getStonesProducts(formValues).then(result => { props.setStones(result) });
     };
 
     return (
@@ -30,7 +33,7 @@ export default function StonesForm() {
                 <div>
                     <i className="fa-solid fa-filter"></i>
                     <label htmlFor="stone-type">Stone type</label>
-                    <select name="stone-type" id="stone-type" value={formValues.stoneType} onChange={onFormValuesChange}>
+                    <select name="stone-type" id="stone-type" value={formValues['stone-type']} onChange={onFormValuesChange}>
                         <option value="all">All</option>
                         <option value="crystal">Crystal</option>
                         <option value="metal">Metal</option>
@@ -38,7 +41,7 @@ export default function StonesForm() {
                 </div>
                 <div>
                     <label htmlFor="stone-shape">Stone shape</label>
-                    <select name="stone-shape" id="stone-shape" value={formValues.stoneShape} onChange={onFormValuesChange}>
+                    <select name="stone-shape" id="stone-shape" value={formValues['stone-shape']} onChange={onFormValuesChange}>
                         <option value="all">All</option>
                         <option value="circle">Circle</option>
                         <option value="rectangle">Rectangle</option>
@@ -48,7 +51,7 @@ export default function StonesForm() {
                 </div>
                 <div>
                     <label htmlFor="stone-size">Stone size</label>
-                    <select name="stone-size" id="stone-size" value={formValues.stoneSize} onChange={onFormValuesChange}>
+                    <select name="stone-size" id="stone-size" value={formValues['stone-size']} onChange={onFormValuesChange}>
                         <option value="all">All</option>
                         <option value="2">2mm</option>
                         <option value="3">3mm</option>
@@ -63,7 +66,7 @@ export default function StonesForm() {
                 </div>
                 <div>
                     <label htmlFor="stone-color">Stone color</label>
-                    <select name="stone-color" id="stone-color" value={formValues.stoneColor} onChange={onFormValuesChange}>
+                    <select name="stone-color" id="stone-color" value={formValues['stone-color']} onChange={onFormValuesChange}>
                         <option value="all">All</option>
                         <option value="black">Black</option>
                         <option value="blue">Blue</option>
