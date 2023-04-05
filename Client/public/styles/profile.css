@@ -1,0 +1,150 @@
+/* Main content styling */
+
+#profile main {
+    margin: 50px 80px;
+}
+
+#profile .person-info {
+    padding: 15px;
+    background-color: #faf4fa;
+    text-align: center;
+}
+
+#profile .person-info i {
+    font-size: 200px;
+    color: #2a2d2c;
+}
+
+#profile .person-info p {
+    font-size: 20px;
+}
+
+#profile .person-info h3 {
+    font-size: 22px;
+}
+
+#profile hr {
+    height: 2px;
+    width: 20%;
+    color: #2a2d2c;
+    background-color: #2a2d2c;
+}
+
+#profile .buttons {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+#profile .buttons button {
+    width: 30%;
+    height: 40px;
+    background-color: #76cfed;
+    cursor: pointer;
+    border-radius: 10px;
+    color: white;
+    text-shadow: -1px 0 black, 1px 0 black, 0 1px black, 0 -1px black;
+    font-size: 20px;
+}
+
+#profile .buttons a {
+    width: 30%;
+}
+
+#profile .buttons a button {
+    width: 100%;
+}
+
+#profile .buttons a:hover {
+    background-color: transparent;
+}
+
+#profile .buttons button:hover {
+    background-color: #7deca8;
+}
+
+#profile .buttons button.edit, .edit {
+    background-color: #ffff4d;
+}
+
+#profile .buttons button.edit:hover, .edit:hover {
+    background-color: #ffcc00;
+}
+
+#profile .cancel {
+    background-color: orange;
+}
+
+#profile .cancel:hover {
+    background-color: #ff3333;
+}
+
+#profile form {
+    padding: 30px;
+    background-color: #faf4fa;
+    margin: 30px 0;
+    text-align: center;
+    line-height: 1.5;
+}
+
+#profile label {
+    font-size: 30px;
+}
+
+#profile input[type=text], input[type=password] {
+    height: 30px;
+    width: 20%;
+    border-radius: 5px;
+}
+
+#profile input[type=submit] {
+    height: 36px;
+    width: 20%;
+    font-size: 22px;
+    background-color: #76cfed;
+    border-radius: 10px;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    cursor: pointer;
+}
+
+#profile input[type=submit]:hover {
+    background-color: #7deca8;
+}
+
+#profile button {
+    width: 20%;
+    height: 36px;
+    font-size: 22px;
+    border-radius: 10px;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    cursor: pointer;
+}
+
+#profile .invalid {
+    border-left: 6px solid red;
+}
+
+#profile .valid {
+    border-left: 6px solid green;
+}
+
+#profile .error {
+    font-size: 20px;
+    color: red;
+    display: none;
+}
+
+#profile .pass-text:hover {
+    cursor: pointer;
+}
+
+#profile input[type=password] {
+    margin-left: 22px;
+}
+
+#profile .fa-lock-open {
+    width: 14px;
+}

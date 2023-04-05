@@ -1,0 +1,79 @@
+/* Main content styling */
+
+#stones select {
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#stones form {
+    font-size: 20px;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    margin-top: -16px;
+    background-color: #cecece;
+}
+
+#stones .search-box {
+    align-self: center;
+}
+
+#stones form button {
+    cursor: pointer;
+    border: none;
+    height: 22px;
+    background-color: #acacac;
+}
+
+#stones .filter-box {
+    width: 60%;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+#stones main {
+    margin: 50px 80px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+#stones main button {
+    width: 70%;
+    height: 40px;
+    background-color: #76cfed;
+    cursor: pointer;
+    border-radius: 10px;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    font-size: 20px;
+}
+
+#stones main button:hover {
+    background-color: #7deca8;
+}
+
+#stones .product-card {
+    width: 20%;
+    margin: 10px;
+    border: 1px solid black;
+    padding: 30px;
+    text-align: center;
+    border-radius: 20px;
+    background-color: #faf4fa;
+}
+
+#stones .product-card img {
+    width: 250px;
+    height: 250px;
+}
+
+#stones .product-card p {
+    font-size: 20px;
+}
+
+#stones .stars {
+    color: gold;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}

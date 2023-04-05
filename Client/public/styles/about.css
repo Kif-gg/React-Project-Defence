@@ -1,0 +1,21 @@
+/* Main content styling */
+
+#about main {
+    margin: 50px 80px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+#about h2 {
+    color: coral;
+    text-align: center;
+    font-size: 28px;
+}
+
+#about p {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    text-align: justify;
+    font-size: 20px;
+}

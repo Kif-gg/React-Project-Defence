@@ -1,0 +1,195 @@
+#stones-details .back {
+    border-radius: 10px;
+    width: 150%;
+    padding: 15px;
+    font-size: 20px;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    background-color: #76cfed;
+    cursor: pointer;
+}
+
+#stones-details .back:hover {
+    background-color: #7deca8;
+}
+
+#stones-details .back-a {
+    position: absolute;
+    top: 380px;
+    display: inline-block;
+    width: 50px;
+    margin-left: 50px;
+    left: 30px;
+}
+
+#stones-details .back-a:hover {
+    background-color: transparent;
+}
+
+/* Main content styling */
+
+#stones-details main {
+    margin: 50px 80px;
+    display: flex;
+    justify-content: space-around;
+}
+
+#stones-details .product-card {
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 12px;
+    box-shadow: 1px 1px 20px black;
+    padding: 20px;
+    width: 35%;
+    background-color: #faf4fa;
+    font-size: 20px;
+}
+
+#stones-details .product-card .remove-favorites {
+    background-color: orange;
+}
+
+
+#stones-details .product-card .remove-favorites:hover {
+    background-color: #ff3333;
+}
+
+#stones-details main img {
+    width: 65%;
+}
+
+#stones-details .stars,
+#stones-details .rating {
+    color: gold;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+#stones-details .product-card button {
+    margin-bottom: 30px;
+    width: 70%;
+    padding: 20px;
+    background-color: #76cfed;
+    cursor: pointer;
+    border-radius: 10px;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    font-size: 20px;
+}
+
+#stones-details .product-card button:hover {
+    background-color: #7deca8;
+}
+
+#stones-details .comments {
+    height: 1000px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 35%;
+    border-radius: 12px;
+    box-shadow: 1px 1px 20px black;
+    overflow: auto;
+}
+
+#stones-details main form {
+    width: 100%;
+}
+
+#stones-details textarea {
+    width: 80%;
+    resize: none;
+}
+
+#stones-details .radio-stars {
+    display: flex;
+    justify-content: center;
+    flex-direction: row-reverse;
+}
+
+#stones-details input[type=submit] {
+    width: 80%;
+    padding: 10px 20px;
+    background-color: #76cfed;
+    color: white;
+    font-size: 22px;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#stones-details input[type=submit]:hover {
+    background-color: #7deca8;
+}
+
+#stones-details input[type=radio] {
+    display: none;
+}
+
+#stones-details .comments label i {
+    cursor: pointer;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+#stones-details label i:hover {
+    color: gold;
+    font-size: 18px;
+}
+
+#stones-details input[type=radio]:checked~label i {
+    color: gold;
+    font-size: 18px;
+}
+
+#stones-details hr {
+    width: 90%;
+}
+
+#stones-details .comment {
+    font-size: 18px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid gray;
+    width: 80%;
+    margin: 10px;
+    padding: 5px;
+    text-align: justify;
+    box-shadow: 1px 1px 20px black;
+}
+
+#stones-details .edit-delete {
+    align-self: flex-end;
+    margin-bottom: -6%;
+}
+
+#stones-details .edit-delete .edit {
+    border-radius: 5px;
+    font-size: 18px;
+    background-color: #76cfed;
+    cursor: pointer;
+}
+
+#stones-details .edit-delete .edit:hover {
+    background-color: #7deca8;
+}
+
+#stones-details .edit-delete .delete {
+    border-radius: 5px;
+    margin-left: 10px;
+    font-size: 18px;
+    background-color: orange;
+    cursor: pointer;
+}
+
+#stones-details .edit-delete .delete:hover {
+    background-color: red;
+}
+
+#stones-details time {
+    text-align: right;
+    text-decoration: underline;
+}

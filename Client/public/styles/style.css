@@ -1,0 +1,29 @@
+@import url('https://use.fontawesome.com/releases/v6.3.0/css/all.css');
+
+@import '404.css';
+@import 'about.css';
+@import 'cart.css';
+@import 'clothes-details.css';
+@import 'clothes.css';
+@import 'fabric-details.css';
+@import 'fabric.css';
+@import 'faq.css';
+@import 'favorites.css';
+@import 'landing-page.css';
+@import 'login.css';
+@import 'profile.css';
+@import 'register.css';
+@import 'stamps-details.css';
+@import 'stamps.css';
+@import 'stones-details.css';
+@import 'stones.css';
+@import 'header.css';
+@import 'footer.css';
+
+body {
+    margin: 0;
+}
+
+ul {
+    list-style-type: none;
+}

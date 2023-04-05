@@ -1,0 +1,43 @@
+/* Main content styling */
+
+#faq main {
+    margin: 50px 80px;
+    text-align: center;
+    font-size: 20px;
+}
+
+#faq h2 {
+    font-size: 28px;
+    color: coral;
+}
+
+#faq .contact {
+    text-decoration: none;
+    color: coral;
+    padding: 10px 5px;
+}
+
+#faq .contact:hover {
+    color: white;
+    background-color: #2a2d2c;
+}
+
+#faq .question {
+    padding: 5px 20px;
+    background-color: #cecece;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#faq .question:hover {
+    background-color: #b5b3b3;
+    cursor: pointer;
+}
+
+#faq .answer {
+    text-align: justify;
+    padding: 5px 20px;
+    background-color: #f5f5f5;
+    display: none;
+}

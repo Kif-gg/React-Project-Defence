@@ -1,0 +1,186 @@
+#fabric-details .back {
+    border-radius: 10px;
+    width: 150%;
+    padding: 15px;
+    font-size: 20px;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    background-color: #76cfed;
+    cursor: pointer;
+}
+
+#fabric-details .back:hover {
+    background-color: #7deca8;
+}
+
+#fabric-details .back-a {
+    position: absolute;
+    top: 380px;
+    display: inline-block;
+    width: 50px;
+    margin-left: 50px;
+    left: 30px;
+}
+
+#fabric-details .back-a:hover {
+    background-color: transparent;
+}
+
+/* Main content styling */
+
+#fabric-details main {
+    margin: 50px 80px;
+    display: flex;
+    justify-content: space-around;
+}
+
+#fabric-details .product-card {
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 12px;
+    box-shadow: 1px 1px 20px black;
+    padding: 20px;
+    width: 35%;
+    background-color: #faf4fa;
+    font-size: 20px;
+}
+
+#fabric-details main img {
+    width: 65%;
+}
+
+#fabric-details .stars,
+#fabric-details .rating {
+    color: gold;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+#fabric-details .product-card button {
+    margin-bottom: 30px;
+    width: 70%;
+    padding: 20px;
+    background-color: #76cfed;
+    cursor: pointer;
+    border-radius: 10px;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    font-size: 20px;
+}
+
+#fabric-details .product-card button:hover {
+    background-color: #7deca8;
+}
+
+#fabric-details .comments {
+    height: 1000px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 35%;
+    border-radius: 12px;
+    box-shadow: 1px 1px 20px black;
+    overflow: auto;
+}
+
+#fabric-details main form {
+    width: 100%;
+}
+
+#fabric-details textarea {
+    width: 80%;
+    resize: none;
+}
+
+#fabric-details .radio-stars {
+    display: flex;
+    justify-content: center;
+    flex-direction: row-reverse;
+}
+
+#fabric-details input[type=submit] {
+    width: 80%;
+    padding: 10px 20px;
+    background-color: #76cfed;
+    color: white;
+    font-size: 22px;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#fabric-details input[type=submit]:hover {
+    background-color: #7deca8;
+}
+
+#fabric-details input[type=radio] {
+    display: none;
+}
+
+#fabric-details .comments label i {
+    cursor: pointer;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+#fabric-details label i:hover {
+    color: gold;
+    font-size: 18px;
+}
+
+#fabric-details input[type=radio]:checked~label i {
+    color: gold;
+    font-size: 18px;
+}
+
+#fabric-details hr {
+    width: 90%;
+}
+
+#fabric-details .comment {
+    font-size: 18px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid gray;
+    width: 80%;
+    margin: 10px;
+    padding: 5px;
+    text-align: justify;
+    box-shadow: 1px 1px 20px black;
+}
+
+#fabric-details .edit-delete {
+    align-self: flex-end;
+    margin-bottom: -6%;
+}
+
+#fabric-details .edit-delete .edit {
+    border-radius: 5px;
+    font-size: 18px;
+    background-color: #76cfed;
+    cursor: pointer;
+}
+
+#fabric-details .edit-delete .edit:hover {
+    background-color: #7deca8;
+}
+
+#fabric-details .edit-delete .delete {
+    border-radius: 5px;
+    margin-left: 10px;
+    font-size: 18px;
+    background-color: orange;
+    cursor: pointer;
+}
+
+#fabric-details .edit-delete .delete:hover {
+    background-color: red;
+}
+
+#fabric-details time {
+    text-align: right;
+    text-decoration: underline;
+}
