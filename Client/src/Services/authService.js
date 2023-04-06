@@ -2,6 +2,8 @@ import * as request from './requester';
 
 const url = 'http://localhost:3030/users';
 
+const altUrl = 'http://localhost:3030';
+
 export const login = async (loginData) => {
     return await request.post(`${url}/login`, loginData);
 };
@@ -20,6 +22,29 @@ export const getUserProfile = async () => {
 
 export const getUserFavorites = async () => {
     return await request.get(`${url}/profile/favorites`);
+};
+
+export const addToFavorites = async () => {
+    const pathname = window.location.pathname;
+    return await request.post(`${altUrl}${pathname}/favorite`);
+};
+
+export const removeFromFavorites = async () => {
+    const pathname = window.location.pathname;
+    return await request.del(`${altUrl}${pathname}/favorite`);
+};
+
+export const getUserCart = async () => {
+    return await request.get(`${altUrl}/cart`);
+};
+
+export const addToCart = async () => {
+    const pathname = window.location.pathname;
+    return await request.post(`${altUrl}${pathname}/cart`);
+};
+
+export const removeFromCart = async () => {
+    return await request.del(`${altUrl}/cart`);
 };
 
 export const editUserData = async (editedData) => {
