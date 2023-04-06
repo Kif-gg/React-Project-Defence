@@ -1,26 +1,42 @@
-export default function EditUserData() {
+import { useState } from "react";
+import { editUserData } from "../../../Services/authService";
+
+export default function EditUserData({ user, setEditDataMode, setUser }) {
+
+    const [formValues, setFormValues] = useState({
+        username: user.username,
+        email: user.email,
+        number: user.number
+    });
+
+    const onFormValuesChange = (e) => {
+        setFormValues(state => ({ ...state, [e.target.name]: e.target.value }));
+    }
+
+    const onEditSubmit = async (e) => {
+        e.preventDefault();
+
+        const result = Object.fromEntries(new FormData(e.target));
+        
+        if (window.confirm('Are you sure you want to update your profile data?') === true) {
+            const done = await editUserData(result);
+
+            if (done) {
+                setEditDataMode(false);
+                setUser(result);
+            }
+        }
+    };
+
+    const cancelEdit = () => {
+        setEditDataMode(false);
+    }
+
     return (
-        <form action="" method="">
-            <label htmlFor="username">Username
-                <br />
-                <input type="text" name="username" id="username" required minLength="3" maxLength="15" />
-            </label>
-            <p className="error">
-                Username is required!
-            </p>
-            <p className="error">
-                Username is too short!
-            </p>
-            <p className="error">
-                Username is too long!
-            </p>
-            <p className="error">
-                This username is already taken!
-            </p>
-            <br />
+        <form method="POST" onSubmit={onEditSubmit}>
             <label htmlFor="email">Email
                 <br />
-                <input type="text" name="email" id="email" required className="valid" />
+                <input type="text" name="email" id="email" required className="valid" value={formValues.email} onChange={onFormValuesChange} />
             </label>
             <p className="error">
                 Email is required!
@@ -34,7 +50,7 @@ export default function EditUserData() {
             <br />
             <label htmlFor="number">Phone number
                 <br />
-                <input type="text" name="number" id="number" required className="invalid" />
+                <input type="text" name="number" id="number" required className="invalid" value={formValues.number} onChange={onFormValuesChange} />
             </label>
             <p className="error">
                 Phone number is required!
@@ -46,7 +62,7 @@ export default function EditUserData() {
             <p>
                 <input type="submit" value="Update profile data" />
             </p>
-            <a href="profile.html"><button type="button" className="cancel">Cancel</button></a>
+            <button type="button" className="cancel" onClick={cancelEdit}>Cancel</button>
         </form>
     );
 };

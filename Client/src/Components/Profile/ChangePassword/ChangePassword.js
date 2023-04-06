@@ -1,6 +1,26 @@
-export default function ChangePassword() {
+import { editUserData } from "../../../Services/authService";
+
+export default function ChangePassword({ setEditPasswordMode }) {
+
+    const onEditSubmit = async (e) => {
+        e.preventDefault();
+
+        const result = Object.fromEntries(new FormData(e.target));
+
+        if (window.confirm('Are you sure you want to change your password?') === true) {
+            const done = await editUserData(result);
+            if (done) {
+                setEditPasswordMode(false);
+            };
+        }
+    }
+
+    const cancelEdit = () => {
+        setEditPasswordMode(false);
+    }
+
     return (
-        <form action="" method="">
+        <form method="POST" onSubmit={onEditSubmit}>
             <label htmlFor="current">Current password
                 <br />
                 <input type="password" name="current" id="current" required />
@@ -27,7 +47,7 @@ export default function ChangePassword() {
             <p>
                 <input type="submit" value="Change password" />
             </p>
-            <a href="profile.html"><button type="button" className="cancel">Cancel</button></a>
+            <button type="button" className="cancel" onClick={cancelEdit}>Cancel</button>
         </form>
     );
 };
