@@ -50,7 +50,7 @@
     background-color: #7deca8;
 }
 
-#favorites .favorites-card {
+#favorites .product-card {
     width: 20%;
     margin: 10px;
     border: 1px solid black;
@@ -60,12 +60,12 @@
     background-color: #faf4fa;
 }
 
-#favorites .favorites-card img {
+#favorites .product-card img {
     width: 250px;
     height: 250px;
 }
 
-#favorites .favorites-card p {
+#favorites .product-card p {
     font-size: 20px;
 }
 
