@@ -51,8 +51,8 @@ fabricController.put('/:id', guestGuard(), async (req, res) => {
 
 fabricController.delete('/:id', guestGuard(), async (req, res) => {
     try {
-        await deleteFabricReview(req.params.id, req.user._id);
-        res.status(204).end();
+        const result = await deleteFabricReview(req.params.id, req.user._id);
+        res.json(result);
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });

@@ -52,7 +52,7 @@ stonesController.put('/:id', guestGuard(), async (req, res) => {
 stonesController.delete('/:id', guestGuard(), async (req, res) => {
     try {
         const result = await deleteStonesReview(req.params.id, req.user._id);
-        res.status(204).end();
+        res.json(result);
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });

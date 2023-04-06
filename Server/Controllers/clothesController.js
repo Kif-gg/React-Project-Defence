@@ -51,8 +51,8 @@ clothesController.put('/:id', guestGuard(), async (req, res) => {
 
 clothesController.delete('/:id', guestGuard(), async (req, res) => {
     try {
-        await deleteClothesReview(req.params.id, req.user._id);
-        res.status(204).end();
+        const result = await deleteClothesReview(req.params.id, req.user._id);
+        res.json(result);
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });

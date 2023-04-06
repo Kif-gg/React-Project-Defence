@@ -51,8 +51,8 @@ stampController.put('/:id', guestGuard(), async (req, res) => {
 
 stampController.delete('/:id', guestGuard(), async (req, res) => {
     try {
-        await deleteStampReview(req.params.id, req.user._id);
-        res.status(204).end();
+        const result = await deleteStampReview(req.params.id, req.user._id);
+        res.json(result);
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });
