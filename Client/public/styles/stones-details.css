@@ -193,3 +193,18 @@
     text-align: right;
     text-decoration: underline;
 }
+
+#fabric-details .cancel {
+    background-color: orange;
+    width: 80%;
+    padding: 10px 20px;
+    color: white;
+    font-size: 22px;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#fabric-details .cancel:hover {
+    background-color: #ff3333;
+}

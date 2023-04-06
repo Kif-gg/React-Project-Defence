@@ -24,6 +24,17 @@ body {
     margin: 0;
 }
 
+main {
+    min-height: 198px;
+}
+
+h5 {
+    text-align: center;
+    width: 100%;
+    font-size: 26px;
+    color: coral;
+}
+
 ul {
     list-style-type: none;
 }
