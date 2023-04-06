@@ -247,16 +247,17 @@ async function editStonesReview(stonesId, userId, reviewBody) {
         throw new Error(`User with ID ${userId} does not exist!`);
     } else if (!!existingStones == false) {
         throw new Error(`A product from this category with ID ${stonesId} does not exist!`);
-    } else if (!!existingReview == false) {
+    } else if (existingReview == undefined) {
         throw new Error('There is no review of this product posted by you to edit!');
-    } else if (!!existingReview == false) {
-        throw new Error(`Review with ID ${existingReview._id} does not exist in this product!`);
     } else {
         if (existingReview.rating != reviewBody.rating || existingReview.comment != reviewBody.comment) {
             existingReview.rating = reviewBody.rating;
             existingReview.comment = reviewBody.comment;
 
             await existingReview.save();
+            
+            existingStones.reviews.splice(existingStones.reviews.find(review => review.userId == userId), 1, existingReview);
+            
             await existingStones.save();
 
             return calcAvgRatingAndTotalReviewsById(stonesId);
@@ -274,10 +275,8 @@ async function deleteStonesReview(stonesId, userId) {
         throw new Error(`User with ID ${userId} does not exist!`);
     } else if (!!existingStones == false) {
         throw new Error(`A product from this category with ID ${stonesId} does not exist!`);
-    } else if (!!existingReview == false) {
+    } else if (existingReview == undefined) {
         throw new Error('There is no review of this product posted by you to delete!');
-    } else if (!!existingReview == false) {
-        throw new Error(`Review with ID ${existingReview._id} does not exist in this product!`);
     } else {
         await Review.findByIdAndDelete(existingReview._id);
 

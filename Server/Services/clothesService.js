@@ -239,16 +239,17 @@ async function editClothesReview(clothesId, userId, reviewBody) {
         throw new Error(`User with ID ${userId} does not exist!`);
     } else if (!!existingClothes == false) {
         throw new Error(`A product from this category with ID ${clothesId} does not exist!`);
-    } else if (!!existingReview == false) {
+    } else if (existingReview == undefined) {
         throw new Error('There is no review of this product posted by you to edit!');
-    } else if (!!existingReview == false) {
-        throw new Error(`Review with ID ${existingReview._id} does not exist in this product!`);
     } else {
         if (existingReview.rating != reviewBody.rating || existingReview.comment != reviewBody.comment) {
             existingReview.rating = reviewBody.rating;
             existingReview.comment = reviewBody.comment;
 
             await existingReview.save();
+
+            existingClothes.reviews.splice(existingClothes.reviews.find(review => review.userId == userId), 1, existingReview);
+
             await existingClothes.save();
 
             return calcAvgRatingAndTotalReviewsById(clothesId);
@@ -266,10 +267,8 @@ async function deleteClothesReview(clothesId, userId) {
         throw new Error(`User with ID ${userId} does not exist!`);
     } else if (!!existingClothes == false) {
         throw new Error(`A product from this category with ID ${clothesId} does not exist!`);
-    } else if (!!existingReview == false) {
+    } else if (existingReview == undefined) {
         throw new Error('There is no review of this product posted by you to delete!');
-    } else if (!!existingReview == false) {
-        throw new Error(`Review with ID ${existingReview._id} does not exist in this product!`);
     } else {
         await Review.findByIdAndDelete(existingReview._id);
 
