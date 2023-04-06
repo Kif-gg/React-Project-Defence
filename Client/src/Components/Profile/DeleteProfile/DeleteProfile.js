@@ -8,8 +8,6 @@ export default function DeleteProfile({ setDeleteProfileMode }) {
 
         const result = Object.fromEntries(new FormData(e.target));
 
-        console.log(result);
-
         if (window.confirm('Are you sure you want to delete your profile?') === true) {
             const done = await deleteUserProfile(result);
             if (done) {

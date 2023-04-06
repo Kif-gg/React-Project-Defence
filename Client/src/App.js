@@ -61,7 +61,6 @@ function App() {
         e.preventDefault();
 
         const data = Object.fromEntries(new FormData(e.target));
-        console.log(data);
 
         try {
             const { confirmPassword, ...registerData } = data;
