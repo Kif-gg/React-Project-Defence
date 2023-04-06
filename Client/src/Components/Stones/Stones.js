@@ -18,7 +18,7 @@ export default function Stones() {
                 {stones.map(prod => <UniversalProductCard key={prod._id} {...prod} urlPath="/stones" />)}
 
                 {stones.length === 0 && (
-                    <h3>There is nothing to show yet!</h3>
+                    <h5>There is nothing to show!</h5>
                 )}
             </main>
         </div>

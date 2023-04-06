@@ -33,7 +33,7 @@ export default function Favorites() {
                 })}
 
                 {products.length === 0 && (
-                    <h3>You haven't added anything to your favorites yet!</h3>
+                    <h5>You haven't added anything to your favorites yet!</h5>
                 )}
             </main>
         </div>

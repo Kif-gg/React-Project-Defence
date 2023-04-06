@@ -19,9 +19,8 @@ export default function Fabric() {
                 {fabrics.map(prod => <UniversalProductCard key={prod._id} {...prod} urlPath="/fabric" />)}
                 {/* ELSE: Show sth */}
                 {fabrics.length === 0 && (
-                    <h3>There is nothing to show yet!</h3>
+                    <h5>There is nothing to show!</h5>
                 )}
-
             </main>
         </div >
     );

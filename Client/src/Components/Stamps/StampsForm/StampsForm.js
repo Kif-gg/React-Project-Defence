@@ -52,6 +52,7 @@ export default function StampsForm(props) {
                     <label htmlFor="stamp-color">Select stone color</label>
                     <select name="stamp-color" id="stamp-color" value={formValues['stone-color']} onChange={onFormValuesChange}>
                         <option value="all">All</option>
+                        <option value="mixed">Mixed</option>
                         <option value="black">Black</option>
                         <option value="blue">Blue</option>
                         <option value="chameleon">Chameleon</option>

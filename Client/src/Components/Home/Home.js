@@ -32,7 +32,7 @@ export default function Home() {
                     })}
 
                     {homeProducts.length === 0 && (
-                        <h3>There is nothing to show yet!</h3>
+                        <h5>There is nothing to show!</h5>
                     )}
                 </article>
             </main>
