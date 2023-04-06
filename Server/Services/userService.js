@@ -75,25 +75,15 @@ async function logout(token) {
 async function changeUserData(id, user) {
     const existingUser = await User.findById(id);
 
-    const currentName = new RegExp(`^${existingUser.username}$`, 'i');
     const currentEmail = new RegExp(`^${existingUser.email}$`, 'i');
     const currentNumber = new RegExp(`^(\\+359|0)${existingUser.number.slice(existingUser.number.length - 9)}$`, 'i');
 
-    if (currentName.test(user.username) == true) {
-        throw new Error('New username can\'t be your current username!');
-    } else if (!!await User.findOne({ username: { '$regex': `^${user.username}$`, '$options': 'i' } }) == true) {
-        throw new Error("This username is already taken!");
-    }
-    if (currentEmail.test(user.email) == true) {
-        throw new Error('New email can\'t be your current email!');
-    } else if (!!await User.findOne({ email: { '$regex': `^${user.email}$`, '$options': 'i' } }) == true) {
-        throw new Error("This username is already taken!");
-    }
-    if (currentNumber.test(user.number) == true) {
-        throw new Error('New number can\'t be your current number!');
+    if (currentEmail.test(user.email) == true && currentNumber.test(user.number) == true) {
+        throw new Error('You must change at least one field!');
+    } else if (!!await User.findOne({ email: { '$regex': `^${user.email}$`, '$options': 'i' }, _id: existingUser._id }) != true) {
+        throw new Error("This email is already registered!");
     }
 
-    existingUser.username = user.username;
     existingUser.email = user.email;
     existingUser.number = user.number;
 
@@ -118,7 +108,15 @@ async function changePassword(id, user) {
     }
 };
 
-async function deleteUser(id) {
+async function deleteUser(id, body) {
+    const existingUser = await User.findById(id);
+
+    const match = await bcrypt.compare(body.password, existingUser.hashedPassword);
+
+    if (!match) {
+        throw new Error('Wrong password!');
+    }
+
     return User.findByIdAndDelete(id);
 };
 

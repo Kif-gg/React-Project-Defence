@@ -67,7 +67,7 @@ authController.put('/profile', guestGuard(), async (req, res) => {
             throw new Error(`User with ID ${req.user._id} does not exist!`);
         } else {
             const checkWhatIsBeingUpdated = Object.keys(req.body);
-            if (checkWhatIsBeingUpdated.length == 3 && checkWhatIsBeingUpdated.includes('username') && checkWhatIsBeingUpdated.includes('email') && checkWhatIsBeingUpdated.includes('number')) {
+            if (checkWhatIsBeingUpdated.length == 2 && checkWhatIsBeingUpdated.includes('email') && checkWhatIsBeingUpdated.includes('number')) {
                 const result = await changeUserData(req.user._id, req.body);
                 res.json(result);
             } else if (checkWhatIsBeingUpdated.length == 2 && checkWhatIsBeingUpdated.includes('current') && checkWhatIsBeingUpdated.includes('new')) {
@@ -104,7 +104,7 @@ authController.delete('/profile', guestGuard(), async (req, res) => {
         if (!user) {
             throw new Error(`User with ID ${req.user._id} does not exist!`);
         } else {
-            await deleteUser(req.user._id);
+            await deleteUser(req.user._id, req.body);
             const token = req.token;
             await logout(token);
             res.clearCookie('Authorization');
