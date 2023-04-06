@@ -1,4 +1,4 @@
-export default function CommentCard({ review, onEditReview, owner }) {
+export default function CommentCard({ review, onEditReview, onDeleteReview, owner }) {
 
     const createdAt = new Date(review.createdAt);
 
@@ -26,7 +26,7 @@ export default function CommentCard({ review, onEditReview, owner }) {
             {owner && (
                 <div className="edit-delete">
                     <button type="button" className="edit" onClick={onEditReview}><i className="fa-solid fa-pen-to-square"></i></button>
-                    <button type="button" className="delete"><i className="fa-solid fa-trash"></i></button>
+                    <button type="button" className="delete" onClick={onDeleteReview}><i className="fa-solid fa-trash"></i></button>
                 </div>
             )}
             <h4>@{review.username}</h4>
