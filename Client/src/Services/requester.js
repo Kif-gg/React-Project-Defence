@@ -22,6 +22,11 @@ const request = async (method, url, data) => {
     const result = await response.json();
 
     if (!response.ok) {
+        if (response.status === 401) {
+            localStorage.clear();
+            document.cookie += '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
+        }
+        alert(result.message);
         throw new Error(result.message);
     }
     return result;
