@@ -10,7 +10,7 @@ export default function Profile() {
     const [user, setUser] = useState({});
 
     useEffect(() => {
-        getUserProfile().then(result => setUser(result))
+        getUserProfile().then(result => setUser(result)).catch(setUser({}));
     }, []);
 
     const [editDataMode, setEditDataMode] = useState(false);
@@ -56,7 +56,7 @@ export default function Profile() {
                     </div>
                     <button type="button" className="cancel" onClick={toggleDeleteProfile}>Delete profile</button>
                 </div>
-                {/* Add logic for rendering the two forms */}
+                {/* Add logic for rendering the forms */}
                 {editDataMode && (
                     <EditUserData user={user} setEditDataMode={setEditDataMode} setUser={setUser} />
                 )}
