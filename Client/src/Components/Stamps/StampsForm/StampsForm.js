@@ -7,7 +7,7 @@ export default function StampsForm(props) {
         search: '',
         'stone-type': 'all',
         'stamp-design': 'all',
-        'stone-color': 'all',
+        'stamp-color': 'all',
         sort: 'price',
         direction: 'ascending'
     });
@@ -23,7 +23,7 @@ export default function StampsForm(props) {
     };
 
     return (
-        <form action="" onSubmit={onFormSubmit}>
+        <form method="POST" onSubmit={onFormSubmit}>
             <div className="search-box">
                 <label htmlFor="search">Search...</label><input type="text" name="search" id="search" value={formValues.search} onChange={onFormValuesChange} /><button type="submit"><i
                     className="fa-solid fa-magnifying-glass"></i></button>
@@ -31,8 +31,8 @@ export default function StampsForm(props) {
             <div className="filter-box">
                 <div>
                     <i className="fa-solid fa-filter"></i>
-                    <label htmlFor="stamp-type">Stone type</label>
-                    <select name="stamp-type" id="stamp-type" value={formValues['stone-type']} onChange={onFormValuesChange}>
+                    <label htmlFor="stone-type">Stone type</label>
+                    <select name="stone-type" id="stone-type" value={formValues['stone-type']} onChange={onFormValuesChange}>
                         <option value="all">All</option>
                         <option value="crystal">Crystal</option>
                         <option value="metal">Metal</option>

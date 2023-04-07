@@ -54,7 +54,7 @@ export default function FabricForm(props) {
                         <option value="none">None</option>
                         <option value="brocade">Brocade</option>
                         <option value="sequins">Sequins</option>
-                        <option value="swarovski-stones">Swarovski stones</option>
+                        <option value="swarovski stones">Swarovski stones</option>
                     </select>
                 </div>
                 <div>
