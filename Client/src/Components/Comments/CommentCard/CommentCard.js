@@ -32,7 +32,7 @@ export default function CommentCard({ review, onEditReview, onDeleteReview, owne
             <h4>@{review.username}</h4>
             <span className="rating">{stars}</span>
             <p>{review.comment}</p>
-            <time>Posted: {date} {months[month]} {year} at {hours}:{minutes}</time>
+            <time>Posted: {date} {months[month]} {year} at {hours < 10 ? `0${hours}` : hours}:{minutes < 10 ? `0${minutes}` : minutes}</time>
         </div>
     );
 };
