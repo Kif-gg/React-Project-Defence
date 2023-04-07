@@ -25,12 +25,15 @@ import { AuthContext } from "./Contexts/AuthContext";
 
 import * as authService from "./Services/authService";
 
+import { UserPathGuard } from "./Guards/UserPathGuard";
+import { GuestPathGuard } from "./Guards/GuestPathGuard.js"
+import NotFound from "./Components/NotFound/NotFound";
+
 function App() {
 
     const navigate = useNavigate();
 
     const [user, setUser] = useState({});
-    const [error, setError] = useState('');
 
     useEffect(() => {
         const obj = JSON.parse(localStorage.getItem('Authorization'));
@@ -50,10 +53,10 @@ function App() {
             const result = await authService.login(data);
             localStorage.setItem('Authorization', JSON.stringify(result));
             setUser(result);
-            setError('');
             navigate('/');
         } catch (error) {
-            setError(error.message);
+            alert(error.message);
+            navigate('/users/login');
         }
     };
 
@@ -71,10 +74,10 @@ function App() {
             const result = await authService.register(registerData);
             localStorage.setItem('Authorization', JSON.stringify(result));
             setUser(result);
-            setError('');
             navigate('/');
         } catch (error) {
-            setError(error.message);
+            alert(error.message);
+            navigate('/users/register');
         }
     };
 
@@ -101,7 +104,6 @@ function App() {
                 {/* HEADER */}
                 <Header />
                 {/* MAIN CONTENT */}
-                {!!error && (<div className="modal"><h1>{error}</h1></div>)}
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/fabric" element={<Fabric />} />
@@ -115,13 +117,25 @@ function App() {
                     <Route path="/about" element={<About />} />
                     <Route path="/faq" element={<FAQ />} />
                     {/* USER ONLY */}
-                    <Route path="/users/profile" element={<Profile />} />
-                    <Route path="/users/profile/favorites" element={<Favorites />} />
-                    <Route path="/cart" element={<Cart />} />
-                    <Route path="/users/logout" element={<Logout />} />
+                    {!!user._id && (
+                        <>
+                            <Route path="/users/profile" element={<Profile />} />
+                            <Route path="/users/profile/favorites" element={<Favorites />} />
+                            <Route path="/users/logout" element={<Logout />} />
+                            <Route path="/cart" element={<Cart />} />
+                            <Route path="/users/*" element={<GuestPathGuard />} />
+                        </>
+                    )}
                     {/* GUEST ONLY */}
-                    <Route path="/users/login" element={<Login />} />
-                    <Route path="/users/register" element={<Register />} />
+                    {!!user._id === false && (
+                        <>
+                            <Route path="/users/login" element={<Login />} />
+                            <Route path="/users/register" element={<Register />} />
+                            <Route path="/cart" element={<UserPathGuard />} />
+                            <Route path="/users/*" element={<UserPathGuard />} />
+                        </>
+                    )}
+                    <Route path="*" element={<NotFound />} />
                 </Routes>
                 {/* FOOTER */}
                 <Footer id="footer" />
