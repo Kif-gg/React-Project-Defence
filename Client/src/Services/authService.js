@@ -43,8 +43,8 @@ export const addToCart = async () => {
     return await request.post(`${altUrl}${pathname}/cart`);
 };
 
-export const removeFromCart = async () => {
-    return await request.del(`${altUrl}/cart`);
+export const removeFromCart = async (_id) => {
+    return await request.del(`${altUrl}/cart/${_id}`);
 };
 
 export const editUserData = async (editedData) => {
