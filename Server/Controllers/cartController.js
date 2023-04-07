@@ -1,3 +1,4 @@
+const { guestGuard } = require('../Middlewares/guards');
 const { removeClothesFromCart } = require('../Services/clothesService');
 const { removeFabricFromCart } = require('../Services/fabricService');
 const { removeStampFromCart } = require('../Services/stampService');
@@ -7,7 +8,7 @@ const { parseError } = require('../Util/parser');
 
 const cartController = require('express').Router();
 
-cartController.get('/', async (req, res) => {
+cartController.get('/', guestGuard(), async (req, res) => {
     try {
         const products = await getUserCart(req.user._id);
         res.json(products);
@@ -17,7 +18,7 @@ cartController.get('/', async (req, res) => {
     }
 });
 
-cartController.delete('/:id', async (req, res) => {
+cartController.delete('/:id', guestGuard(), async (req, res) => {
     try {
         await removeFabricFromCart(req.params.id, req.user._id);
         res.status(204).end();
