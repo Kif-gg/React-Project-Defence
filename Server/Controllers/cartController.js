@@ -1,3 +1,4 @@
+const { isValidObjectId } = require('mongoose');
 const { guestGuard } = require('../Middlewares/guards');
 const { removeClothesFromCart } = require('../Services/clothesService');
 const { removeFabricFromCart } = require('../Services/fabricService');
@@ -20,9 +21,13 @@ cartController.get('/', guestGuard(), async (req, res) => {
 
 cartController.delete('/:id', guestGuard(), async (req, res) => {
     try {
-        await removeFabricFromCart(req.params.id, req.user._id);
-        res.status(204).end();
-        return;
+        if (isValidObjectId(req.params.id)) {
+            await removeFabricFromCart(req.params.id, req.user._id);
+            res.status(204).end();
+            return;
+        } else {
+            res.status(404).json({ message: 'Resource not found!' });
+        }
     } catch (error) {
         const message = parseError(error);
         if (message.includes('not in your cart') || message.includes('User with ID')) {

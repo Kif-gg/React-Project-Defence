@@ -1,3 +1,4 @@
+const { isValidObjectId } = require('mongoose');
 const { guestGuard } = require('../Middlewares/guards');
 const { getAllStamps, getStampsFiltered, getStampById, addStampReview, editStampReview, deleteStampReview, addStampToFavorites, removeStampFromFavorites, addStampToCart, removeStampFromCart } = require('../Services/stampService');
 const { parseError } = require('../Util/parser');
@@ -10,7 +11,7 @@ stampController.get('/', async (req, res) => {
         if (Object.keys(req.query) == 0) {
             result = await getAllStamps();
         } else {
-            result = await getStampsFiltered(req.query.search, req.query['clothes-type'], req.query['target-customers'], req.query.sort, req.query.direction);
+            result = await getStampsFiltered(req.query.search, req.query['stone-type'], req.query['stamp-design'], req.query['stamp-color'], req.query.sort, req.query.direction);
         }
         res.json(result);
     } catch (error) {
@@ -21,8 +22,12 @@ stampController.get('/', async (req, res) => {
 
 stampController.get('/:id', async (req, res) => {
     try {
-        const result = await getStampById(req.params.id);
-        res.json(result);
+        if (isValidObjectId(req.params.id)) {
+            const result = await getStampById(req.params.id);
+            res.json(result);
+        } else {
+            res.status(404).json({ message: 'Resource not found!' });
+        }
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });
@@ -31,8 +36,12 @@ stampController.get('/:id', async (req, res) => {
 
 stampController.post('/:id', guestGuard(), async (req, res) => {
     try {
-        const result = await addStampReview(req.params.id, req.user._id, req.body);
-        res.json(result);
+        if (isValidObjectId(req.params.id)) {
+            const result = await addStampReview(req.params.id, req.user._id, req.body);
+            res.json(result);
+        } else {
+            res.status(404).json({ message: 'Resource not found!' });
+        }
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });
@@ -41,8 +50,12 @@ stampController.post('/:id', guestGuard(), async (req, res) => {
 
 stampController.put('/:id', guestGuard(), async (req, res) => {
     try {
-        const result = await editStampReview(req.params.id, req.user._id, req.body);
-        res.json(result);
+        if (isValidObjectId(req.params.id)) {
+            const result = await editStampReview(req.params.id, req.user._id, req.body);
+            res.json(result);
+        } else {
+            res.status(404).json({ message: 'Resource not found!' });
+        }
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });
@@ -51,8 +64,12 @@ stampController.put('/:id', guestGuard(), async (req, res) => {
 
 stampController.delete('/:id', guestGuard(), async (req, res) => {
     try {
-        const result = await deleteStampReview(req.params.id, req.user._id);
-        res.json(result);
+        if (isValidObjectId(req.params.id)) {
+            const result = await deleteStampReview(req.params.id, req.user._id);
+            res.json(result);
+        } else {
+            res.status(404).json({ message: 'Resource not found!' });
+        }
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });
@@ -61,8 +78,12 @@ stampController.delete('/:id', guestGuard(), async (req, res) => {
 
 stampController.post('/:id/favorite', guestGuard(), async (req, res) => {
     try {
-        const result = await addStampToFavorites(req.params.id, req.user._id);
-        res.json(result);
+        if (isValidObjectId(req.params.id)) {
+            const result = await addStampToFavorites(req.params.id, req.user._id);
+            res.json(result);
+        } else {
+            res.status(404).json({ message: 'Resource not found!' });
+        }
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });
@@ -71,8 +92,12 @@ stampController.post('/:id/favorite', guestGuard(), async (req, res) => {
 
 stampController.delete('/:id/favorite', guestGuard(), async (req, res) => {
     try {
-        await removeStampFromFavorites(req.params.id, req.user._id);
-        res.status(204).end();
+        if (isValidObjectId(req.params.id)) {
+            await removeStampFromFavorites(req.params.id, req.user._id);
+            res.status(204).end();
+        } else {
+            res.status(404).json({ message: 'Resource not found!' });
+        }
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });
@@ -81,8 +106,12 @@ stampController.delete('/:id/favorite', guestGuard(), async (req, res) => {
 
 stampController.post('/:id/cart', guestGuard(), async (req, res) => {
     try {
-        const result = await addStampToCart(req.params.id, req.user._id);
-        res.json(result);
+        if (isValidObjectId(req.params.id)) {
+            const result = await addStampToCart(req.params.id, req.user._id);
+            res.json(result);
+        } else {
+            res.status(404).json({ message: 'Resource not found!' });
+        }
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });

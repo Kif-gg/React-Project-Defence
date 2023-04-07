@@ -1,3 +1,4 @@
+const { isValidObjectId } = require('mongoose');
 const { guestGuard } = require('../Middlewares/guards');
 const { getAllClothes, getClothesFiltered, getClothesById, addClothesReview, editClothesReview, deleteClothesReview, addClothesToFavorites, removeClothesFromFavorites, addClothesToCart, removeClothesFromCart } = require('../Services/clothesService');
 const { parseError } = require('../Util/parser');
@@ -21,8 +22,12 @@ clothesController.get('/', async (req, res) => {
 
 clothesController.get('/:id', async (req, res) => {
     try {
-        const result = await getClothesById(req.params.id);
-        res.json(result);
+        if (isValidObjectId(req.params.id)) {
+            const result = await getClothesById(req.params.id);
+            res.json(result);
+        } else {
+            res.status(404).json({ message: 'Resource not found!' });
+        }
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });
@@ -31,8 +36,12 @@ clothesController.get('/:id', async (req, res) => {
 
 clothesController.post('/:id', guestGuard(), async (req, res) => {
     try {
-        const result = await addClothesReview(req.params.id, req.user._id, req.body);
-        res.json(result);
+        if (isValidObjectId(req.params.id)) {
+            const result = await addClothesReview(req.params.id, req.user._id, req.body);
+            res.json(result);
+        } else {
+            res.status(404).json({ message: 'Resource not found!' });
+        }
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });
@@ -41,8 +50,12 @@ clothesController.post('/:id', guestGuard(), async (req, res) => {
 
 clothesController.put('/:id', guestGuard(), async (req, res) => {
     try {
-        const result = await editClothesReview(req.params.id, req.user._id, req.body);
-        res.json(result);
+        if (isValidObjectId(req.params.id)) {
+            const result = await editClothesReview(req.params.id, req.user._id, req.body);
+            res.json(result);
+        } else {
+            res.status(404).json({ message: 'Resource not found!' });
+        }
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });
@@ -51,8 +64,12 @@ clothesController.put('/:id', guestGuard(), async (req, res) => {
 
 clothesController.delete('/:id', guestGuard(), async (req, res) => {
     try {
-        const result = await deleteClothesReview(req.params.id, req.user._id);
-        res.json(result);
+        if (isValidObjectId(req.params.id)) {
+            const result = await deleteClothesReview(req.params.id, req.user._id);
+            res.json(result);
+        } else {
+            res.status(404).json({ message: 'Resource not found!' });
+        }
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });
@@ -61,8 +78,12 @@ clothesController.delete('/:id', guestGuard(), async (req, res) => {
 
 clothesController.post('/:id/favorite', guestGuard(), async (req, res) => {
     try {
-        const result = await addClothesToFavorites(req.params.id, req.user._id);
-        res.json(result);
+        if (isValidObjectId(req.params.id)) {
+            const result = await addClothesToFavorites(req.params.id, req.user._id);
+            res.json(result);
+        } else {
+            res.status(404).json({ message: 'Resource not found!' });
+        }
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });
@@ -71,8 +92,12 @@ clothesController.post('/:id/favorite', guestGuard(), async (req, res) => {
 
 clothesController.delete('/:id/favorite', guestGuard(), async (req, res) => {
     try {
-        await removeClothesFromFavorites(req.params.id, req.user._id);
-        res.status(204).end();
+        if (isValidObjectId(req.params.id)) {
+            await removeClothesFromFavorites(req.params.id, req.user._id);
+            res.status(204).end();
+        } else {
+            res.status(404).json({ message: 'Resource not found!' });
+        }
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });
@@ -81,8 +106,12 @@ clothesController.delete('/:id/favorite', guestGuard(), async (req, res) => {
 
 clothesController.post('/:id/cart', guestGuard(), async (req, res) => {
     try {
-        const result = await addClothesToCart(req.params.id, req.user._id);
-        res.json(result);
+        if (isValidObjectId(req.params.id)) {
+            const result = await addClothesToCart(req.params.id, req.user._id);
+            res.json(result);
+        } else {
+            res.status(404).json({ message: 'Resource not found!' });
+        }
     } catch (error) {
         const message = parseError(error);
         res.status(400).json({ message });
