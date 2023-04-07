@@ -1,26 +1,29 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Comments from "../../Comments/Comments";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { getStampDetails } from "../../../Services/stampService";
 import { addToCart, addToFavorites, getUserCart, getUserFavorites, removeFromFavorites } from "../../../Services/authService";
+import { AuthContext } from "../../../Contexts/AuthContext";
+
 
 export default function StampDetails() {
+
+    const { userId } = useContext(AuthContext);
+
+    const navigate = useNavigate();
 
     const { id } = useParams();
 
     const onAddToFavClick = () => {
-        addToFavorites();
-        setIsInFavorites(true);
+        addToFavorites().then(setIsInFavorites(true)).catch(err => console.log(err));
     };
 
     const onRemoveFromFavClick = () => {
-        removeFromFavorites();
-        setIsInFavorites(false);
+        removeFromFavorites().then(setIsInFavorites(false)).catch(err => console.log(err));
     };
 
     const onAddToCartClick = () => {
-        addToCart();
-        setIsInCart(true);
+        addToCart().then(setIsInCart(true)).catch(err => console.log(err));
     };
 
     const [stamp, setProduct] = useState({});
@@ -39,23 +42,31 @@ export default function StampDetails() {
 
     useEffect(() => {
         getStampDetails(id).then(result => {
-            setProduct(result);
+            if (!!result === false) {
+                navigate('/NOT_FOUND');
+            } else if (result.reviews !== undefined) {
+                setProduct(result);
+            }
         });
-    }, [id]);
+    }, [id, navigate]);
 
     useEffect(() => {
-        getUserFavorites().then(result => {
-            setFavorites(result);
-        });
-        setIsInFavorites(favoritesChecker);
-    }, [favoritesChecker]);
-
-    useEffect(() => {
-        getUserCart().then(result => {
-            setCart(result);
-        });
+        if (!!userId) {
+            getUserCart().then(result => {
+                setCart(result);
+            });
+        }
         setIsInCart(cartChecker);
-    }, [cartChecker]);
+    }, [cartChecker, userId]);
+
+    useEffect(() => {
+        if (!!userId) {
+            getUserFavorites().then(result => {
+                setFavorites(result);
+            });
+        }
+        setIsInFavorites(favoritesChecker);
+    }, [favoritesChecker, cartChecker, userId]);
 
     return (
         <div id="stamps-details">
@@ -64,7 +75,7 @@ export default function StampDetails() {
                     <button type="button" className="back"><i className="fa-solid fa-arrow-left"></i></button>
                 </Link>
                 <div className="product-card">
-                    <img src={stamp.imgUrl} alt="stamps" />
+                    <img src={stamp.imageUrl} alt="stamps" />
                     <h3>{stamp.title}</h3>
                     <p>{stamp.description}</p>
                     <p>Stone type: {stamp.stoneType}</p>
@@ -73,7 +84,7 @@ export default function StampDetails() {
                     <p>Price: {stamp.price} BGN</p>
                     {stamp.availability ? <p>In stock</p> : <p>Out of stock</p>}
                     <p><span className="stars"><i className="fa-solid fa-star"></i></span> 4.7 stars from 100 users</p>
-                    {stamp.availability && (
+                    {(stamp.availability && !!userId) && (
                         (isInCart && (
                             <button type="button" onClick={onAddToCartClick}><i className="fa-solid fa-cart-shopping"></i> Add to cart</button>
                         ))
@@ -81,15 +92,15 @@ export default function StampDetails() {
                             <h4>Product is in your cart! <i className="fa-regular fa-smile"></i> </h4>
                         ))
                     )}
-                    {!stamp.availability && (
-                            <h4>Product is unavailable for now! <i className="fa-regular fa-frown"></i> </h4>
+                    {(!stamp.availability && !!userId) && (
+                        <h4>Product is unavailable for now! <i className="fa-regular fa-frown"></i> </h4>
                     )}
-                    {stamp._id !== undefined && (
+                    {(stamp._id !== undefined && !!userId) && (
                         isInFavorites && (
                             <button type="button" className="remove-favorites" onClick={onRemoveFromFavClick}><i className="fa-solid fa-heart"></i> Remove from favorites</button>
                         )
                     )}
-                    {stamp._id !== undefined && (
+                    {(stamp._id !== undefined && !!userId) && (
                         !isInFavorites && (
                             <button type="button" className="add-favorites" onClick={onAddToFavClick}><i className="fa-regular fa-heart"></i> Add to favorites</button>
                         )

@@ -1,26 +1,29 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Comments from "../../Comments/Comments";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { getFabricDetails } from "../../../Services/fabricService";
 import { getUserFavorites, addToFavorites, removeFromFavorites, getUserCart, addToCart } from "../../../Services/authService";
+import { AuthContext } from "../../../Contexts/AuthContext";
+
 
 export default function FabricDetails() {
+
+    const { userId } = useContext(AuthContext);
+
+    const navigate = useNavigate();
 
     const { id } = useParams();
 
     const onAddToFavClick = () => {
-        addToFavorites();
-        setIsInFavorites(true);
+        addToFavorites().then(setIsInFavorites(true)).catch(err => console.log(err));
     };
 
     const onRemoveFromFavClick = () => {
-        removeFromFavorites();
-        setIsInFavorites(false);
+        removeFromFavorites().then(setIsInFavorites(false)).catch(err => console.log(err));
     };
 
     const onAddToCartClick = () => {
-        addToCart();
-        setIsInCart(true);
+        addToCart().then(setIsInCart(true)).catch(err => console.log(err));
     };
 
     const [fabric, setProduct] = useState({});
@@ -36,29 +39,34 @@ export default function FabricDetails() {
     const favoritesChecker = favorites.map(fav => fav._id).includes(id);
 
     const [isInFavorites, setIsInFavorites] = useState(favoritesChecker);
-    
+
     useEffect(() => {
         getFabricDetails(id).then(result => {
-            if (result.reviews !== undefined) {
-                console.log(result.reviews);
+            if (!!result === false) {
+                navigate('/NOT_FOUND');
+            } else if (result.reviews !== undefined) {
                 setProduct(result);
             }
-        });
-    }, [id]);
-    
+        }).catch(err => console.log(err));
+    }, [id, navigate]);
+
     useEffect(() => {
-        getUserCart().then(result => {
-            setCart(result);
-        });
+        if (!!userId) {
+            getUserCart().then(result => {
+                setCart(result);
+            }).catch(err => console.log(err));
+        }
         setIsInCart(cartChecker);
-    }, [cartChecker]);
-    
+    }, [cartChecker, userId]);
+
     useEffect(() => {
-        getUserFavorites().then(result => {
-            setFavorites(result);
-        });
+        if (!!userId) {
+            getUserFavorites().then(result => {
+                setFavorites(result);
+            }).catch(err => console.log(err));
+        }
         setIsInFavorites(favoritesChecker);
-    }, [favoritesChecker, cartChecker]);
+    }, [favoritesChecker, cartChecker, userId]);
 
     return (
         <div id="fabric-details">
@@ -75,7 +83,7 @@ export default function FabricDetails() {
                     <p>Price: {fabric.price} BGN</p>
                     {fabric.availability ? <p>In stock</p> : <p>Out of stock</p>}
                     <p><span className="stars"><i className="fa-solid fa-star"></i></span> {fabric.average} stars from {fabric.totalPeople} users</p>
-                    {fabric.availability && (
+                    {(fabric.availability && !!userId) && (
                         (!isInCart && (
                             <button type="button" onClick={onAddToCartClick}><i className="fa-solid fa-cart-shopping"></i> Add to cart</button>
                         ))
@@ -83,15 +91,15 @@ export default function FabricDetails() {
                             <h4>Product is in your cart! <i className="fa-regular fa-smile"></i> </h4>
                         ))
                     )}
-                    {!fabric.availability && (
+                    {(!fabric.availability && !!userId) && (
                         <h4>Product is unavailable for now! <i className="fa-regular fa-frown"></i> </h4>
                     )}
-                    {fabric._id !== undefined && (
+                    {(fabric._id !== undefined && !!userId) && (
                         isInFavorites && (
                             <button type="button" className="remove-favorites" onClick={onRemoveFromFavClick}><i className="fa-solid fa-heart"></i> Remove from favorites</button>
                         )
                     )}
-                    {fabric._id !== undefined && (
+                    {(fabric._id !== undefined && !!userId) && (
                         !isInFavorites && (
                             <button type="button" className="add-favorites" onClick={onAddToFavClick}><i className="fa-regular fa-heart"></i> Add to favorites</button>
                         )

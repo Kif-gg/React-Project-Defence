@@ -1,26 +1,29 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Comments from "../../Comments/Comments";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { getStonesDetails } from "../../../Services/stonesService";
 import { addToCart, addToFavorites, getUserCart, getUserFavorites, removeFromFavorites } from "../../../Services/authService";
+import { AuthContext } from "../../../Contexts/AuthContext";
+
 
 export default function StonesDetails() {
+
+    const { userId } = useContext(AuthContext);
+    
+    const navigate = useNavigate();
 
     const { id } = useParams();
 
     const onAddToFavClick = () => {
-        addToFavorites();
-        setIsInFavorites(true);
+        addToFavorites().then(setIsInFavorites(true)).catch(err => console.log(err));
     };
 
     const onRemoveFromFavClick = () => {
-        removeFromFavorites();
-        setIsInFavorites(false);
+        removeFromFavorites().then(setIsInFavorites(false)).catch(err => console.log(err));
     };
 
     const onAddToCartClick = () => {
-        addToCart();
-        setIsInCart(true);
+        addToCart().then(setIsInCart(true)).catch(err => console.log(err));
     };
 
     const [stones, setProduct] = useState({});
@@ -36,29 +39,34 @@ export default function StonesDetails() {
     const favoritesChecker = favorites.map(fav => fav._id).includes(id);
 
     const [isInFavorites, setIsInFavorites] = useState(favoritesChecker);
-    
+
     useEffect(() => {
         getStonesDetails(id).then(result => {
-            if (result.reviews !== undefined) {
-                console.log(result.reviews);
+            if (!!result === false) {
+                navigate('/NOT_FOUND');
+            } else if (result.reviews !== undefined) {
                 setProduct(result);
             }
         });
-    }, [id]);
-    
+    }, [id, navigate]);
+
     useEffect(() => {
-        getUserCart().then(result => {
-            setCart(result);
-        });
+        if (!!userId) {
+            getUserCart().then(result => {
+                setCart(result);
+            });
+        }
         setIsInCart(cartChecker);
-    }, [cartChecker]);
-    
+    }, [cartChecker, userId]);
+
     useEffect(() => {
-        getUserFavorites().then(result => {
-            setFavorites(result);
-        });
+        if (!!userId) {
+            getUserFavorites().then(result => {
+                setFavorites(result);
+            });
+        }
         setIsInFavorites(favoritesChecker);
-    }, [favoritesChecker, cartChecker]);
+    }, [favoritesChecker, cartChecker, userId]);
 
     return (
         <div id="stones-details">
@@ -67,7 +75,7 @@ export default function StonesDetails() {
                     <button type="button" className="back"><i className="fa-solid fa-arrow-left"></i></button>
                 </Link>
                 <div className="product-card">
-                    <img src={stones.imgUrl} alt="" />
+                    <img src={stones.imageUrl} alt="" />
                     <h3>{stones.title}</h3>
                     <p>{stones.description}</p>
                     <p>Type: {stones.stoneType}</p>
@@ -77,7 +85,7 @@ export default function StonesDetails() {
                     <p>Price: {stones.price} BGN</p>
                     {stones.availability ? <p>In stock</p> : <p>Out of stock</p>}
                     <p><span className="stars"><i className="fa-solid fa-star"></i></span> 4.7 stars from 100 users</p>
-                    {stones.availability && (
+                    {(stones.availability && !!userId) && (
                         (!isInCart && (
                             <button type="button" onClick={onAddToCartClick}><i className="fa-solid fa-cart-shopping"></i> Add to cart</button>
                         ))
@@ -85,15 +93,15 @@ export default function StonesDetails() {
                             <h4>Product is in your cart! <i className="fa-regular fa-smile"></i> </h4>
                         ))
                     )}
-                    {!stones.availability && (
+                    {(!stones.availability && !!userId) && (
                         <h4>Product is unavailable for now! <i className="fa-regular fa-frown"></i> </h4>
                     )}
-                    {stones._id !== undefined && (
+                    {(stones._id !== undefined && !!userId) && (
                         isInFavorites && (
                             <button type="button" className="remove-favorites" onClick={onRemoveFromFavClick}><i className="fa-solid fa-heart"></i> Remove from favorites</button>
                         )
                     )}
-                    {stones._id !== undefined && (
+                    {(stones._id !== undefined && !!userId) && (
                         !isInFavorites && (
                             <button type="button" className="add-favorites" onClick={onAddToFavClick}><i className="fa-regular fa-heart"></i> Add to favorites</button>
                         )
