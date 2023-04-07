@@ -256,7 +256,7 @@ async function editStonesReview(stonesId, userId, reviewBody) {
 
             await existingReview.save();
             
-            existingStones.reviews.splice(existingStones.reviews.find(review => review.userId == userId), 1, existingReview);
+            existingStones.reviews.splice(existingStones.reviews.findIndex(review => review.userId == userId), 1, existingReview);
             
             await existingStones.save();
 
@@ -280,7 +280,7 @@ async function deleteStonesReview(stonesId, userId) {
     } else {
         await Review.findByIdAndDelete(existingReview._id);
 
-        existingStones.reviews.splice(existingStones.reviews.findIndex(review => review._id == existingReview._id), 1);
+        existingStones.reviews.splice(existingStones.reviews.findIndex(review => review.userId == userId), 1);
 
         existingStones.save();
 

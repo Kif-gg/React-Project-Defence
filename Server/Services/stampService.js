@@ -252,7 +252,7 @@ async function editStampReview(stampId, userId, reviewBody) {
 
             await existingReview.save();
 
-            existingStamp.reviews.splice(existingStamp.reviews.find(review => review.userId == userId), 1, existingReview);
+            existingStamp.reviews.splice(existingStamp.reviews.findIndex(review => review.userId == userId), 1, existingReview);
 
             await existingStamp.save();
 
@@ -276,7 +276,7 @@ async function deleteStampReview(stampId, userId) {
     } else {
         await Review.findByIdAndDelete(existingReview._id);
 
-        existingStamp.reviews.splice(existingStamp.reviews.findIndex(review => review._id == existingReview._id), 1);
+        existingStamp.reviews.splice(existingStamp.reviews.findIndex(review => review.userId == userId), 1);
 
         existingStamp.save();
 

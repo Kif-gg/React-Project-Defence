@@ -248,7 +248,7 @@ async function editClothesReview(clothesId, userId, reviewBody) {
 
             await existingReview.save();
 
-            existingClothes.reviews.splice(existingClothes.reviews.find(review => review.userId == userId), 1, existingReview);
+            existingClothes.reviews.splice(existingClothes.reviews.findIndex(review => review.userId == userId), 1, existingReview);
 
             await existingClothes.save();
 
@@ -272,7 +272,7 @@ async function deleteClothesReview(clothesId, userId) {
     } else {
         await Review.findByIdAndDelete(existingReview._id);
 
-        existingClothes.reviews.splice(existingClothes.reviews.findIndex(review => review._id == existingReview._id), 1);
+        existingClothes.reviews.splice(existingClothes.reviews.findIndex(review => review.userId == userId), 1);
 
         existingClothes.save();
 

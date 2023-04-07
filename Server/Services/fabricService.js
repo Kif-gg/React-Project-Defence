@@ -248,7 +248,7 @@ async function editFabricReview(fabricId, userId, reviewBody) {
 
             await existingReview.save();
 
-            existingFabric.reviews.splice(existingFabric.reviews.find(review => review.userId == userId), 1, existingReview);
+            existingFabric.reviews.splice(existingFabric.reviews.findIndex(review => review.userId == userId), 1, existingReview);
 
             await existingFabric.save();
 
@@ -272,7 +272,7 @@ async function deleteFabricReview(fabricId, userId) {
     } else {
         await Review.findByIdAndDelete(existingReview._id);
 
-        existingFabric.reviews.splice(existingFabric.reviews.findIndex(review => review._id == existingReview._id), 1);
+        existingFabric.reviews.splice(existingFabric.reviews.findIndex(review => review.userId == userId), 1);
 
         existingFabric.save();
 
