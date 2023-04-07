@@ -1,0 +1,49 @@
+/* Main content styling */
+
+#not-found main {
+    margin-bottom: 80px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    justify-content: center;
+}
+
+#not-found a button {
+    width: 100%;
+    height: 100px;
+    background-color: #76cfed;
+    cursor: pointer;
+    border-radius: 10px;
+    color: white;
+    text-shadow: -1px 0 black, 1px 0 black, 0 1px black, 0 -1px black;
+    font-size: 30px;
+}
+
+#not-found main a {
+    width: 40%;
+}
+
+#not-found main a:hover {
+    background-color: transparent;
+}
+
+#not-found button:hover {
+    background-color: #7deca8;
+}
+
+#not-found main img {
+    width: 50%;
+}
+
+#not-found h2 {
+    position: relative;
+    left: 25%;
+    text-align: center;
+    font-size: 100px;
+    color: coral;
+}
+
+#not-found main h3 {
+    font-size: 40px;
+}

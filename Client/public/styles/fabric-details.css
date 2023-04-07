@@ -48,7 +48,8 @@
 }
 
 #fabric-details main img {
-    width: 65%;
+    width: 100%;
+    height: 60%;
 }
 
 #fabric-details .stars,

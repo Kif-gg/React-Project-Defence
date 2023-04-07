@@ -34,8 +34,8 @@
 }
 
 #cart .product-card img {
-    width: 70%;
-    height: 50%;
+    width: 100%;
+    height: 100%;
 }
 
 #cart .product-card p {
@@ -96,6 +96,8 @@
     background-color: #7deca8;
 }
 
-#cart input[type=text] {
+#cart span {
     text-align: center;
+    border: 1px solid black;
+    width: 40px;
 }
