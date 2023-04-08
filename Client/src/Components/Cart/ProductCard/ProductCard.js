@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { removeFromCart } from "../../../Services/authService";
 
-export default function ProductCard({ imageUrl, title, price, setTotalCost, totalCost, _id, cart }) {
+export default function ProductCard({ imageUrl, title, price, setTotalCost, totalCost, _id, cart, setCart }) {
 
     const [quantity, setQuantity] = useState(1);
 
@@ -26,8 +26,12 @@ export default function ProductCard({ imageUrl, title, price, setTotalCost, tota
 
     const onRemove = () => {
         if (window.confirm('Are you sure you want to remove this item from your cart?')) {
-            removeFromCart(_id).then(setTotalCost(totalCost - (price * (quantity - 1))));
+            removeFromCart(_id).then(result => {
+                setTotalCost(totalCost - (price * (quantity - 1)));
+                setCart(result);
+            });
             cart.splice(cart.findIndex(prod => prod._id === _id), 1);
+            setCart(cart);
         }
     };
 
