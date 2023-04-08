@@ -4,7 +4,8 @@ const userSchema = new Schema({
     username: {
         type: String, required: [true, 'Username is required!'], unique: true,
         minLength: [3, 'Username must be at least 3 characters!'],
-        maxLength: [20, 'Username must not be longer than 20 characters!']
+        maxLength: [20, 'Username must not be longer than 20 characters!'],
+        match: [/^(?=.{3,20}$)(?![_.])(?!.*[_.]{2})[a-z0-9._]+(?<![_.])$/i, 'This username is not valid!']
     },
     email: {
         type: String, required: [true, 'Email is required!'], unique: true, match: [/^([a-z]+)\w{2,20}[@][a-z_-]{3,20}[.][a-z]{2,5}$/i, 'This email is not valid!'],
