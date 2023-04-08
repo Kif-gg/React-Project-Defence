@@ -33,15 +33,10 @@ function App() {
 
     const navigate = useNavigate();
 
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState(JSON.parse(localStorage.getItem('Authorization')) || {});
 
     useEffect(() => {
-        const obj = JSON.parse(localStorage.getItem('Authorization'));
-        if (!!obj) {
-            setUser(obj);
-        } else {
-            setUser({})
-        }
+        setUser(JSON.parse(localStorage.getItem('Authorization')) || {});
     }, []);
 
     const onLoginSubmit = async (e) => {
