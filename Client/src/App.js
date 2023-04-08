@@ -77,7 +77,7 @@ function App() {
     };
 
     const onLogout = async () => {
-        await authService.logout();
+        authService.logout();
         localStorage.clear();
         setUser({});
     };
