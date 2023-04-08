@@ -67,6 +67,8 @@ async function getClothesFiltered(search, type, targets, sort, direction) {
     }
     if (targets == 'all' || targets == undefined) {
         targets = '';
+    } else {
+        targets = `^${targets}$`;
     }
     if (sort == undefined) {
         sort = 'price';
