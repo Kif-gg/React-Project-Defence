@@ -141,10 +141,14 @@
     cursor: pointer;
 }
 
-#profile input[type=password] {
-    margin-left: 22px;
+#profile input.password {
+    margin-left: 16px;
 }
 
 #profile .fa-lock-open {
     width: 14px;
+}
+
+#profile .fa-solid {
+    height: 17px;
 }

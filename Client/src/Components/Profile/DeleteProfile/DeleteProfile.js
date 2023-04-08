@@ -19,17 +19,42 @@ export default function DeleteProfile({ setDeleteProfileMode }) {
 
     const cancelDelete = () => {
         setDeleteProfileMode(false);
-    }
+    };
+
+    const toggleVisibility = (e) => {
+        e.currentTarget.classList.toggle('fa-lock');
+        e.currentTarget.classList.toggle('fa-lock-open');
+
+        const field = e.currentTarget.parentElement.previousSibling.lastChild;
+
+        if (Array.from(e.currentTarget.classList).find(e => e === 'fa-lock-open')) {
+            field.type = 'text';
+        } else {
+            field.type = 'password';
+        }
+    };
+
+    const onBlurValidate = (e) => {
+        const firstErrEl = document.getElementsByClassName('error')[0];
+
+        if (e.currentTarget.value.length === 0) {
+            firstErrEl.style.display = 'block';
+            e.currentTarget.classList.add('invalid');
+        } else {
+            firstErrEl.style.display = 'none';
+            e.currentTarget.classList.remove('invalid');
+        }
+    };
 
     return (
         <form method="POST" onSubmit={onDeleteSubmit}>
             <label htmlFor="password">Enter password
                 <br />
-                <input type="password" name="password" id="password" required />
+                <input type="password" name="password" id="password" required onBlur={onBlurValidate} />
             </label>
-            <span className="pass-text"><i className="fa-solid fa-lock"></i></span>
+            <span className="pass-text"><i className="fa-solid fa-lock" onClick={toggleVisibility}></i></span>
             <p className="error">
-                Wrong password!
+                Password is required!
             </p>
             <p>
                 <input type="submit" value="Delete profile" />
