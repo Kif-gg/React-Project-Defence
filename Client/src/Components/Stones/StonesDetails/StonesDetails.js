@@ -84,7 +84,7 @@ export default function StonesDetails() {
                     <p>Color: {stones.stoneColor}</p>
                     <p>Price: {stones.price} BGN</p>
                     {stones.availability ? <p>In stock</p> : <p>Out of stock</p>}
-                    <p><span className="stars"><i className="fa-solid fa-star"></i></span> 4.7 stars from 100 users</p>
+                    <p><span className="stars"><i className="fa-solid fa-star"></i></span> {stones.average} stars from {stones.totalPeople} users</p>
                     {(stones.availability && !!userId) && (
                         (!isInCart && (
                             <button type="button" onClick={onAddToCartClick}><i className="fa-solid fa-cart-shopping"></i> Add to cart</button>

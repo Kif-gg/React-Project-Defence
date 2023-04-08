@@ -83,7 +83,7 @@ export default function StampDetails() {
                     <p>Color: {stamp.stoneColor}</p>
                     <p>Price: {stamp.price} BGN</p>
                     {stamp.availability ? <p>In stock</p> : <p>Out of stock</p>}
-                    <p><span className="stars"><i className="fa-solid fa-star"></i></span> 4.7 stars from 100 users</p>
+                    <p><span className="stars"><i className="fa-solid fa-star"></i></span> {stamp.average} stars from {stamp.totalPeople} users</p>
                     {(stamp.availability && !!userId) && (
                         (!isInCart && (
                             <button type="button" onClick={onAddToCartClick}><i className="fa-solid fa-cart-shopping"></i> Add to cart</button>

@@ -82,6 +82,7 @@ export default function ClothesDetails() {
                     <p>For: {clothes.targetCustomers}</p>
                     <p>Price: {clothes.price} BGN</p>
                     {clothes.availability ? <p>In stock</p> : <p>Out of stock</p>}
+                    <p><span className="stars"><i className="fa-solid fa-star"></i></span> {clothes.average} stars from {clothes.totalPeople} users</p>
                     {(clothes.availability && !!userId) && (
                         (!isInCart && (
                             <button type="button" onClick={onAddToCartClick}><i className="fa-solid fa-cart-shopping"></i> Add to cart</button>
