@@ -43,8 +43,12 @@ export const addToCart = async () => {
     return await request.post(`${altUrl}${pathname}/cart`);
 };
 
-export const removeFromCart = async (_id) => {
-    return await request.del(`${altUrl}/cart/${_id}`);
+export const removeFromCart = async (id) => {
+    return await request.del(`${altUrl}/cart/${id}`);
+};
+
+export const checkoutAndBuy = async () => {
+    return await request.get(`${altUrl}/cart/checkout`);
 };
 
 export const editUserData = async (editedData) => {
@@ -53,4 +57,4 @@ export const editUserData = async (editedData) => {
 
 export const deleteUserProfile = async (password) => {
     return await request.del(`${url}/profile`, password)
-}
+};

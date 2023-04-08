@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import ProductCard from "./ProductCard/ProductCard";
-import { getUserCart } from "../../Services/authService";
+import { checkoutAndBuy, getUserCart } from "../../Services/authService";
 import { AuthContext } from "../../Contexts/AuthContext";
 
 
@@ -30,15 +30,28 @@ export default function Cart() {
 
     total += totalCost;
 
+    const onCheckOutClick = () => {
+        if (window.confirm('Are you sure you want to buy these products?')) {
+            checkoutAndBuy().then(alert('Thank you for your purchase! :)'), setCart([])).catch(err => console.log(err));
+        }
+    }
+
     return (
         <div id="cart">
             <main>
                 <h2>Cart</h2>
-                <section>
-                    {cart.map(product => <ProductCard key={product._id} setCart={setCart} cart={cart} setTotalCost={setTotalCost} totalCost={totalCost} {...product} />)}
-                </section>
-                <p className="total">Total cost: {Number(total).toFixed(2)} BGN</p>
-                <button type="button" className="order">Make order</button>
+                {cart.length > 0 && (
+                    <div>
+                        <section>
+                            {cart.map(product => <ProductCard key={product._id} setCart={setCart} cart={cart} setTotalCost={setTotalCost} totalCost={totalCost} {...product} />)}
+                        </section>
+                        <p className="total">Total cost: {Number(total).toFixed(2)} BGN</p>
+                        <button type="button" className="order" onClick={onCheckOutClick}>Make order</button>
+                    </div>
+                )}
+                {cart.length === 0 && (
+                    <h5>You haven't added anything to your cart yet!</h5>
+                )}
             </main>
         </div>
     )

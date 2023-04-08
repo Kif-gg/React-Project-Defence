@@ -70,7 +70,7 @@ async function login(username, password) {
 
 async function logout(token) {
     await BlacklistedToken.create({ token });
-}
+};
 
 async function changeUserData(id, user) {
     const existingUser = await User.findById(id);
@@ -88,7 +88,7 @@ async function changeUserData(id, user) {
     existingUser.number = user.number;
 
     return existingUser.save();
-}
+};
 
 async function changePassword(id, user) {
     const existingUser = await User.findById(id);
@@ -154,7 +154,7 @@ async function parseToken(token) {
 
 async function getUserById(userId) {
     return User.findById(userId);
-}
+};
 
 async function getUserFavorites(userId) {
     const existingUser = await getUserById(userId);
@@ -175,7 +175,7 @@ async function getUserFavorites(userId) {
 
         return allFavoritesArray.filter(fav => fav != '');
     }
-}
+};
 
 async function getUserCart(userId) {
     const existingUser = await getUserById(userId);
@@ -196,6 +196,23 @@ async function getUserCart(userId) {
 
         return allProductsInCartArray.filter(fav => fav != '');
     }
+};
+
+async function checkoutAndBuy(userId) {
+    const existingUser = await getUserById(userId);
+    if (!!existingUser == false) {
+        throw new Error(`User with ID ${userId} does not exist!`);
+    } else {
+        existingUser.cart = {
+            fabrics: [],
+            stones: [],
+            stamps: [],
+            clothes: []
+        }
+
+        await existingUser.save();
+        return;
+    }
 }
 
 module.exports = {
@@ -209,5 +226,5 @@ module.exports = {
     getUserById,
     getUserFavorites,
     getUserCart,
-    secret
+    checkoutAndBuy
 };
