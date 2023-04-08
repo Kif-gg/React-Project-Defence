@@ -22,7 +22,8 @@
     font-size: 30px;
 }
 
-#register input[type=text], input[type=password] {
+#register input[type=text],
+input[type=password] {
     height: 30px;
     width: 20%;
     border-radius: 5px;
@@ -54,15 +55,15 @@
 #register .error {
     font-size: 20px;
     color: red;
-    /* display: none; */
+    display: none;
 }
 
 #register .pass-text:hover {
     cursor: pointer;
 }
 
-#register input[type=password] {
-    margin-left: 22px;
+#register input.password {
+    margin-left: 16px;
 }
 
 #register h4 {
@@ -82,4 +83,8 @@
 
 #register .fa-lock-open {
     width: 14px;
+}
+
+#login .fa-solid {
+    height: 17px;
 }
