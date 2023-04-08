@@ -4,7 +4,6 @@ import { editUserData } from "../../../Services/authService";
 export default function EditUserData({ user, setEditDataMode, setUser }) {
 
     const [formValues, setFormValues] = useState({
-        username: user.username,
         email: user.email,
         number: user.number
     });
@@ -13,18 +12,15 @@ export default function EditUserData({ user, setEditDataMode, setUser }) {
         setFormValues(state => ({ ...state, [e.target.name]: e.target.value }));
     }
 
-    const onEditSubmit = async (e) => {
+    const onEditSubmit = (e) => {
         e.preventDefault();
 
         const result = Object.fromEntries(new FormData(e.target));
-        
-        if (window.confirm('Are you sure you want to update your profile data?') === true) {
-            const done = await editUserData(result);
 
-            if (done) {
-                setEditDataMode(false);
-                setUser(result);
-            }
+        if (window.confirm('Are you sure you want to update your profile data?') === true) {
+            editUserData(result).then(res => {
+                setUser({ ...result, username: user.username });
+            }).catch(err => console.log(err));
         }
     };
 

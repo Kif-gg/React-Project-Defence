@@ -80,7 +80,7 @@ async function changeUserData(id, user) {
 
     if (currentEmail.test(user.email) == true && currentNumber.test(user.number) == true) {
         throw new Error('You must change at least one field!');
-    } else if (!!await User.findOne({ email: { '$regex': `^${user.email}$`, '$options': 'i' }, _id: existingUser._id }) != true) {
+    } else if (!!await User.findOne({ email: { '$regex': `^${user.email}$`, '$options': 'i' }, _id: existingUser._id }) == true) {
         throw new Error("This email is already registered!");
     }
 
