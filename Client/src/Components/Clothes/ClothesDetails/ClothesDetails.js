@@ -15,15 +15,15 @@ export default function ClothesDetails() {
     const { id } = useParams();
 
     const onAddToFavClick = () => {
-        addToFavorites().then(setIsInFavorites(true)).catch(setIsInFavorites(false));
+        addToFavorites().then(setIsInFavorites(true)).catch(err => console.log(err.message));
     };
 
     const onRemoveFromFavClick = () => {
-        removeFromFavorites().then(setIsInFavorites(false)).catch(setIsInFavorites(true));
+        removeFromFavorites().then(setIsInFavorites(false)).catch(err => console.log(err.message));
     };
 
     const onAddToCartClick = () => {
-        addToCart().then(setIsInCart(true)).catch(setIsInCart(false));
+        addToCart().then(setIsInCart(true)).catch(err => console.log(err.message));
     };
 
     const [clothes, setProduct] = useState({});
@@ -83,10 +83,10 @@ export default function ClothesDetails() {
                     <p>Price: {clothes.price} BGN</p>
                     {clothes.availability ? <p>In stock</p> : <p>Out of stock</p>}
                     {(clothes.availability && !!userId) && (
-                        (isInCart && (
+                        (!isInCart && (
                             <button type="button" onClick={onAddToCartClick}><i className="fa-solid fa-cart-shopping"></i> Add to cart</button>
                         ))
-                        || (!isInCart && (
+                        || (isInCart && (
                             <h4>Product is in your cart! <i className="fa-regular fa-smile"></i> </h4>
                         ))
                     )}

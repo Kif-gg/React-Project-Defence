@@ -85,10 +85,10 @@ export default function StampDetails() {
                     {stamp.availability ? <p>In stock</p> : <p>Out of stock</p>}
                     <p><span className="stars"><i className="fa-solid fa-star"></i></span> 4.7 stars from 100 users</p>
                     {(stamp.availability && !!userId) && (
-                        (isInCart && (
+                        (!isInCart && (
                             <button type="button" onClick={onAddToCartClick}><i className="fa-solid fa-cart-shopping"></i> Add to cart</button>
                         ))
-                        || (!isInCart && (
+                        || (isInCart && (
                             <h4>Product is in your cart! <i className="fa-regular fa-smile"></i> </h4>
                         ))
                     )}
