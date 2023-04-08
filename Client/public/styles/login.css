@@ -43,26 +43,12 @@
     background-color: #7deca8;
 }
 
-#login .invalid {
-    border-left: 6px solid red;
-}
-
-#login .valid {
-    border-left: 6px solid green;
-}
-
-#login .error {
-    font-size: 20px;
-    color: red;
-    display: none;
-}
-
 #login .pass-text:hover {
     cursor: pointer;
 }
 
-#login input[type=password] {
-    margin-left: 22px;
+#login input.password {
+    margin-left: 16px;
 }
 
 #login h4 {
@@ -82,4 +68,8 @@
 
 #login .fa-lock-open {
     width: 14px;
+}
+
+#login .fa-solid {
+    height: 17px;
 }

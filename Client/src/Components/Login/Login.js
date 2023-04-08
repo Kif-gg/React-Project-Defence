@@ -16,6 +16,18 @@ export default function Login() {
         setFormValues(state => ({ ...state, [e.target.name]: e.target.value }));
     }
 
+    const toggleVisibility = (e) => {
+        const field = document.getElementById('password');
+        e.currentTarget.classList.toggle('fa-lock');
+        e.currentTarget.classList.toggle('fa-lock-open');
+
+        if (Array.from(e.currentTarget.classList).find(e => e === 'fa-lock-open')) {
+            field.type = 'text';
+        } else {
+            field.type = 'password';
+        }
+    };
+
     return (
         <div id="login">
             <main>
@@ -24,20 +36,14 @@ export default function Login() {
                     <form method="POST" onSubmit={onLoginSubmit}>
                         <label htmlFor="username">Username
                             <br />
-                            <input type="text" name="username" id="username" required value={formValues.username} onChange={onFormValuesChange} className="valid" />
+                            <input type="text" name="username" id="username" required value={formValues.username} onChange={onFormValuesChange} />
                         </label>
-                        <p className="error">
-                            Username is required!
-                        </p>
                         <br />
                         <label htmlFor="password">Password
                             <br />
-                            <input type="password" name="password" id="password" required value={formValues.password} onChange={onFormValuesChange} className="invalid" />
+                            <input type="password" name="password" id="password" className="password" required value={formValues.password} onChange={onFormValuesChange} />
                         </label>
-                        <span className="pass-text"><i className="fa-solid fa-lock"></i></span>
-                        <p className="error">
-                            Password is required!
-                        </p>
+                        <span className="pass-text"><i className="fa-solid fa-lock" onClick={toggleVisibility}></i></span>
                         <br />
                         <p>
                             <input type="submit" value="Log in" />
