@@ -14,7 +14,6 @@ const cartController = require('./Controllers/cartController');
 
 const trimBody = require('./Middlewares/trimBody');
 const session = require('./Middlewares/session');
-const { guestGuard } = require('./Middlewares/guards');
 const cors = require('./Middlewares/cors');
 
 start();
@@ -42,7 +41,7 @@ async function start() {
         app.use('/stones', stonesController);
         app.use('/stamps', stampController);
         app.use('/clothes', clothesController);
-        app.use('/cart', guestGuard(), cartController);
+        app.use('/cart', cartController);
 
         app.listen(3030, () => console.log('REST service started successfully'));
     } catch (error) {
