@@ -17,6 +17,9 @@ async function register(username, email, password, repass, number) {
     const existingUsername = await User.findOne({ username }).collation({ locale: 'en', strength: 2 });
     const existingEmail = await User.findOne({ email }).collation({ locale: 'en', strength: 2 });
 
+    if (password.includes(' ') || repass.includes(' ')) {
+        throw new Error('Whitespaces are not allowed!');
+    }
     if (existingUsername) {
         throw new Error('This username is already taken!');
     } else if (existingEmail) {
