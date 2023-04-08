@@ -29,7 +29,7 @@ export default function ProductCard({ imageUrl, title, price, setTotalCost, tota
             removeFromCart(_id).then(result => {
                 setTotalCost(totalCost - (price * (quantity - 1)));
                 setCart(result);
-            });
+            }).catch(err => alert(err.message));
             cart.splice(cart.findIndex(prod => prod._id === _id), 1);
             setCart(cart);
         }

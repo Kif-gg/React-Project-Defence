@@ -8,7 +8,7 @@ export default function Favorites() {
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
-        getUserFavorites().then(result => setProducts(result)).catch(setProducts([]));
+        getUserFavorites().then(result => setProducts(result)).catch(err => alert(err.message), setProducts([]));
     }, []);
 
     return (

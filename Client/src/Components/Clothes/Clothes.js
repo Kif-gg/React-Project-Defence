@@ -8,7 +8,7 @@ export default function Clothes() {
     const [clothes, setClothes] = useState([]);
 
     useEffect(() => {
-        getClothesProducts().then(result => setClothes(result));
+        getClothesProducts().then(result => setClothes(result)).catch(err => alert(err.message));
     }, []);
 
     return (

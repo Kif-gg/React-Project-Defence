@@ -8,7 +8,7 @@ export default function Fabric() {
     const [fabrics, setFabrics] = useState([]);
 
     useEffect(() => {
-        getFabricProducts().then(result => { setFabrics(result) });
+        getFabricProducts().then(result => { setFabrics(result) }).catch(err => alert(err.message));
     }, []);
 
     return (

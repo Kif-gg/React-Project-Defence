@@ -8,7 +8,7 @@ export default function Stamps() {
     const [stamps, setStamps] = useState([]);
 
     useEffect(() => {
-        getStampsProducts().then(result => setStamps(result));
+        getStampsProducts().then(result => setStamps(result)).catch(err => alert(err.message));
     }, []);
 
     return (

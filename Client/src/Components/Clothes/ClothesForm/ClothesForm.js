@@ -18,7 +18,7 @@ export default function ClothesForm(props) {
     const onFormSubmit = (e) => {
         e.preventDefault();
 
-        getClothesProducts(formValues).then(result => { props.setClothes(result) });
+        getClothesProducts(formValues).then(result => { props.setClothes(result) }).catch(err => alert(err.message));
     };
 
     return (

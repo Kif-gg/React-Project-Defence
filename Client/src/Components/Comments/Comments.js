@@ -41,7 +41,7 @@ export default function Comments({ reviews, setProduct }) {
                 setRevs(result.reviews || []);
                 setProduct(result);
             }
-        });
+        }).catch(err => alert(err.message));
 
         setReviewValues({
             rating: '',
@@ -71,7 +71,7 @@ export default function Comments({ reviews, setProduct }) {
                     setRevs(result.reviews);
                     setProduct(result);
                 }
-            });
+            }).catch(err => alert(err.message));
             setEditMode(false);
         }
     };
@@ -83,7 +83,7 @@ export default function Comments({ reviews, setProduct }) {
                     setRevs(result.reviews);
                     setProduct(result);
                 }
-            });
+            }).catch(err => alert(err.message));
             setReviewValues({
                 rating: '',
                 comment: ''

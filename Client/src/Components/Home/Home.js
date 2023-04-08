@@ -7,7 +7,7 @@ export default function Home() {
     const [homeProducts, setHomeProducts] = useState([]);
 
     useEffect(() => {
-        getHomeProducts().then(result => { setHomeProducts(result) });
+        getHomeProducts().then(result => { setHomeProducts(result) }).catch(err => alert(err.message));
     }, []);
 
     return (

@@ -15,15 +15,15 @@ export default function ClothesDetails() {
     const { id } = useParams();
 
     const onAddToFavClick = () => {
-        addToFavorites().then(setIsInFavorites(true)).catch(err => console.log(err.message));
+        addToFavorites().then(setIsInFavorites(true)).catch(err => alert(err.message));
     };
 
     const onRemoveFromFavClick = () => {
-        removeFromFavorites().then(setIsInFavorites(false)).catch(err => console.log(err.message));
+        removeFromFavorites().then(setIsInFavorites(false)).catch(err => alert(err.message));
     };
 
     const onAddToCartClick = () => {
-        addToCart().then(setIsInCart(true)).catch(err => console.log(err.message));
+        addToCart().then(setIsInCart(true)).catch(err => alert(err.message));
     };
 
     const [clothes, setProduct] = useState({});
@@ -47,14 +47,14 @@ export default function ClothesDetails() {
             } else if (result.reviews !== undefined) {
                 setProduct(result);
             }
-        });
+        }).catch(err => alert(err.message));
     }, [id, navigate]);
 
     useEffect(() => {
         if (!!userId) {
             getUserCart().then(result => {
                 setCart(result);
-            });
+            }).catch(err => alert(err.message));
         }
         setIsInCart(cartChecker);
     }, [cartChecker, userId]);
@@ -63,7 +63,7 @@ export default function ClothesDetails() {
         if (!!userId) {
             getUserFavorites().then(result => {
                 setFavorites(result);
-            });
+            }).catch(err => alert(err.message));
         }
         setIsInFavorites(favoritesChecker);
     }, [favoritesChecker, cartChecker, userId]);

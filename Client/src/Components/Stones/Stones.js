@@ -8,7 +8,7 @@ export default function Stones() {
     const [stones, setStones] = useState([]);
 
     useEffect(() => {
-        getStonesProducts().then(result => setStones(result))
+        getStonesProducts().then(result => setStones(result)).catch(err => alert(err.message))
     }, []);
 
     return (

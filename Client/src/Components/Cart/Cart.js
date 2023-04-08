@@ -32,7 +32,7 @@ export default function Cart() {
 
     const onCheckOutClick = () => {
         if (window.confirm('Are you sure you want to buy these products?')) {
-            checkoutAndBuy().then(alert('Thank you for your purchase! :)'), setCart([])).catch(err => console.log(err));
+            checkoutAndBuy().then(alert('Thank you for your purchase! :)'), setCart([])).catch(err => alert(err.message));
         }
     }
 

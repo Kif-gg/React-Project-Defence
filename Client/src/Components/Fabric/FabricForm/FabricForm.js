@@ -18,7 +18,7 @@ export default function FabricForm(props) {
     const onFormSubmit = (e) => {
         e.preventDefault();
 
-        getFabricProducts(formValues).then(result => { props.setFabrics(result) });
+        getFabricProducts(formValues).then(result => { props.setFabrics(result) }).catch(err => alert(err.message));
     };
 
     return (

@@ -19,7 +19,7 @@ export default function StampsForm(props) {
     const onFormSubmit = (e) => {
         e.preventDefault();
 
-        getStampsProducts(formValues).then(result => { props.setStamps(result) });
+        getStampsProducts(formValues).then(result => { props.setStamps(result) }).catch(err => alert(err.message));
     };
 
     return (

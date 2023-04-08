@@ -20,7 +20,7 @@ export default function StonesForm(props) {
     const onFormSubmit = (e) => {
         e.preventDefault();
 
-        getStonesProducts(formValues).then(result => { props.setStones(result) });
+        getStonesProducts(formValues).then(result => { props.setStones(result) }).catch(err => alert(err.message));
     };
 
     return (

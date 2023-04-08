@@ -10,7 +10,7 @@ export default function Profile() {
     const [user, setUser] = useState({});
 
     useEffect(() => {
-        getUserProfile().then(result => setUser(result)).catch(setUser({}));
+        getUserProfile().then(result => setUser(result)).catch(err => alert(err.message), setUser({}));
     }, []);
 
     const [editDataMode, setEditDataMode] = useState(false);

@@ -1,6 +1,3 @@
-import { Navigate } from "react-router-dom";
-import NotFound from "../Components/NotFound/NotFound";
-
 const request = async (method, url, data) => {
 
     const options = { mode: 'cors', credentials: 'include' };
@@ -28,13 +25,9 @@ const request = async (method, url, data) => {
         if (response.status === 401) {
             localStorage.clear();
             document.cookie += '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
-            <Navigate to={'/users/login'} />;
-            throw new Error(result.message);
         } else if (response.status === 404) {
-            <Navigate to={<NotFound />} />;
             return;
         }
-        alert(result.message);
         throw new Error(result.message);
     }
     return result;
