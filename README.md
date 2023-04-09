@@ -42,7 +42,7 @@ The application has **17 paths/pages**:
 
 **Users also have functionalities to post reviews, edit them and also delete them, add products to their favorites page and also add products to their cart.**
 
-### Acessible to guests only:
+### Accessible to guests only:
 - Login
 - Register
 
