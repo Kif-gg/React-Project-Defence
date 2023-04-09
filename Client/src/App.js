@@ -1,4 +1,4 @@
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import Header from "./Components/Header/Header";
@@ -25,8 +25,6 @@ import { AuthContext } from "./Contexts/AuthContext";
 
 import * as authService from "./Services/authService";
 
-import { UserPathGuard } from "./Guards/UserPathGuard";
-import { GuestPathGuard } from "./Guards/GuestPathGuard.js"
 import NotFound from "./Components/NotFound/NotFound";
 
 function App() {
@@ -76,13 +74,15 @@ function App() {
         }
     };
 
-    const onLogout = async () => {
-        authService.logout();
-        localStorage.clear();
-        setUser({});
+    const onLogout = () => {
+        authService.logout().then(
+            localStorage.clear(),
+            setUser({}),
+        ).catch(err => alert(err.message));
     };
 
     const contextValues = {
+        setUser,
         onLoginSubmit,
         onRegisterSubmit,
         onLogout,
@@ -118,7 +118,7 @@ function App() {
                             <Route path="/users/profile/favorites" element={<Favorites />} />
                             <Route path="/users/logout" element={<Logout />} />
                             <Route path="/cart" element={<Cart />} />
-                            <Route path="/users/*" element={<GuestPathGuard />} />
+                            <Route path="/users/*" element={<Navigate to={'/'} />} />
                         </>
                     )}
                     {/* GUEST ONLY */}
@@ -126,8 +126,8 @@ function App() {
                         <>
                             <Route path="/users/login" element={<Login />} />
                             <Route path="/users/register" element={<Register />} />
-                            <Route path="/cart" element={<UserPathGuard />} />
-                            <Route path="/users/*" element={<UserPathGuard />} />
+                            <Route path="/cart" element={<Navigate to={'/users/login'} />} />
+                            <Route path="/users/*" element={<Navigate to={'/users/login'} />} />
                         </>
                     )}
                     <Route path="*" element={<NotFound />} />

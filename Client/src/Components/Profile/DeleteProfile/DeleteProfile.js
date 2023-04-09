@@ -1,21 +1,27 @@
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { deleteUserProfile } from "../../../Services/authService";
+import { AuthContext } from "../../../Contexts/AuthContext";
+import { useContext } from "react";
 
 export default function DeleteProfile({ setDeleteProfileMode }) {
 
-    const onDeleteSubmit = async (e) => {
+    const { setUser } = useContext(AuthContext);
+
+    const navigate = useNavigate();
+
+    const onDeleteSubmit = (e) => {
         e.preventDefault();
 
         const result = Object.fromEntries(new FormData(e.target));
 
         if (window.confirm('Are you sure you want to delete your profile?') === true) {
-            const done = await deleteUserProfile(result);
-            if (done) {
-                localStorage.clear();
-                <Navigate to={'/users/login'} />
-            };
-        }
-    }
+            deleteUserProfile(result).then(
+                localStorage.clear(),
+                setUser({}),
+                navigate('/users/login')
+            ).catch(err => alert(err.message));
+        };
+    };
 
     const cancelDelete = () => {
         setDeleteProfileMode(false);
